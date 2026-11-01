@@ -48,8 +48,11 @@ void loop() {
 
 const UI_TEXT = {
   th: {
-    subtitle: "โปรแกรมผู้ช่วยตรวจจับ Bug คู่กับ Arduino IDE & จำลองวงจรกระดาษแปะ",
-    watchingLabel: "กำลังเฝ้าดูไฟล์ Arduino IDE:",
+    subtitle: "ผู้ช่วยแปล Bug ใน Arduino IDE เป็นภาษาคน พร้อมจำลองวงจรสไตล์กระดาษตัดแปะ (Paper-Scrapbook)",
+    howToBtn: "📖 วิธีใช้งานคู่กับ Arduino IDE (3 ขั้นตอน)",
+    howToTitle: "🚀 วิธีใช้งานร่วมกับโปรแกรม Arduino IDE แบบง่ายๆ (ทำตามได้ทันที!)",
+    closeGuide: "✕ ซ่อนคู่มือนี้",
+    watchingLabel: "กำลังซิงค์กับไฟล์ Arduino IDE:",
     pickFileBtn: "📂 เลือกไฟล์ .ino ในเครื่อง",
     miniModeBtnOff: "📌 โหมดเกาะขอบจอคู่กับ Arduino IDE",
     miniModeBtnOn: "📐 ขยายกลับโหมดเต็มจอ",
@@ -76,7 +79,10 @@ const UI_TEXT = {
     noDevices: "ยังไม่มีการเรียกใช้ขา Pin ในโค้ด ลองเขียน pinMode หรือ digitalWrite ดูสิ!",
   },
   en: {
-    subtitle: "Desktop Arduino IDE Bug Companion & Torn-Paper Circuit Visualizer",
+    subtitle: "Friendly Arduino IDE Bug Companion & Torn-Paper Scrapbook Circuit Visualizer",
+    howToBtn: "📖 How to Use with Arduino IDE (3 Steps)",
+    howToTitle: "🚀 How to Use Alongside Arduino IDE in 3 Easy Steps",
+    closeGuide: "✕ Hide Guide",
     watchingLabel: "Watching Arduino IDE File:",
     pickFileBtn: "📂 Browse .ino File",
     miniModeBtnOff: "📌 Mini Mode (Float next to Arduino IDE)",
@@ -119,6 +125,9 @@ const presetSelect = document.getElementById("presetSelect");
 const recentFilesSelect = document.getElementById("recentFilesSelect");
 const btnPickFile = document.getElementById("btnPickFile");
 const btnToggleMini = document.getElementById("btnToggleMini");
+const btnHowTo = document.getElementById("btnHowTo");
+const btnCloseHowTo = document.getElementById("btnCloseHowTo");
+const howToCard = document.getElementById("howToCard");
 const btnExpandCircuit = document.getElementById("btnExpandCircuit");
 const btnSaveCode = document.getElementById("btnSaveCode");
 const currentFileName = document.getElementById("currentFileName");
@@ -186,6 +195,9 @@ function updateLineNumbers() {
 function updateStaticLabels() {
   const t = UI_TEXT[currentLang];
   document.getElementById("subtitleText").textContent = t.subtitle;
+  if (btnHowTo) btnHowTo.textContent = t.howToBtn;
+  if (document.getElementById("howToTitle")) document.getElementById("howToTitle").textContent = t.howToTitle;
+  if (btnCloseHowTo) btnCloseHowTo.textContent = t.closeGuide;
   document.getElementById("watchingLabel").textContent = t.watchingLabel;
   btnPickFile.textContent = t.pickFileBtn;
   btnToggleMini.textContent = isMiniMode ? t.miniModeBtnOn : t.miniModeBtnOff;
@@ -534,6 +546,18 @@ presetSelect.addEventListener("change", (e) => {
 btnToggleMini.addEventListener("click", () => {
   setMiniMode(!isMiniMode);
 });
+
+if (btnHowTo && howToCard) {
+  btnHowTo.addEventListener("click", () => {
+    howToCard.style.display = howToCard.style.display === "none" ? "block" : "none";
+  });
+}
+
+if (btnCloseHowTo && howToCard) {
+  btnCloseHowTo.addEventListener("click", () => {
+    howToCard.style.display = "none";
+  });
+}
 
 btnExpandCircuit.addEventListener("click", () => {
   setMiniMode(false);

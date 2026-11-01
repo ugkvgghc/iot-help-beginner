@@ -3,21 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IoT Help Beginner — Desktop Companion</title>
+  <title>IoT Help Beginner — คู่หูนักพัฒนา Arduino & จำลองวงจรกระดาษแปะ</title>
+  <link rel="icon" type="image/x-icon" href="assets/app-icon.ico" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top Desktop App Title & Toolbar -->
-  <header class="topbar">
-    <div class="brand">
-      <span class="brand-logo">🐾⚡</span>
-      <div>
-        <h1>IoT Help Beginner <span class="app-badge">DESKTOP APP</span></h1>
-        <p id="subtitleText">โปรแกรมผู้ช่วยตรวจจับ Bug คู่กับ Arduino IDE & จำลองวงจรกระดาษแปะ</p>
+  <!-- Beautiful Hero Cover Header -->
+  <header class="hero-cover">
+    <div class="hero-left">
+      <div class="cover-art-frame">
+        <img
+          src="assets/mascot-cover.png"
+          alt="IoT Help Beginner Cover"
+          class="cover-art-img"
+          onerror="this.style.display='none'; document.getElementById('fallbackCoverSvg').style.display='flex';"
+        />
+        <div id="fallbackCoverSvg" class="fallback-cover" style="display: none;">
+          🦊⚡
+        </div>
+      </div>
+      <div class="hero-title-block">
+        <div class="badge-row">
+          <span class="app-badge">✨ OPEN SOURCE DESKTOP COMPANION</span>
+          <span class="version-badge">v0.2 • Arduino IDE Ready</span>
+        </div>
+        <h1>IoT Help Beginner</h1>
+        <p id="subtitleText">
+          ผู้ช่วยแปล Bug ใน Arduino IDE เป็นภาษาคน พร้อมจำลองวงจรสไตล์กระดาษตัดแปะ (Paper-Scrapbook)
+        </p>
       </div>
     </div>
 
-    <div class="controls">
+    <div class="hero-right-controls">
+      <button id="btnHowTo" class="guide-toggle-btn" type="button">
+        📖 วิธีใช้งานคู่กับ Arduino IDE (3 ขั้นตอน)
+      </button>
+
       <button id="btnToggleMini" class="mode-btn" type="button" title="ย่อเป็นหน้าต่างเล็กเกาะขอบจอคู่กับ Arduino IDE">
         📌 โหมดเกาะขอบจอคู่กับ Arduino IDE
       </button>
@@ -29,11 +50,51 @@
     </div>
   </header>
 
+  <!-- Step-by-Step Visual Onboarding Guide for Arduino IDE (Collapsible) -->
+  <section class="howto-guide-card" id="howToCard">
+    <div class="howto-header">
+      <h2 id="howToTitle">🚀 วิธีใช้งานร่วมกับโปรแกรม Arduino IDE แบบง่ายๆ (ทำตามได้ทันที!)</h2>
+      <button id="btnCloseHowTo" class="close-guide-btn" type="button">✕ ซ่อนคู่มือนี้</button>
+    </div>
+    <div class="howto-steps">
+      <div class="step-box">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3 id="step1Title">เปิด Arduino IDE แล้วเลือกไฟล์ `.ino`</h3>
+          <p id="step1Desc">
+            เปิดโปรแกรม <strong>Arduino IDE</strong> ของคุณขึ้นมาตามปกติ แล้วกดปุ่ม
+            <strong>"📂 เลือกไฟล์ .ino ในเครื่อง"</strong> ด้านล่าง เพื่อชี้เป้าไฟล์ที่คุณกำลังเขียนอยู่ (หรือปล่อยให้โปรแกรมตรวจจับไฟล์ล่าสุดให้อัตโนมัติ)
+          </p>
+        </div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3 id="step2Title">กดโหมด "📌 เกาะขอบจอ" แล้วเขียนโค้ดได้เลย</h3>
+          <p id="step2Desc">
+            กดปุ่ม <strong>"📌 โหมดเกาะขอบจอคู่กับ Arduino IDE"</strong> หน้าต่างจะย่อเป็นตัวละครลอยอยู่มุมจอ เวลาคุณพิมพ์โค้ดใน Arduino IDE แล้วกด <strong>Save (Ctrl + S)</strong> โปรแกรมจะตรวจโค้ดให้ทันที!
+          </p>
+        </div>
+      </div>
+
+      <div class="step-box">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3 id="step3Title">ดูจุดผิด (?) บนวงจรกระดาษแปะ & กดแก้โค้ดอัตโนมัติ</h3>
+          <p id="step3Desc">
+            ถ้าเขียนโค้ดผิด (เช่น <code>pinMode(4, Output);</code>) ตัวละครจะพูดบอกเป็นภาษาคน และชี้ว่าอุปกรณ์ชิ้นไหนในวงจรที่มีเครื่องหมาย <strong><code>?</code></strong> บนหัว พร้อมปุ่มกดแก้โค้ดให้อัตโนมัติ!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Arduino IDE Live File Sync Bar -->
   <section class="sync-bar" id="syncBar">
     <div class="sync-status">
       <span class="pulse-dot"></span>
-      <span id="watchingLabel">กำลังเฝ้าดูไฟล์ Arduino IDE:</span>
+      <span id="watchingLabel">กำลังซิงค์กับไฟล์ Arduino IDE:</span>
       <strong id="currentFileName" class="file-pill" title="">blink_bug.ino</strong>
     </div>
 
@@ -59,7 +120,13 @@
   <!-- Mascot Speech Banner (Always visible in both Mini Mode & Full Mode) -->
   <section class="mascot-banner" id="mascotBanner">
     <div class="mascot-avatar-card">
-      <div class="mascot-face" id="mascotFace">🦊🔧</div>
+      <img
+        src="assets/mascot-cover.png"
+        alt="Mascot"
+        class="mascot-mini-img"
+        onerror="this.style.display='none'; document.getElementById('mascotFace').style.display='block';"
+      />
+      <div class="mascot-face" id="mascotFace" style="display: none;">🦊🔧</div>
       <span class="mascot-tag" id="mascotNameTag">คู่หูตรวจโค้ด</span>
     </div>
     <div class="mascot-speech-bubble">

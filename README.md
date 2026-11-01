@@ -1,5 +1,9 @@
 # 🛠️🐾 IoT Help Beginner (Open Source)
 
+<p align="center">
+  <img src="packages/web-visualizer/assets/mascot-cover.png" alt="IoT Help Beginner Cover" width="540" style="border-radius: 16px;" />
+</p>
+
 > **ผู้ช่วยคู่ใจนักพัฒนา Hardware IoT มือใหม่** — เปลี่ยน Error ยากๆ ใน Arduino IDE ให้กลายเป็นคำอธิบายภาษาคนจากตัวละครบนหน้าจอ Desktop พร้อมเว็บจำลองวงจรสไตล์ **"รูปแปะกระดาษ (Paper Scrapbook)"** ที่ชี้ให้เห็นทันทีว่าโค้ดที่เขียนผิดส่งผลต่ออุปกรณ์ชิ้นไหน!
 >
 > **Friendly IoT Hardware Companion for Beginners** — Translates cryptic Arduino IDE bugs into friendly human explanations via a Desktop Mascot and visualizes hardware impact on a **Torn-Paper Scrapbook Circuit Web Visualizer**.

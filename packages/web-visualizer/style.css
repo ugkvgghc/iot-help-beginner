@@ -5,10 +5,11 @@
   --ink-dark: #2c2623;
   --ink-muted: #6e655f;
   --accent-teal: #00878f;
+  --accent-teal-dark: #005f66;
   --accent-orange: #e85d04;
   --error-red: #d90429;
   --ok-green: #2b9348;
-  --tape-yellow: rgba(255, 232, 140, 0.78);
+  --tape-yellow: rgba(255, 232, 140, 0.82);
 }
 
 * {
@@ -26,81 +27,139 @@ body {
   flex-direction: column;
 }
 
-/* Top Bar */
-.topbar {
-  background: #1f1d1b;
+/* Beautiful Hero Cover Header */
+.hero-cover {
+  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #006d77 100%);
   color: #fff;
-  padding: 10px 20px;
+  padding: 16px 24px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  border-bottom: 3px solid var(--accent-teal);
+  gap: 18px;
+  border-bottom: 4px solid #ffd166;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
 }
 
-.brand {
+.hero-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 18px;
 }
 
-.brand-logo {
-  font-size: 1.8rem;
+.cover-art-frame {
+  width: 78px;
+  height: 78px;
+  border-radius: 16px;
+  background: #fff9eb;
+  border: 3px solid #ffd166;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.brand h1 {
-  font-size: 1.15rem;
-  font-weight: 700;
+.cover-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallback-cover {
+  font-size: 2.2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 4px;
 }
 
 .app-badge {
-  background: var(--accent-teal);
-  font-size: 0.68rem;
-  padding: 2px 7px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
+  background: #ffd166;
+  color: #1d2d44;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.4px;
 }
 
-.brand p {
-  font-size: 0.8rem;
-  color: #ccc4be;
+.version-badge {
+  background: rgba(255, 255, 255, 0.16);
+  color: #e0fbfc;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
 }
 
-.controls {
+.hero-title-block h1 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.hero-title-block p {
+  font-size: 0.88rem;
+  color: #e0fbfc;
+  margin-top: 2px;
+}
+
+.hero-right-controls {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.mode-btn {
-  background: #3a3532;
-  color: #ffd166;
-  border: 1px solid #ffd166;
-  padding: 6px 12px;
-  border-radius: 7px;
+.guide-toggle-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 7px 13px;
+  border-radius: 8px;
   font-weight: 700;
   font-size: 0.83rem;
   cursor: pointer;
   transition: all 0.15s;
 }
 
-.mode-btn:hover,
-.mode-btn.active {
+.guide-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.mode-btn {
   background: #ffd166;
   color: #1f1d1b;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.83rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+  transition: all 0.15s;
+}
+
+.mode-btn:hover,
+.mode-btn.active {
+  background: #ffb703;
+  transform: translateY(-1px);
 }
 
 .lang-switch {
   display: flex;
-  background: #332f2c;
+  background: rgba(0, 0, 0, 0.32);
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #4e4945;
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .lang-btn {
@@ -108,13 +167,94 @@ body {
   color: #ddd;
   border: none;
   padding: 6px 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .lang-btn.active {
+  background: #00b4d8;
+  color: #fff;
+}
+
+/* 3-Step Visual Onboarding Guide Card */
+.howto-guide-card {
+  margin: 12px 20px 4px;
+  background: linear-gradient(to right, #ffffff, #f8fdff);
+  border: 2px solid #90e0ef;
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 14px rgba(0, 119, 182, 0.08);
+}
+
+.howto-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.howto-header h2 {
+  font-size: 1rem;
+  color: #005f73;
+}
+
+.close-guide-btn {
+  background: #e9ecef;
+  color: #495057;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.howto-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .howto-steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.step-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f1faee;
+  border: 1px solid #cce3de;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   background: var(--accent-teal);
   color: #fff;
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  font-size: 0.88rem;
+  color: #1d3557;
+  margin-bottom: 3px;
+}
+
+.step-content p {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #455a64;
 }
 
 /* Arduino IDE Live Sync Bar */
@@ -179,7 +319,7 @@ body {
 }
 
 .action-btn:hover {
-  background: #006b72;
+  background: var(--accent-teal-dark);
 }
 
 .sync-actions select {
@@ -193,7 +333,7 @@ body {
 
 /* Mascot Speech Banner */
 .mascot-banner {
-  margin: 12px 20px 6px;
+  margin: 10px 20px 6px;
   display: flex;
   align-items: stretch;
   gap: 14px;
@@ -214,11 +354,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 90px;
+  min-width: 92px;
   background: #fff;
   border-radius: 12px;
-  padding: 10px;
+  padding: 8px;
   border: 2px solid #e6ccb2;
+}
+
+.mascot-mini-img {
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  object-fit: cover;
+  animation: mascotBounce 2.2s infinite ease-in-out;
 }
 
 .mascot-face {
@@ -233,7 +381,7 @@ body {
 }
 
 .mascot-tag {
-  margin-top: 6px;
+  margin-top: 5px;
   font-size: 0.74rem;
   font-weight: 700;
   color: #7f5539;
@@ -310,15 +458,23 @@ body {
 }
 
 /* Mini Companion Mode (เกาะขอบจอคู่กับ Arduino IDE) */
-body.mini-mode .brand p,
+body.mini-mode .hero-title-block p,
+body.mini-mode .badge-row,
+body.mini-mode .cover-art-frame,
+body.mini-mode #btnHowTo,
+body.mini-mode #howToCard,
 body.mini-mode #recentFilesSelect,
 body.mini-mode #presetSelect,
 body.mini-mode #mainWorkspace {
   display: none !important;
 }
 
-body.mini-mode .topbar {
+body.mini-mode .hero-cover {
   padding: 8px 12px;
+}
+
+body.mini-mode .hero-title-block h1 {
+  font-size: 1.05rem;
 }
 
 body.mini-mode .sync-bar {
