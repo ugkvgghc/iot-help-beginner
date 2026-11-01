@@ -1,5 +1,5 @@
 /**
- * IoT Help Beginner - Paper-Scrapbook Circuit Visualizer App
+ * IoT Help Beginner - Desktop Companion & Paper-Scrapbook Circuit App
  */
 
 const PRESETS = {
@@ -48,13 +48,17 @@ void loop() {
 
 const UI_TEXT = {
   th: {
-    subtitle: "ผู้ช่วยตรวจจับ Bug โค้ด Arduino และจำลองวงจรสไตล์กระดาษตัดแปะ",
-    presetLabel: "ตัวอย่างโค้ดทดสอบ:",
+    subtitle: "โปรแกรมผู้ช่วยตรวจจับ Bug คู่กับ Arduino IDE & จำลองวงจรกระดาษแปะ",
+    watchingLabel: "กำลังเฝ้าดูไฟล์ Arduino IDE:",
+    pickFileBtn: "📂 เลือกไฟล์ .ino ในเครื่อง",
+    miniModeBtnOff: "📌 โหมดเกาะขอบจอคู่กับ Arduino IDE",
+    miniModeBtnOn: "📐 ขยายกลับโหมดเต็มจอ",
+    expandCircuitBtn: "🔍 ดูวงจรกระดาษแปะ (?)",
+    saveBtn: "💾 บันทึกลงไฟล์ .ino",
     mascotName: "คู่หูตรวจโค้ด",
     statusBug: "พบจุดผิดพลาด!",
     statusOk: "โค้ดถูกต้องพร้อมลุย!",
-    autoFix: "✨ แก้โค้ดให้ถูกต้องอัตโนมัติ",
-    editorHint: "ลองแก้โค้ดด้านล่างแล้วดูผลลัพธ์ในวงจรกระดาษแปะได้ทันที",
+    autoFix: "✨ แก้โค้ดในไฟล์ .ino ให้อัตโนมัติ",
     boardTitle: "📌 กระดานจำลองวงจรจากโค้ด (Paper-Scrapbook Circuit)",
     boardNote: "*อ้างอิงอุปกรณ์และขาจากโค้ดโดยอัตโนมัติ",
     pinRailTitle: "ขาเชื่อมต่อ (Pins in Code)",
@@ -72,13 +76,17 @@ const UI_TEXT = {
     noDevices: "ยังไม่มีการเรียกใช้ขา Pin ในโค้ด ลองเขียน pinMode หรือ digitalWrite ดูสิ!",
   },
   en: {
-    subtitle: "Friendly Arduino Bug Detector & Torn-Paper Scrapbook Circuit Visualizer",
-    presetLabel: "Sample Scenarios:",
+    subtitle: "Desktop Arduino IDE Bug Companion & Torn-Paper Circuit Visualizer",
+    watchingLabel: "Watching Arduino IDE File:",
+    pickFileBtn: "📂 Browse .ino File",
+    miniModeBtnOff: "📌 Mini Mode (Float next to Arduino IDE)",
+    miniModeBtnOn: "📐 Expand to Full Circuit View",
+    expandCircuitBtn: "🔍 View Paper Circuit (?)",
+    saveBtn: "💾 Save to .ino File",
     mascotName: "IoT Buddy",
     statusBug: "Bug Detected!",
     statusOk: "All Systems Go!",
-    autoFix: "✨ Auto-Fix Code Bugs",
-    editorHint: "Edit the Arduino code below and watch the paper circuit react live",
+    autoFix: "✨ Auto-Fix & Save .ino",
     boardTitle: "📌 Paper-Scrapbook Circuit Board (Inferred from Code)",
     boardNote: "*Hardware & wires automatically generated from your code",
     pinRailTitle: "Active Pins in Code",
@@ -99,10 +107,21 @@ const UI_TEXT = {
 
 let currentLang = "th";
 let lastAnalysis = null;
+let isMiniMode = false;
+let currentWatchedPath = "";
+let lastSyncedMtime = 0;
+let isUserTyping = false;
+let typingTimer = null;
 
 const codeInput = document.getElementById("codeInput");
 const lineNumbers = document.getElementById("lineNumbers");
 const presetSelect = document.getElementById("presetSelect");
+const recentFilesSelect = document.getElementById("recentFilesSelect");
+const btnPickFile = document.getElementById("btnPickFile");
+const btnToggleMini = document.getElementById("btnToggleMini");
+const btnExpandCircuit = document.getElementById("btnExpandCircuit");
+const btnSaveCode = document.getElementById("btnSaveCode");
+const currentFileName = document.getElementById("currentFileName");
 const btnLangTH = document.getElementById("btnLangTH");
 const btnLangEN = document.getElementById("btnLangEN");
 const mascotBanner = document.getElementById("mascotBanner");
@@ -116,9 +135,6 @@ const devicesZone = document.getElementById("devicesZone");
 const wireLayer = document.getElementById("wireLayer");
 const scrapbookCanvas = document.getElementById("scrapbookCanvas");
 
-/**
- * สร้าง SVG รูปภาพอุปกรณ์สไตล์ภาพวาดแปะกระดาษ (LED, ปุ่มกด, เซนเซอร์)
- */
 function getDeviceSVG(deviceType, isOn, hasBug) {
   if (deviceType === "button" || deviceType === "sensor") {
     const ringColor = hasBug ? "#d90429" : "#2b9348";
@@ -131,23 +147,18 @@ function getDeviceSVG(deviceType, isOn, hasBug) {
     `;
   }
 
-  // Default: หลอดไฟ LED (สว่างมีรัศมีเมื่อทำงานปกติ vs มืดดับเมื่อมี Bug)
   if (hasBug || !isOn) {
     return `
       <svg viewBox="0 0 80 80" width="66" height="66">
-        <!-- ขาหลอด LED -->
         <line x1="33" y1="54" x2="33" y2="75" stroke="#6c757d" stroke-width="4" stroke-linecap="round"/>
         <line x1="47" y1="54" x2="47" y2="70" stroke="#6c757d" stroke-width="4" stroke-linecap="round"/>
-        <!-- หัวหลอด LED ที่ดับสนิท -->
         <path d="M22 52 L22 32 A18 18 0 0 1 58 32 L58 52 Z" fill="#adb5bd" stroke="#495057" stroke-width="3"/>
         <rect x="19" y="50" width="42" height="6" rx="2" fill="#6c757d" stroke="#495057" stroke-width="2"/>
-        <!-- รอยกากบาทเล็กๆ ตาหลอดไฟงง -->
         <text x="40" y="41" text-anchor="middle" fill="#343a40" font-size="14" font-weight="bold">x_x</text>
       </svg>
     `;
   }
 
-  // หลอดไฟ LED สว่างสดใส
   return `
     <svg viewBox="0 0 80 80" width="66" height="66">
       <defs>
@@ -157,12 +168,9 @@ function getDeviceSVG(deviceType, isOn, hasBug) {
           <stop offset="100%" stop-color="rgba(255,190,11,0)"/>
         </radialGradient>
       </defs>
-      <!-- รัศมีไฟสว่าง -->
       <circle cx="40" cy="34" r="32" fill="url(#ledGlow)"/>
-      <!-- ขาหลอด LED -->
       <line x1="33" y1="54" x2="33" y2="75" stroke="#495057" stroke-width="4" stroke-linecap="round"/>
       <line x1="47" y1="54" x2="47" y2="70" stroke="#495057" stroke-width="4" stroke-linecap="round"/>
-      <!-- ตัวหลอดไฟสีเหลืองส้มสว่าง -->
       <path d="M22 52 L22 32 A18 18 0 0 1 58 32 L58 52 Z" fill="#ffbe0b" stroke="#fb5607" stroke-width="3"/>
       <rect x="19" y="50" width="42" height="6" rx="2" fill="#fb5607"/>
       <circle cx="33" cy="28" r="5" fill="rgba(255,255,255,0.85)"/>
@@ -178,10 +186,13 @@ function updateLineNumbers() {
 function updateStaticLabels() {
   const t = UI_TEXT[currentLang];
   document.getElementById("subtitleText").textContent = t.subtitle;
-  document.getElementById("presetLabel").textContent = t.presetLabel;
+  document.getElementById("watchingLabel").textContent = t.watchingLabel;
+  btnPickFile.textContent = t.pickFileBtn;
+  btnToggleMini.textContent = isMiniMode ? t.miniModeBtnOn : t.miniModeBtnOff;
+  btnExpandCircuit.textContent = t.expandCircuitBtn;
+  btnSaveCode.textContent = t.saveBtn;
   document.getElementById("mascotNameTag").textContent = t.mascotName;
-  document.getElementById("btnAutoFix").textContent = t.autoFix;
-  document.getElementById("editorHint").textContent = t.editorHint;
+  btnAutoFix.textContent = t.autoFix;
   document.getElementById("boardTitle").textContent = t.boardTitle;
   document.getElementById("boardNote").textContent = t.boardNote;
   document.getElementById("pinRailTitle").textContent = t.pinRailTitle;
@@ -194,7 +205,7 @@ function renderAnalysis() {
   lastAnalysis = result;
   const t = UI_TEXT[currentLang];
 
-  // 1. อัปเดตกล่องคำพูดตัวละคร (Mascot Banner)
+  // 1. Mascot Speech Banner
   if (result.ok) {
     mascotBanner.classList.add("status-ok");
     mascotFace.textContent = "🦊🎉";
@@ -214,7 +225,7 @@ function renderAnalysis() {
       .join("");
   }
 
-  // 2. อัปเดตกล่องรายการ Bug ใต้ Code Editor
+  // 2. Bug List Box
   if (result.bugs.length === 0) {
     bugListBox.innerHTML = `<span style="color: var(--ok-green); font-weight: 700;">✅ ${result.summary[currentLang]}</span>`;
   } else {
@@ -229,7 +240,7 @@ function renderAnalysis() {
       .join("");
   }
 
-  // 3. วาดขา Pin บนบอร์ด Arduino และกระดาษแปะอุปกรณ์ทางขวา
+  // 3. Paper-Scrapbook Circuit Board
   arduinoPinList.innerHTML = "";
   devicesZone.innerHTML = "";
 
@@ -240,7 +251,6 @@ function renderAnalysis() {
   }
 
   result.devices.forEach((dev, index) => {
-    // สร้างช่องเสียบขา Pin บนบอร์ด Arduino
     const pinEl = document.createElement("div");
     pinEl.className = `pin-socket ${dev.hasBug ? "pin-error" : ""}`;
     pinEl.id = `board-pin-${dev.pin}`;
@@ -250,7 +260,6 @@ function renderAnalysis() {
     `;
     arduinoPinList.appendChild(pinEl);
 
-    // สร้างแผ่นกระดาษฉีกแปะรูปอุปกรณ์ (Torn Paper Cutout)
     const tiltDeg = index % 2 === 0 ? 1.5 : -1.8;
     const wrapper = document.createElement("div");
     wrapper.className = "device-card-wrapper";
@@ -296,12 +305,13 @@ function renderAnalysis() {
     devicesZone.appendChild(wrapper);
   });
 
-  // 4. ลากเส้นสายไฟเชื่อมระหว่างขาบอร์ด Arduino ไปยังรูปกระดาษแปะอุปกรณ์
-  requestAnimationFrame(drawHandDrawnWires);
+  if (!isMiniMode) {
+    requestAnimationFrame(drawHandDrawnWires);
+  }
 }
 
 function drawHandDrawnWires() {
-  if (!lastAnalysis || !lastAnalysis.devices.length) {
+  if (isMiniMode || !lastAnalysis || !lastAnalysis.devices.length) {
     wireLayer.innerHTML = "";
     return;
   }
@@ -335,11 +345,27 @@ function drawHandDrawnWires() {
 }
 
 /**
- * ปุ่มแก้โค้ดให้ถูกต้องอัตโนมัติ (Auto-Fix) เพื่อให้ผู้เรียนเห็นความต่างทันที
+ * บันทึกโค้ดลงไฟล์ .ino จริงในเครื่อง
  */
-function autoFixCode() {
+async function saveCodeToInoFile(codeToSave) {
+  try {
+    const res = await fetch("/api/save-file", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: codeToSave }),
+    });
+    if (res.ok) {
+      const state = await res.json();
+      lastSyncedMtime = state.mtimeMs;
+    }
+  } catch (_) {}
+}
+
+/**
+ * แก้โค้ดให้ถูกต้องอัตโนมัติ และบันทึกกลับลงไฟล์ .ino ทันที
+ */
+async function autoFixCode() {
   let code = codeInput.value;
-  // แก้คำที่มักพิมพ์ผิดเป็นคำที่ถูกต้อง
   code = code.replace(/\b(pinmode|PinMode)\b/g, "pinMode");
   code = code.replace(/\b(Output|output)\b/g, "OUTPUT");
   code = code.replace(/\b(Input|input)\b/g, "INPUT");
@@ -348,7 +374,6 @@ function autoFixCode() {
   code = code.replace(/\b(High|high)\b/g, "HIGH");
   code = code.replace(/\b(Low|low)\b/g, "LOW");
 
-  // หากลืมประกาศ pinMode ใน setup() สำหรับขาที่มี digitalWrite
   if (lastAnalysis) {
     lastAnalysis.bugs.forEach((b) => {
       if (b.id.startsWith("bug-missing-pinmode-") && b.pin) {
@@ -362,16 +387,156 @@ function autoFixCode() {
 
   codeInput.value = code;
   renderAnalysis();
+  await saveCodeToInoFile(code);
+}
+
+/**
+ * สลับระหว่างโหมดหน้าต่างเล็กเกาะขอบจอคู่กับ Arduino IDE (Mini Mode) และโหมดดูวงจรเต็มจอ
+ */
+async function setMiniMode(enable) {
+  isMiniMode = enable;
+  if (isMiniMode) {
+    document.body.classList.add("mini-mode");
+    btnToggleMini.classList.add("active");
+    btnExpandCircuit.style.display = "inline-block";
+    try {
+      window.resizeTo(480, 320);
+      window.moveTo(window.screen.availWidth - 500, window.screen.availHeight - 360);
+    } catch (_) {}
+  } else {
+    document.body.classList.remove("mini-mode");
+    btnToggleMini.classList.remove("active");
+    btnExpandCircuit.style.display = "none";
+    try {
+      window.resizeTo(1200, 780);
+      window.moveTo(
+        Math.max(20, (window.screen.availWidth - 1200) / 2),
+        Math.max(20, (window.screen.availHeight - 780) / 2)
+      );
+    } catch (_) {}
+    setTimeout(drawHandDrawnWires, 120);
+  }
+  updateStaticLabels();
+
+  try {
+    await fetch("/api/window-topmost", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ topMost: isMiniMode }),
+    });
+  } catch (_) {}
+}
+
+/**
+ * ซิงค์ไฟล์ .ino ล่าสุดจากเซิร์ฟเวอร์ (อัปเดตทันทีเมื่อผู้ใช้กด Save ใน Arduino IDE)
+ */
+async function pollArduinoFileState() {
+  if (isUserTyping) return;
+  try {
+    const res = await fetch("/api/state");
+    if (!res.ok) return;
+    const state = await res.json();
+
+    currentFileName.textContent = state.watchedFileName || "blink_bug.ino";
+    currentFileName.title = state.watchedFilePath || "";
+
+    // อัปเดตรายการไฟล์ .ino ในเครื่อง
+    if (Array.isArray(state.recentFiles)) {
+      const currentOptions = Array.from(recentFilesSelect.options).map((o) => o.value);
+      const newPaths = state.recentFiles.map((f) => f.path);
+      if (JSON.stringify(currentOptions.slice(1)) !== JSON.stringify(newPaths)) {
+        recentFilesSelect.innerHTML = `<option value="">-- สลับไฟล์ .ino ในเครื่อง (${newPaths.length}) --</option>`;
+        state.recentFiles.forEach((f) => {
+          const opt = document.createElement("option");
+          opt.value = f.path;
+          opt.textContent = `${f.isExample ? "[ตัวอย่าง]" : "[Arduino IDE]"} ${f.name}`;
+          if (f.path === state.watchedFilePath) opt.selected = true;
+          recentFilesSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // ถ้าไฟล์ถูกแก้ไขจาก Arduino IDE หรือเพิ่งสลับไฟล์ใหม่ ให้อัปเดตโค้ดและวงจรทันที
+    if (
+      state.watchedFilePath !== currentWatchedPath ||
+      state.mtimeMs !== lastSyncedMtime
+    ) {
+      currentWatchedPath = state.watchedFilePath;
+      lastSyncedMtime = state.mtimeMs;
+      if (typeof state.code === "string" && state.code !== codeInput.value) {
+        codeInput.value = state.code;
+        renderAnalysis();
+      }
+    }
+  } catch (_) {
+    // กรณีเปิดผ่านไฟล์ตรงๆ โดยไม่ได้รัน server.js
+  }
 }
 
 // Event Listeners
-codeInput.addEventListener("input", renderAnalysis);
+codeInput.addEventListener("input", () => {
+  isUserTyping = true;
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(() => {
+    isUserTyping = false;
+  }, 2000);
+  renderAnalysis();
+});
+
+btnSaveCode.addEventListener("click", async () => {
+  await saveCodeToInoFile(codeInput.value);
+});
+
+btnPickFile.addEventListener("click", async () => {
+  try {
+    const res = await fetch("/api/pick-file", { method: "POST" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.state && data.state.code) {
+        currentWatchedPath = data.state.watchedFilePath;
+        lastSyncedMtime = data.state.mtimeMs;
+        currentFileName.textContent = data.state.watchedFileName;
+        codeInput.value = data.state.code;
+        renderAnalysis();
+      }
+    }
+  } catch (_) {}
+});
+
+recentFilesSelect.addEventListener("change", async (e) => {
+  const filePath = e.target.value;
+  if (!filePath) return;
+  try {
+    const res = await fetch("/api/select-file", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ filePath, autoSwitch: false }),
+    });
+    if (res.ok) {
+      const state = await res.json();
+      currentWatchedPath = state.watchedFilePath;
+      lastSyncedMtime = state.mtimeMs;
+      currentFileName.textContent = state.watchedFileName;
+      codeInput.value = state.code;
+      renderAnalysis();
+    }
+  } catch (_) {}
+});
+
 presetSelect.addEventListener("change", (e) => {
   const key = e.target.value;
   if (PRESETS[key]) {
     codeInput.value = PRESETS[key];
     renderAnalysis();
   }
+});
+
+btnToggleMini.addEventListener("click", () => {
+  setMiniMode(!isMiniMode);
+});
+
+btnExpandCircuit.addEventListener("click", () => {
+  setMiniMode(false);
 });
 
 btnLangTH.addEventListener("click", () => {
@@ -393,7 +558,9 @@ btnLangEN.addEventListener("click", () => {
 btnAutoFix.addEventListener("click", autoFixCode);
 window.addEventListener("resize", drawHandDrawnWires);
 
-// เริ่มต้นด้วย Preset แรกตามตัวอย่างของผู้ใช้: pinMode(4, Output);
+// เริ่มต้นโปรแกรม
 codeInput.value = PRESETS.output_typo;
 updateStaticLabels();
 renderAnalysis();
+pollArduinoFileState();
+setInterval(pollArduinoFileState, 1200);

@@ -3,30 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IoT Help Beginner — Paper-Scrapbook Circuit Visualizer</title>
+  <title>IoT Help Beginner — Desktop Companion</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top Bar -->
+  <!-- Top Desktop App Title & Toolbar -->
   <header class="topbar">
     <div class="brand">
       <span class="brand-logo">🐾⚡</span>
       <div>
-        <h1>IoT Help Beginner</h1>
-        <p id="subtitleText">ผู้ช่วยตรวจจับ Bug โค้ด Arduino และจำลองวงจรสไตล์กระดาษตัดแปะ</p>
+        <h1>IoT Help Beginner <span class="app-badge">DESKTOP APP</span></h1>
+        <p id="subtitleText">โปรแกรมผู้ช่วยตรวจจับ Bug คู่กับ Arduino IDE & จำลองวงจรกระดาษแปะ</p>
       </div>
     </div>
 
     <div class="controls">
-      <div class="preset-group">
-        <label for="presetSelect" id="presetLabel">ตัวอย่างโค้ดทดสอบ:</label>
-        <select id="presetSelect">
-          <option value="output_typo">1. เขียน Output ผิด (pinMode 4)</option>
-          <option value="high_typo">2. เขียนจ่ายไฟ High ผิด + มีหลายอุปกรณ์</option>
-          <option value="missing_pinmode">3. ลืมเขียน pinMode ใน setup()</option>
-          <option value="clean_working">4. โค้ดที่ถูกต้อง (ไฟติดครบทุกขา!)</option>
-        </select>
-      </div>
+      <button id="btnToggleMini" class="mode-btn" type="button" title="ย่อเป็นหน้าต่างเล็กเกาะขอบจอคู่กับ Arduino IDE">
+        📌 โหมดเกาะขอบจอคู่กับ Arduino IDE
+      </button>
 
       <div class="lang-switch" role="group" aria-label="Language switch">
         <button id="btnLangTH" class="lang-btn active" type="button">🇹🇭 ไทย</button>
@@ -35,7 +29,34 @@
     </div>
   </header>
 
-  <!-- Mascot Speech Banner (Simulating what the Desktop Mascot says + Web detail) -->
+  <!-- Arduino IDE Live File Sync Bar -->
+  <section class="sync-bar" id="syncBar">
+    <div class="sync-status">
+      <span class="pulse-dot"></span>
+      <span id="watchingLabel">กำลังเฝ้าดูไฟล์ Arduino IDE:</span>
+      <strong id="currentFileName" class="file-pill" title="">blink_bug.ino</strong>
+    </div>
+
+    <div class="sync-actions">
+      <button id="btnPickFile" class="action-btn primary-action" type="button">
+        📂 เลือกไฟล์ .ino ในเครื่อง
+      </button>
+
+      <select id="recentFilesSelect" aria-label="Recent Arduino Files">
+        <option value="">-- หรือสลับไฟล์ .ino ในเครื่อง --</option>
+      </select>
+
+      <select id="presetSelect" aria-label="Sample Bug Scenarios">
+        <option value="">🧪 ลองโหลดโจทย์ Bug ตัวอย่าง...</option>
+        <option value="output_typo">ตัวอย่าง 1: เขียน Output ผิด (pinMode 4)</option>
+        <option value="high_typo">ตัวอย่าง 2: เขียนจ่ายไฟ High ผิด + มีหลายอุปกรณ์</option>
+        <option value="missing_pinmode">ตัวอย่าง 3: ลืมเขียน pinMode ใน setup()</option>
+        <option value="clean_working">ตัวอย่าง 4: โค้ดที่ถูกต้อง (ไฟติดครบทุกขา!)</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Mascot Speech Banner (Always visible in both Mini Mode & Full Mode) -->
   <section class="mascot-banner" id="mascotBanner">
     <div class="mascot-avatar-card">
       <div class="mascot-face" id="mascotFace">🦊🔧</div>
@@ -44,19 +65,24 @@
     <div class="mascot-speech-bubble">
       <div class="speech-header">
         <span class="status-pill" id="statusPill">พบจุดผิดพลาด!</span>
-        <button id="btnAutoFix" class="autofix-btn" type="button">✨ แก้โค้ดให้ถูกต้องอัตโนมัติ</button>
+        <div class="speech-buttons">
+          <button id="btnAutoFix" class="autofix-btn" type="button">✨ แก้โค้ดในไฟล์ .ino ให้อัตโนมัติ</button>
+          <button id="btnExpandCircuit" class="expand-btn" type="button" style="display: none;">
+            🔍 ดูวงจรกระดาษแปะ (?)
+          </button>
+        </div>
       </div>
       <div class="speech-messages" id="speechMessages"></div>
     </div>
   </section>
 
   <!-- Main Workspace: Code Editor (Left) + Paper-Scrapbook Circuit Board (Right) -->
-  <main class="workspace">
+  <main class="workspace" id="mainWorkspace">
     <!-- Left Panel: Arduino Code Editor -->
     <section class="editor-panel">
       <div class="panel-header">
-        <span>📝 Arduino IDE Code (`.ino`)</span>
-        <span class="editor-hint" id="editorHint">ลองแก้โค้ดด้านล่างแล้วดูผลลัพธ์ในวงจรกระดาษแปะได้ทันที</span>
+        <span>📝 โค้ดจากไฟล์ `.ino` (ซิงค์กับ Arduino IDE อัตโนมัติ)</span>
+        <button id="btnSaveCode" class="save-btn" type="button">💾 บันทึกลงไฟล์ .ino</button>
       </div>
       <div class="code-editor-container">
         <div class="line-numbers" id="lineNumbers">1</div>

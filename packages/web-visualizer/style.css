@@ -28,59 +28,71 @@ body {
 
 /* Top Bar */
 .topbar {
-  background: #23201e;
+  background: #1f1d1b;
   color: #fff;
-  padding: 12px 24px;
+  padding: 10px 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   border-bottom: 3px solid var(--accent-teal);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .brand-logo {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 .brand h1 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-badge {
+  background: var(--accent-teal);
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
 }
 
 .brand p {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #ccc4be;
 }
 
 .controls {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.preset-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
+.mode-btn {
+  background: #3a3532;
+  color: #ffd166;
+  border: 1px solid #ffd166;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 0.83rem;
+  cursor: pointer;
+  transition: all 0.15s;
 }
 
-.preset-group select {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #555;
-  background: #332f2c;
-  color: #fff;
-  font-size: 0.9rem;
-  cursor: pointer;
+.mode-btn:hover,
+.mode-btn.active {
+  background: #ffd166;
+  color: #1f1d1b;
 }
 
 .lang-switch {
@@ -95,10 +107,9 @@ body {
   background: transparent;
   color: #ddd;
   border: none;
-  padding: 6px 14px;
+  padding: 6px 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
 }
 
 .lang-btn.active {
@@ -106,16 +117,90 @@ body {
   color: #fff;
 }
 
+/* Arduino IDE Live Sync Bar */
+.sync-bar {
+  background: #e9e2d6;
+  border-bottom: 1px solid #d4cbbd;
+  padding: 8px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sync-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+}
+
+.pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ok-green);
+  box-shadow: 0 0 0 0 rgba(43, 147, 72, 0.7);
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { box-shadow: 0 0 0 0 rgba(43, 147, 72, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(43, 147, 72, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 147, 72, 0); }
+}
+
+.file-pill {
+  background: #fff;
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid #c6bcad;
+  color: #005f73;
+  font-family: Consolas, monospace;
+}
+
+.sync-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  background: var(--accent-teal);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  background: #006b72;
+}
+
+.sync-actions select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #b8afa0;
+  background: #fff;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
 /* Mascot Speech Banner */
 .mascot-banner {
-  margin: 14px 24px 6px;
+  margin: 12px 20px 6px;
   display: flex;
   align-items: stretch;
-  gap: 16px;
+  gap: 14px;
   background: #fff9eb;
   border: 2px dashed #d4a373;
   border-radius: 14px;
-  padding: 14px 18px;
+  padding: 12px 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -129,7 +214,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 95px;
+  min-width: 90px;
   background: #fff;
   border-radius: 12px;
   padding: 10px;
@@ -137,7 +222,7 @@ body {
 }
 
 .mascot-face {
-  font-size: 2.3rem;
+  font-size: 2.2rem;
   line-height: 1;
   animation: mascotBounce 2.2s infinite ease-in-out;
 }
@@ -149,7 +234,7 @@ body {
 
 .mascot-tag {
   margin-top: 6px;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
   color: #7f5539;
   text-align: center;
@@ -171,6 +256,12 @@ body {
   gap: 8px;
 }
 
+.speech-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .status-pill {
   display: inline-block;
   padding: 3px 10px;
@@ -190,48 +281,65 @@ body {
   background: var(--accent-orange);
   color: #fff;
   border: none;
-  padding: 6px 14px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 7px;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(232, 93, 4, 0.35);
-  transition: transform 0.12s, background 0.15s;
 }
 
-.autofix-btn:hover {
-  background: #d05000;
-  transform: translateY(-1px);
+.expand-btn {
+  background: var(--accent-teal);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
 }
 
 .speech-messages {
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   line-height: 1.5;
   color: #2b2623;
 }
 
 .speech-item {
-  padding: 4px 0;
+  padding: 3px 0;
 }
 
-.speech-item code {
-  background: #ffe8cc;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 700;
-  color: #9c2b00;
+/* Mini Companion Mode (เกาะขอบจอคู่กับ Arduino IDE) */
+body.mini-mode .brand p,
+body.mini-mode #recentFilesSelect,
+body.mini-mode #presetSelect,
+body.mini-mode #mainWorkspace {
+  display: none !important;
+}
+
+body.mini-mode .topbar {
+  padding: 8px 12px;
+}
+
+body.mini-mode .sync-bar {
+  padding: 6px 12px;
+}
+
+body.mini-mode .mascot-banner {
+  margin: 10px 12px;
+  flex: 1;
 }
 
 /* Workspace Layout */
 .workspace {
   flex: 1;
   display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 18px;
-  padding: 10px 24px 24px;
+  grid-template-columns: 390px 1fr;
+  gap: 16px;
+  padding: 8px 20px 20px;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 960px) {
   .workspace {
     grid-template-columns: 1fr;
   }
@@ -250,19 +358,29 @@ body {
 
 .panel-header {
   background: #eee7dc;
-  padding: 10px 16px;
+  padding: 9px 14px;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #dcd3c6;
 }
 
-.editor-hint,
+.save-btn {
+  background: #2b9348;
+  color: #fff;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .board-note {
   font-weight: 400;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--ink-muted);
 }
 
@@ -270,21 +388,21 @@ body {
 .code-editor-container {
   display: flex;
   flex: 1;
-  min-height: 250px;
+  min-height: 240px;
   background: #1e1e1e;
   color: #f8f8f2;
   font-family: Consolas, "Courier New", monospace;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 
 .line-numbers {
   background: #252526;
   color: #858585;
-  padding: 14px 10px;
+  padding: 12px 10px;
   text-align: right;
   user-select: none;
   line-height: 1.55;
-  min-width: 42px;
+  min-width: 40px;
   border-right: 1px solid #333;
 }
 
@@ -294,7 +412,7 @@ body {
   color: #f8f8f2;
   border: none;
   outline: none;
-  padding: 14px;
+  padding: 12px;
   font-family: inherit;
   font-size: inherit;
   line-height: 1.55;
@@ -305,8 +423,8 @@ body {
   background: #faf6f0;
   border-top: 1px solid #e2d9c8;
   padding: 10px 14px;
-  font-size: 0.85rem;
-  max-height: 160px;
+  font-size: 0.84rem;
+  max-height: 140px;
   overflow-y: auto;
 }
 
@@ -321,22 +439,22 @@ body {
   margin-right: 6px;
 }
 
-/* Scrapbook Canvas (Notebook / Craft Paper Look) */
+/* Scrapbook Canvas */
 .scrapbook-canvas {
   position: relative;
   flex: 1;
-  min-height: 460px;
+  min-height: 430px;
   background-color: #f6efe2;
   background-image:
     radial-gradient(#d5c7b2 1.2px, transparent 1.2px),
     linear-gradient(to right, rgba(210, 195, 170, 0.25) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(210, 195, 170, 0.25) 1px, transparent 1px);
   background-size: 24px 24px;
-  padding: 36px 32px;
+  padding: 32px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 48px;
+  gap: 44px;
   overflow: hidden;
 }
 
@@ -356,7 +474,6 @@ body {
   background: var(--paper-cream);
   padding: 18px 18px 14px;
   filter: drop-shadow(3px 5px 6px rgba(60, 45, 30, 0.22));
-  /* Jagged torn-paper polygon border */
   clip-path: polygon(
     0% 3%, 4% 0%, 11% 2%, 18% 0%, 26% 3%, 34% 0%, 42% 2%, 51% 0%, 60% 3%, 69% 0%, 77% 2%, 86% 0%, 94% 3%, 100% 1%,
     99% 12%, 100% 24%, 98% 37%, 100% 50%, 98% 63%, 100% 76%, 99% 89%, 100% 97%,
@@ -370,7 +487,6 @@ body {
   transform: scale(1.02) rotate(0deg) !important;
 }
 
-/* Washi Tape / Masking Tape */
 .washi-tape {
   position: absolute;
   width: 68px;
@@ -400,9 +516,8 @@ body {
   transform: translateX(-50%) rotate(-4deg);
 }
 
-/* Arduino Cutout Specifics */
 .arduino-cutout {
-  min-width: 225px;
+  min-width: 220px;
   transform: rotate(-1.2deg);
 }
 
@@ -433,7 +548,6 @@ body {
 .board-name {
   font-weight: 800;
   font-size: 0.85rem;
-  letter-spacing: 0.5px;
 }
 
 .mcu-chip {
@@ -492,14 +606,12 @@ body {
   font-size: 0.82rem;
   font-weight: 700;
   color: #5c5346;
-  font-family: "Comic Sans MS", "Segoe Print", cursive, sans-serif;
 }
 
-/* Right Side Hardware Device Cutouts */
 .devices-zone {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 26px;
   align-items: flex-end;
   z-index: 3;
 }
@@ -510,7 +622,6 @@ body {
   align-items: center;
 }
 
-/* Floating ? Question Mark Bubble above Faulty Hardware */
 .question-mark-badge {
   position: absolute;
   top: -22px;
@@ -605,7 +716,6 @@ body {
   border-radius: 4px;
 }
 
-/* Hand-drawn Wire SVG animation */
 .hand-wire {
   fill: none;
   stroke-width: 4.5;
