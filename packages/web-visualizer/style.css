@@ -1,0 +1,630 @@
+:root {
+  --bg-desk: #f4efe6;
+  --paper-cream: #fffdf8;
+  --paper-edge: #e2d9c8;
+  --ink-dark: #2c2623;
+  --ink-muted: #6e655f;
+  --accent-teal: #00878f;
+  --accent-orange: #e85d04;
+  --error-red: #d90429;
+  --ok-green: #2b9348;
+  --tape-yellow: rgba(255, 232, 140, 0.78);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-desk);
+  color: var(--ink-dark);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Bar */
+.topbar {
+  background: #23201e;
+  color: #fff;
+  padding: 12px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 3px solid var(--accent-teal);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  font-size: 2rem;
+}
+
+.brand h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.brand p {
+  font-size: 0.85rem;
+  color: #ccc4be;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.preset-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.preset-group select {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background: #332f2c;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.lang-switch {
+  display: flex;
+  background: #332f2c;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #4e4945;
+}
+
+.lang-btn {
+  background: transparent;
+  color: #ddd;
+  border: none;
+  padding: 6px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.lang-btn.active {
+  background: var(--accent-teal);
+  color: #fff;
+}
+
+/* Mascot Speech Banner */
+.mascot-banner {
+  margin: 14px 24px 6px;
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  background: #fff9eb;
+  border: 2px dashed #d4a373;
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.mascot-banner.status-ok {
+  background: #f0fff4;
+  border-color: #52b788;
+}
+
+.mascot-avatar-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 95px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px;
+  border: 2px solid #e6ccb2;
+}
+
+.mascot-face {
+  font-size: 2.3rem;
+  line-height: 1;
+  animation: mascotBounce 2.2s infinite ease-in-out;
+}
+
+@keyframes mascotBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.mascot-tag {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #7f5539;
+  text-align: center;
+}
+
+.mascot-speech-bubble {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.speech-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #ffe3e3;
+  color: var(--error-red);
+}
+
+.mascot-banner.status-ok .status-pill {
+  background: #d8f3dc;
+  color: var(--ok-green);
+}
+
+.autofix-btn {
+  background: var(--accent-orange);
+  color: #fff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(232, 93, 4, 0.35);
+  transition: transform 0.12s, background 0.15s;
+}
+
+.autofix-btn:hover {
+  background: #d05000;
+  transform: translateY(-1px);
+}
+
+.speech-messages {
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: #2b2623;
+}
+
+.speech-item {
+  padding: 4px 0;
+}
+
+.speech-item code {
+  background: #ffe8cc;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  color: #9c2b00;
+}
+
+/* Workspace Layout */
+.workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 18px;
+  padding: 10px 24px 24px;
+}
+
+@media (max-width: 980px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.editor-panel,
+.scrapbook-panel {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #dcd3c6;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.panel-header {
+  background: #eee7dc;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dcd3c6;
+}
+
+.editor-hint,
+.board-note {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+/* Code Editor */
+.code-editor-container {
+  display: flex;
+  flex: 1;
+  min-height: 250px;
+  background: #1e1e1e;
+  color: #f8f8f2;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 0.95rem;
+}
+
+.line-numbers {
+  background: #252526;
+  color: #858585;
+  padding: 14px 10px;
+  text-align: right;
+  user-select: none;
+  line-height: 1.55;
+  min-width: 42px;
+  border-right: 1px solid #333;
+}
+
+#codeInput {
+  flex: 1;
+  background: transparent;
+  color: #f8f8f2;
+  border: none;
+  outline: none;
+  padding: 14px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.55;
+  resize: none;
+}
+
+.bug-list-box {
+  background: #faf6f0;
+  border-top: 1px solid #e2d9c8;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.bug-line-badge {
+  display: inline-block;
+  background: var(--error-red);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.74rem;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+/* Scrapbook Canvas (Notebook / Craft Paper Look) */
+.scrapbook-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 460px;
+  background-color: #f6efe2;
+  background-image:
+    radial-gradient(#d5c7b2 1.2px, transparent 1.2px),
+    linear-gradient(to right, rgba(210, 195, 170, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(210, 195, 170, 0.25) 1px, transparent 1px);
+  background-size: 24px 24px;
+  padding: 36px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 48px;
+  overflow: hidden;
+}
+
+.wire-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Torn Paper Cutout Styling */
+.paper-cutout {
+  position: relative;
+  z-index: 3;
+  background: var(--paper-cream);
+  padding: 18px 18px 14px;
+  filter: drop-shadow(3px 5px 6px rgba(60, 45, 30, 0.22));
+  /* Jagged torn-paper polygon border */
+  clip-path: polygon(
+    0% 3%, 4% 0%, 11% 2%, 18% 0%, 26% 3%, 34% 0%, 42% 2%, 51% 0%, 60% 3%, 69% 0%, 77% 2%, 86% 0%, 94% 3%, 100% 1%,
+    99% 12%, 100% 24%, 98% 37%, 100% 50%, 98% 63%, 100% 76%, 99% 89%, 100% 97%,
+    93% 100%, 84% 98%, 75% 100%, 66% 97%, 57% 100%, 48% 98%, 39% 100%, 30% 97%, 21% 100%, 12% 98%, 4% 100%, 0% 96%,
+    2% 84%, 0% 71%, 2% 58%, 0% 45%, 2% 31%, 0% 17%
+  );
+  transition: transform 0.2s ease;
+}
+
+.paper-cutout:hover {
+  transform: scale(1.02) rotate(0deg) !important;
+}
+
+/* Washi Tape / Masking Tape */
+.washi-tape {
+  position: absolute;
+  width: 68px;
+  height: 20px;
+  background: var(--tape-yellow);
+  border-left: 2px dotted rgba(180, 150, 70, 0.45);
+  border-right: 2px dotted rgba(180, 150, 70, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  z-index: 5;
+}
+
+.tape-top-left {
+  top: 4px;
+  left: 10px;
+  transform: rotate(-16deg);
+}
+
+.tape-top-right {
+  top: 4px;
+  right: 10px;
+  transform: rotate(14deg);
+}
+
+.tape-top-center {
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+}
+
+/* Arduino Cutout Specifics */
+.arduino-cutout {
+  min-width: 225px;
+  transform: rotate(-1.2deg);
+}
+
+.arduino-board-box {
+  background: #006d77;
+  color: #fff;
+  border-radius: 8px;
+  padding: 14px;
+  border: 3px solid #004e57;
+}
+
+.board-header-chip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.usb-port {
+  background: #adb5bd;
+  color: #212529;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.board-name {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.mcu-chip {
+  background: #212529;
+  color: #ced4da;
+  text-align: center;
+  font-family: monospace;
+  font-size: 0.75rem;
+  padding: 5px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  border: 1px dashed #6c757d;
+}
+
+.pin-rail-title {
+  font-size: 0.75rem;
+  color: #e0fbfc;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.pin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pin-socket {
+  background: #1b263b;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: monospace;
+  font-size: 0.85rem;
+  border: 1px solid #415a77;
+}
+
+.pin-socket.pin-error {
+  border-color: #ff4d6d;
+  background: #4a1525;
+}
+
+.pin-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffd166;
+  border: 2px solid #fff;
+}
+
+.paper-caption {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #5c5346;
+  font-family: "Comic Sans MS", "Segoe Print", cursive, sans-serif;
+}
+
+/* Right Side Hardware Device Cutouts */
+.devices-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: flex-end;
+  z-index: 3;
+}
+
+.device-card-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Floating ? Question Mark Bubble above Faulty Hardware */
+.question-mark-badge {
+  position: absolute;
+  top: -22px;
+  right: 12px;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--error-red);
+  color: #fff;
+  font-size: 1.65rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 12px rgba(217, 4, 41, 0.5);
+  cursor: pointer;
+  animation: questionPulse 1.1s infinite alternate ease-in-out;
+}
+
+@keyframes questionPulse {
+  0% { transform: translateY(0) scale(1) rotate(-8deg); }
+  100% { transform: translateY(-8px) scale(1.12) rotate(8deg); }
+}
+
+.device-cutout {
+  min-width: 240px;
+  max-width: 285px;
+  padding: 20px 18px 14px;
+}
+
+.device-cutout.has-bug {
+  background: #fff5f5;
+}
+
+.device-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.device-terminal-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #495057;
+  border: 3px solid #adb5bd;
+  flex-shrink: 0;
+}
+
+.device-illustration {
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.device-info {
+  flex: 1;
+}
+
+.device-title {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #2b2623;
+}
+
+.device-state-text {
+  font-size: 0.8rem;
+  margin-top: 3px;
+  font-weight: 600;
+}
+
+.state-ok {
+  color: var(--ok-green);
+}
+
+.state-error {
+  color: var(--error-red);
+}
+
+.device-bug-tooltip {
+  margin-top: 8px;
+  background: #ffe3e3;
+  border-left: 3px solid var(--error-red);
+  padding: 6px 8px;
+  font-size: 0.78rem;
+  color: #6a040f;
+  border-radius: 4px;
+}
+
+/* Hand-drawn Wire SVG animation */
+.hand-wire {
+  fill: none;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+.hand-wire.wire-ok {
+  stroke: #2b9348;
+}
+
+.hand-wire.wire-error {
+  stroke: #d90429;
+  stroke-dasharray: 9 7;
+  animation: wireDash 1s linear infinite;
+}
+
+@keyframes wireDash {
+  to {
+    stroke-dashoffset: -16;
+  }
+}

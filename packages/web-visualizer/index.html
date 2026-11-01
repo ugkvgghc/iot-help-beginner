@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IoT Help Beginner — Paper-Scrapbook Circuit Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-logo">🐾⚡</span>
+      <div>
+        <h1>IoT Help Beginner</h1>
+        <p id="subtitleText">ผู้ช่วยตรวจจับ Bug โค้ด Arduino และจำลองวงจรสไตล์กระดาษตัดแปะ</p>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="preset-group">
+        <label for="presetSelect" id="presetLabel">ตัวอย่างโค้ดทดสอบ:</label>
+        <select id="presetSelect">
+          <option value="output_typo">1. เขียน Output ผิด (pinMode 4)</option>
+          <option value="high_typo">2. เขียนจ่ายไฟ High ผิด + มีหลายอุปกรณ์</option>
+          <option value="missing_pinmode">3. ลืมเขียน pinMode ใน setup()</option>
+          <option value="clean_working">4. โค้ดที่ถูกต้อง (ไฟติดครบทุกขา!)</option>
+        </select>
+      </div>
+
+      <div class="lang-switch" role="group" aria-label="Language switch">
+        <button id="btnLangTH" class="lang-btn active" type="button">🇹🇭 ไทย</button>
+        <button id="btnLangEN" class="lang-btn" type="button">🇬🇧 EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mascot Speech Banner (Simulating what the Desktop Mascot says + Web detail) -->
+  <section class="mascot-banner" id="mascotBanner">
+    <div class="mascot-avatar-card">
+      <div class="mascot-face" id="mascotFace">🦊🔧</div>
+      <span class="mascot-tag" id="mascotNameTag">คู่หูตรวจโค้ด</span>
+    </div>
+    <div class="mascot-speech-bubble">
+      <div class="speech-header">
+        <span class="status-pill" id="statusPill">พบจุดผิดพลาด!</span>
+        <button id="btnAutoFix" class="autofix-btn" type="button">✨ แก้โค้ดให้ถูกต้องอัตโนมัติ</button>
+      </div>
+      <div class="speech-messages" id="speechMessages"></div>
+    </div>
+  </section>
+
+  <!-- Main Workspace: Code Editor (Left) + Paper-Scrapbook Circuit Board (Right) -->
+  <main class="workspace">
+    <!-- Left Panel: Arduino Code Editor -->
+    <section class="editor-panel">
+      <div class="panel-header">
+        <span>📝 Arduino IDE Code (`.ino`)</span>
+        <span class="editor-hint" id="editorHint">ลองแก้โค้ดด้านล่างแล้วดูผลลัพธ์ในวงจรกระดาษแปะได้ทันที</span>
+      </div>
+      <div class="code-editor-container">
+        <div class="line-numbers" id="lineNumbers">1</div>
+        <textarea id="codeInput" spellcheck="false" aria-label="Arduino Code Editor"></textarea>
+      </div>
+      <div class="bug-list-box" id="bugListBox"></div>
+    </section>
+
+    <!-- Right Panel: Torn-Paper Scrapbook IoT Circuit Visualizer -->
+    <section class="scrapbook-panel">
+      <div class="panel-header">
+        <span id="boardTitle">📌 กระดานจำลองวงจรจากโค้ด (Paper-Scrapbook Circuit)</span>
+        <span class="board-note" id="boardNote">*อ้างอิงอุปกรณ์และขาจากโค้ดโดยอัตโนมัติ</span>
+      </div>
+
+      <div class="scrapbook-canvas" id="scrapbookCanvas">
+        <!-- SVG Layer for Hand-Drawn Wires connecting Board pins to Torn Paper Device Cutouts -->
+        <svg id="wireLayer" class="wire-layer" xmlns="http://www.w3.org/2000/svg"></svg>
+
+        <!-- Left Side of Canvas: Torn Paper Cutout of Arduino Uno Board -->
+        <div class="paper-cutout arduino-cutout" id="arduinoCutout">
+          <div class="washi-tape tape-top-left"></div>
+          <div class="washi-tape tape-top-right"></div>
+          <div class="cutout-inner arduino-board-box">
+            <div class="board-header-chip">
+              <span class="usb-port">USB</span>
+              <span class="board-name">ARDUINO UNO</span>
+            </div>
+            <div class="mcu-chip">ATmega328P</div>
+            <div class="pin-rail-title" id="pinRailTitle">ขาเชื่อมต่อ (Pins in Code)</div>
+            <div class="pin-list" id="arduinoPinList"></div>
+          </div>
+          <div class="paper-caption">บอร์ดหลัก (Main Board)</div>
+        </div>
+
+        <!-- Right Side of Canvas: Torn Paper Cutouts of Hardware Devices inferred from Code -->
+        <div class="devices-zone" id="devicesZone"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../analyzer/analyzer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

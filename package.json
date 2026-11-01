@@ -1,0 +1,21 @@
+{
+  "name": "iot-help-beginner",
+  "version": "0.1.0",
+  "description": "Open-source friendly Arduino bug detector with a Desktop Mascot bridge and Torn-Paper Scrapbook IoT Circuit Web Visualizer (TH/EN)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "analyze": "node packages/analyzer/cli.js examples/blink_bug.ino",
+    "test": "node packages/analyzer/cli.js examples/blink_bug.ino"
+  },
+  "keywords": [
+    "iot",
+    "arduino",
+    "beginner",
+    "hardware",
+    "visualizer",
+    "education",
+    "open-source"
+  ],
+  "license": "MIT"
+}
