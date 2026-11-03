@@ -1,7 +1,7 @@
-// ตัวอย่างโค้ด Arduino ที่มือใหม่มักเขียนผิด (เช่น เขียน Output แทนที่จะเป็น OUTPUT)
+// ตัวอย่างโค้ด Arduino ที่มือใหม่มักเขียนผิด (เช่น เขียน OUTPUT แทนที่จะเป็น OUTPUT)
 void setup() {
-  // ตั้งค่าขาที่ 4 สำหรับหลอดไฟ LED (เขียน Output ผิด!)
-  pinMode(4, Output);
+  // ตั้งค่าขาที่ 4 สำหรับหลอดไฟ LED (เขียน OUTPUT ผิด!)
+  pinMode(4, OUTPUT);
 }
 
 void loop() {

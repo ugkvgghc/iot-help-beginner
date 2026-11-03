@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IoT Help Beginner — คู่หู Arduino & กระดานวงจรกระดาษแปะ</title>
+  <title>IoT Help Beginner — คู่หู Arduino/ESP32 & กระดานทดลองต่อเบรดบอร์ด 2D</title>
   <link rel="icon" type="image/x-icon" href="assets/app-icon.ico" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Unified Slim Paper Topbar (รวมทุกอย่างไว้ในแถบเดียวแบบคลีนๆ ไม่รกตา) -->
+  <!-- Unified Slim Paper Topbar -->
   <header class="paper-topbar">
     <div class="topbar-left">
       <div class="brand-pill">
@@ -21,7 +21,7 @@
         <div id="fallbackCoverSvg" class="fallback-cover" style="display: none;">🦊</div>
         <div class="brand-text">
           <h1>IoT Help Beginner</h1>
-          <span id="subtitleText" class="sr-only">คู่หูตรวจโค้ด Arduino</span>
+          <span id="subtitleText" class="sr-only">คู่หูตรวจโค้ด Arduino & ESP32</span>
         </div>
       </div>
 
@@ -45,19 +45,20 @@
 
         <select id="presetSelect" class="paper-select preset-highlight" aria-label="Sample Bug Scenarios" title="ลองโหลดโจทย์ตัวอย่าง">
           <option value="">🧪 โจทย์ตัวอย่าง...</option>
-          <option value="output_typo">1. เขียน Output ผิด</option>
-          <option value="high_typo">2. เขียน High ผิด</option>
-          <option value="missing_pinmode">3. ลืมใส่ pinMode</option>
-          <option value="if_assignment_bug">4. ใช้ = ใน if ผิด</option>
-          <option value="ultrasonic_demo">5. Ultrasonic HC-SR04</option>
-          <option value="dht11_lcd_buzzer">6. DHT11 + LCD + Buzzer</option>
-          <option value="clean_working">7. โค้ดถูกต้อง (ไฟติดครบ)</option>
+          <option value="output_typo">1. [Bug] เขียน Output ผิด</option>
+          <option value="high_typo">2. [Bug] เขียน High ผิด</option>
+          <option value="missing_pinmode">3. [Bug] ลืมใส่ pinMode</option>
+          <option value="if_assignment_bug">4. [Bug] ใช้ = ใน if ผิด</option>
+          <option value="esp32_wifi_bug">5. [ESP32 Bug] ขา 34 Input-Only & WiFi ADC2</option>
+          <option value="ultrasonic_demo">6. [2D] เซนเซอร์ระยะทาง Ultrasonic</option>
+          <option value="dht11_lcd_buzzer">7. [2D] DHT11 + จอ LCD + Buzzer</option>
+          <option value="clean_working">8. [OK] วงจรสมบูรณ์พร้อมรัน</option>
         </select>
       </div>
     </div>
 
     <div class="topbar-right">
-      <button id="btnToggleCode" class="paper-btn btn-ghost" type="button" title="ซ่อนหรือแสดงกล่องโค้ดเพื่อดูวงจรเต็มจอ">
+      <button id="btnToggleCode" class="paper-btn btn-ghost" type="button" title="ซ่อนหรือแสดงกล่องโค้ดเพื่อดูเบรดบอร์ดเต็มจอ">
         📝 ซ่อนโค้ด
       </button>
 
@@ -76,33 +77,33 @@
     </div>
   </header>
 
-  <!-- Popover Guide Card (ซ่อนไว้เป็นค่าเริ่มต้น เปิดเมื่อกดปุ่ม ❓ วิธีใช้ เท่านั้น) -->
+  <!-- Popover Guide Card (แสดงเมื่อกด ❓ วิธีใช้) -->
   <section class="howto-guide-card" id="howToCard" style="display: none;">
     <div class="washi-tape tape-top-center"></div>
     <div class="howto-header">
-      <h2 id="howToTitle">🚀 วิธีใช้งานคู่กับ Arduino IDE ใน 3 ขั้นตอน</h2>
+      <h2 id="howToTitle">🚀 วิธีใช้งานคู่กับ Arduino IDE & ทดลองต่อเบรดบอร์ด 2D</h2>
       <button id="btnCloseHowTo" class="close-guide-btn" type="button">✕ ปิด</button>
     </div>
     <div class="howto-steps">
       <div class="step-box">
         <div class="step-num">1</div>
         <div class="step-content">
-          <h3 id="step1Title">เลือกไฟล์ `.ino`</h3>
-          <p id="step1Desc">กดปุ่ม <strong>"📂 เปิดไฟล์"</strong> ด้านบนเพื่อเลือกไฟล์ที่กำลังเขียนใน Arduino IDE</p>
+          <h3 id="step1Title">เขียนโค้ด หรือ หยิบอุปกรณ์ 2D</h3>
+          <p id="step1Desc">เลือกไฟล์ <code>.ino</code> จาก Arduino IDE หรือกดปุ่ม <strong>"+ หยิบอุปกรณ์ 2D"</strong> ด้านล่างเพื่อวางลงบนเบรดบอร์ด</p>
         </div>
       </div>
       <div class="step-box">
         <div class="step-num">2</div>
         <div class="step-content">
-          <h3 id="step2Title">กด Save ใน Arduino IDE</h3>
-          <p id="step2Desc">กดปุ่ม <strong>"📌 ย่อเกาะจอ"</strong> แล้วพิมพ์โค้ดตามปกติ เมื่อกด Ctrl+S โปรแกรมจะตรวจให้ทันที</p>
+          <h3 id="step2Title">ทดลองต่อสายบนเบรดบอร์ด 2D</h3>
+          <p id="step2Desc">เอาเมาส์ชี้รูเบรดบอร์ดเพื่อดูแนวไฟเชื่อมกัน และลองกดถอด/เสียบสาย <strong>VCC (+)</strong> หรือ <strong>GND (-)</strong> ของอุปกรณ์ได้จริง</p>
         </div>
       </div>
       <div class="step-box">
         <div class="step-num">3</div>
         <div class="step-content">
-          <h3 id="step3Title">ดูจุดผิด (?) & กดแก้ทันที</h3>
-          <p id="step3Desc">ดูเครื่องหมาย <strong><code>?</code></strong> บนชิ้นส่วนกระดาษแปะ แล้วกดปุ่ม <strong>"✨ แก้ทันที"</strong> ได้เลย</p>
+          <h3 id="step3Title">แก้ Bug & กด ▶️ รันวงจร</h3>
+          <p id="step3Desc">ถ้ามีจุดผิด <strong><code>?</code></strong> กดปุ่ม <strong>"✨ แก้ทันที"</strong> แล้วกด <strong>"▶️ รันวงจร"</strong> เพื่อทดสอบไฟกะพริบ ปุ่มกด และเสียง Buzzer!</p>
         </div>
       </div>
     </div>
@@ -121,7 +122,7 @@
           onerror="this.style.display='none'; document.getElementById('mascotFace').style.display='block';"
         />
         <div class="mascot-face" id="mascotFace" style="display: none;">🦊</div>
-        <span class="mascot-tag" id="mascotNameTag">คู่หูตรวจโค้ด</span>
+        <span class="mascot-tag" id="mascotNameTag">คู่หูตรวจวงจร</span>
       </div>
 
       <div class="mascot-speech-bubble">
@@ -130,7 +131,7 @@
           <div class="speech-buttons">
             <button id="btnAutoFix" class="autofix-btn" type="button">✨ แก้ทันที</button>
             <button id="btnExpandCircuit" class="expand-btn" type="button" style="display: none;">
-              🔍 ดูวงจร (?)
+              🔍 ดูเบรดบอร์ด (?)
             </button>
           </div>
         </div>
@@ -141,23 +142,28 @@
     <!-- Left Column Bottom: Clean Notebook Code Editor -->
     <section class="editor-panel" id="editorPanel">
       <div class="panel-header">
-        <span class="panel-title-text">📝 โค้ด Arduino (`.ino`)</span>
+        <span class="panel-title-text">📝 โค้ด Arduino / ESP32 (`.ino`)</span>
         <button id="btnSaveCode" class="save-btn" type="button">💾 เซฟลงไฟล์</button>
       </div>
       <div class="code-editor-container">
         <div class="line-numbers" id="lineNumbers">1</div>
         <textarea id="codeInput" spellcheck="false" aria-label="Arduino Code Editor"></textarea>
       </div>
-      <!-- ซ่อนกล่อง Bug List ซ้ำซ้อน แล้วแสดงสรุปสั้นๆ เฉพาะเมื่อจำเป็น -->
       <div class="bug-list-box" id="bugListBox" style="display: none;"></div>
     </section>
 
-    <!-- Right Column (Full Height): Torn-Paper Scrapbook IoT Circuit Stage -->
+    <!-- Right Column (Full Height): 2D Paper-Scrapbook Breadboard Stage -->
     <section class="scrapbook-panel" id="scrapbookPanel">
-      <!-- Floating Paper Header inside the Circuit Stage -->
+      <!-- Top Floating Bar inside Circuit Stage -->
       <div class="scrapbook-floating-bar">
         <div class="stage-title-pill">
-          <span id="boardTitle">📌 กระดานวงจรกระดาษแปะ</span>
+          <span id="boardTitle">📌 กระดานต่อวงจรเบรดบอร์ด 2D</span>
+          <!-- สวิตช์เลือกบอร์ด Auto / Uno / ESP32 -->
+          <div class="board-selector-pills" role="group" aria-label="Select Board Type">
+            <button id="btnBoardAuto" class="board-pill active" type="button" title="ตรวจจับชนิดบอร์ดจากโค้ดอัตโนมัติ">Auto</button>
+            <button id="btnBoardUno" class="board-pill" type="button" title="บอร์ด Arduino Uno R3">Arduino Uno</button>
+            <button id="btnBoardEsp32" class="board-pill" type="button" title="บอร์ด ESP32 DevKit V1 (Wi-Fi)">ESP32 📶</button>
+          </div>
           <span class="board-note" id="boardNote"></span>
         </div>
 
@@ -172,28 +178,106 @@
         </div>
       </div>
 
+      <!-- Main 2D Canvas: Board Cutout (Left) + 2D Interactive Breadboard (Right) -->
       <div class="scrapbook-canvas" id="scrapbookCanvas">
-        <!-- SVG Layer for Hand-Drawn Wires -->
+        <!-- SVG Layer for Hand-Drawn 2D Jumper Wires (VCC, GND, Signal) -->
         <svg id="wireLayer" class="wire-layer" xmlns="http://www.w3.org/2000/svg"></svg>
 
-        <!-- Left Side of Canvas: Torn Paper Cutout of Arduino Uno Board -->
+        <!-- Left Side of Canvas: 2D Paper Cutout of Microcontroller Board (Uno or ESP32) -->
         <div class="paper-cutout arduino-cutout" id="arduinoCutout">
           <div class="washi-tape tape-top-left"></div>
           <div class="washi-tape tape-top-right"></div>
-          <div class="cutout-inner arduino-board-box">
+          <div class="cutout-inner arduino-board-box" id="boardBoxInner">
             <div class="board-header-chip">
-              <span class="usb-port">USB</span>
-              <span class="board-name">ARDUINO UNO</span>
+              <span class="usb-port" id="boardUsbLabel">USB</span>
+              <span class="board-name" id="boardNameTitle">ARDUINO UNO</span>
             </div>
-            <div class="mcu-chip">ATmega328P</div>
-            <div class="pin-rail-title" id="pinRailTitle">ขาที่ใช้งาน (Pins)</div>
+            <div class="mcu-chip" id="boardMcuChip">ATmega328P</div>
+
+            <!-- ขาไฟหลักของบอร์ด (Power Rails Source) -->
+            <div class="board-power-section">
+              <div class="pin-socket power-vcc" id="board-pin-vcc">
+                <span id="boardVccText">🔴 5V (VCC)</span>
+                <span class="pin-dot dot-vcc" id="pin-dot-vcc"></span>
+              </div>
+              <div class="pin-socket power-gnd" id="board-pin-gnd">
+                <span>🔵 GND (กราวด์)</span>
+                <span class="pin-dot dot-gnd" id="pin-dot-gnd"></span>
+              </div>
+            </div>
+
+            <div class="pin-rail-title" id="pinRailTitle">ขาสัญญาณ (Signal Pins)</div>
             <div class="pin-list" id="arduinoPinList"></div>
           </div>
-          <div class="paper-caption">บอร์ดหลัก</div>
+          <div class="paper-caption" id="boardCaptionText">บอร์ดควบคุมหลัก</div>
         </div>
 
-        <!-- Right Side of Canvas: Torn Paper Cutouts of Hardware Devices -->
-        <div class="devices-zone" id="devicesZone"></div>
+        <!-- Right Side of Canvas: 2D Paper-Scrapbook Breadboard (เบรดบอร์ด 2D) -->
+        <div class="breadboard-2d-container" id="breadboardContainer">
+          <div class="paper-cutout breadboard-cutout" id="breadboardCutout">
+            <div class="washi-tape tape-top-left"></div>
+            <div class="washi-tape tape-top-right"></div>
+
+            <!-- รางไฟด้านบน: + VCC (สีแดง) -->
+            <div class="bb-power-rail rail-vcc" id="bbRailVcc" title="รางไฟเลี้ยงบวก (+): รูแถวนี้เชื่อมถึงกันยาวตลอดแนวนอน">
+              <span class="rail-sign vcc-sign">+</span>
+              <span class="rail-label" id="bbVccLabel">รางไฟบวก + (5V)</span>
+              <div class="rail-holes" id="vccRailHoles"></div>
+              <span class="rail-terminal-dot" id="bb-dot-vcc"></span>
+            </div>
+
+            <!-- พื้นที่เสียบอุปกรณ์ 2D บนเบรดบอร์ด + ตารางรูเบรดบอร์ดอินเทอร์แอคทีฟ -->
+            <div class="bb-body-area">
+              <!-- แถบจำลองรูเบรดบอร์ดให้มือใหม่เอาเมาส์ชี้ดูการเชื่อมไฟ -->
+              <div class="bb-hole-explorer" id="bbHoleExplorer">
+                <div class="bb-explorer-header">
+                  <span>🔍 <strong>โครงสร้างรูเบรดบอร์ด 2D</strong> (ลองเอาเมาส์ชี้ที่รูเพื่อดูว่าไฟเชื่อมกันแนวไหน!)</span>
+                  <span class="bb-hover-hint" id="bbHoverHint">ชี้ที่รูเพื่อดูแนวเชื่อมต่อ</span>
+                </div>
+                <div class="bb-mini-grid" id="bbMiniGrid"></div>
+              </div>
+
+              <!-- โซนวางตัวอุปกรณ์ 2D ที่เสียบอยู่บนเบรดบอร์ด -->
+              <div class="devices-zone" id="devicesZone"></div>
+            </div>
+
+            <!-- รางไฟด้านล่าง: - GND (สีน้ำเงิน) -->
+            <div class="bb-power-rail rail-gnd" id="bbRailGnd" title="รางกราวด์ลบ (-): รูแถวนี้เชื่อมถึงกันยาวตลอดแนวนอน ต้องต่อขาลบของอุปกรณ์ลงรางนี้เพื่อให้ครบวงจร!">
+              <span class="rail-sign gnd-sign">−</span>
+              <span class="rail-label">รางกราวด์ − (GND)</span>
+              <div class="rail-holes" id="gndRailHoles"></div>
+              <span class="rail-terminal-dot" id="bb-dot-gnd"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom 2D Component Tray (แถบหยิบอุปกรณ์ 2D มาวางบนเบรดบอร์ดได้ทันที) -->
+      <div class="component-tray-bar" id="componentTray">
+        <span class="tray-label">🧰 หยิบอุปกรณ์ 2D เสียบเบรดบอร์ด:</span>
+        <div class="tray-buttons">
+          <button type="button" class="tray-item-btn" data-add-device="led" title="เพิ่มหลอดไฟ LED + ตัวต้านทานลงเบรดบอร์ด">
+            + 💡 LED
+          </button>
+          <button type="button" class="tray-item-btn" data-add-device="button" title="เพิ่มปุ่มกดลงเบรดบอร์ด">
+            + 🔘 ปุ่มกด
+          </button>
+          <button type="button" class="tray-item-btn" data-add-device="buzzer" title="เพิ่มลำโพง Buzzer ลงเบรดบอร์ด">
+            + 🔊 Buzzer
+          </button>
+          <button type="button" class="tray-item-btn" data-add-device="ultrasonic" title="เพิ่มเซนเซอร์วัดระยะทาง Ultrasonic ลงเบรดบอร์ด">
+            + 📏 Ultrasonic
+          </button>
+          <button type="button" class="tray-item-btn" data-add-device="dht11" title="เพิ่มเซนเซอร์อุณหภูมิ DHT11 ลงเบรดบอร์ด">
+            + 🌡️ DHT11
+          </button>
+          <button type="button" class="tray-item-btn" data-add-device="lcd_i2c" title="เพิ่มหน้าจอ LCD I2C 16x2 ลงเบรดบอร์ด">
+            + 🖥️ LCD I2C
+          </button>
+          <button type="button" class="tray-item-btn" data-add-device="servo" title="เพิ่มเซอร์โวมอเตอร์ลงเบรดบอร์ด">
+            + ⚙️ Servo
+          </button>
+        </div>
       </div>
     </section>
   </main>

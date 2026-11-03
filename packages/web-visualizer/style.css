@@ -10,6 +10,8 @@
   --accent-orange: #f46036;
   --error-red: #d90429;
   --ok-green: #2b9348;
+  --wire-vcc: #e63946;
+  --wire-gnd: #1d3557;
   --tape-yellow: rgba(255, 228, 132, 0.82);
   --tape-mint: rgba(168, 230, 207, 0.78);
 }
@@ -195,7 +197,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 2px 0 #e2d9c8;
-  max-width: 175px;
+  max-width: 195px;
 }
 
 .paper-select.preset-highlight {
@@ -314,10 +316,10 @@ body {
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 360px 1fr;
   grid-template-rows: auto 1fr;
-  gap: 16px 20px;
-  padding: 18px 22px 22px;
+  gap: 14px 18px;
+  padding: 14px 20px 18px;
   position: relative;
 }
 
@@ -337,10 +339,10 @@ body {
 
 .workspace.code-hidden .mascot-banner {
   position: absolute;
-  bottom: 34px;
-  left: 36px;
-  width: 420px;
-  max-width: calc(100vw - 72px);
+  bottom: 72px;
+  left: 34px;
+  width: 410px;
+  max-width: calc(100vw - 68px);
   z-index: 20;
   box-shadow: 0 10px 28px rgba(44, 38, 35, 0.16);
 }
@@ -358,7 +360,7 @@ body {
   background: #fff9e6;
   border: 2px solid #e9d296;
   border-radius: 16px;
-  padding: 12px 14px;
+  padding: 11px 14px;
   box-shadow: 0 4px 14px rgba(140, 108, 40, 0.08);
 }
 
@@ -381,7 +383,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 68px;
+  min-width: 66px;
   background: #fff;
   border-radius: 12px;
   padding: 6px;
@@ -390,15 +392,15 @@ body {
 }
 
 .mascot-mini-img {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 8px;
   object-fit: cover;
   animation: mascotBounce 2.4s infinite ease-in-out;
 }
 
 .mascot-face {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   line-height: 1;
   animation: mascotBounce 2.4s infinite ease-in-out;
 }
@@ -420,7 +422,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   min-width: 0;
 }
 
@@ -481,7 +483,7 @@ body {
 }
 
 .speech-messages {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   line-height: 1.45;
   color: var(--ink-dark);
   max-height: 82px;
@@ -500,7 +502,7 @@ body {
   padding: 1px 7px;
   border-radius: 6px;
   font-family: Consolas, monospace;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
 }
 
 /* ==========================================================================
@@ -550,7 +552,7 @@ body {
   background: #21201e;
   color: #f8f8f2;
   font-family: Consolas, "Courier New", monospace;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
 }
 
 .line-numbers {
@@ -579,7 +581,7 @@ body {
 }
 
 /* ==========================================================================
-   6. Full-Height Paper-Scrapbook Circuit Stage (คอลัมน์ขวาเต็มความสูง)
+   6. Full-Height Paper-Scrapbook 2D Breadboard Stage (คอลัมน์ขวา)
    ========================================================================== */
 .scrapbook-panel {
   grid-column: 2;
@@ -601,8 +603,8 @@ body {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 12px 18px;
-  background: rgba(255, 253, 249, 0.88);
+  padding: 10px 16px;
+  background: rgba(255, 253, 249, 0.92);
   backdrop-filter: blur(6px);
   border-bottom: 1.5px dashed #e2d8c7;
   z-index: 10;
@@ -612,15 +614,43 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
   font-weight: 800;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--ink-dark);
 }
 
-.board-note {
-  font-weight: 500;
-  font-size: 0.75rem;
+.board-selector-pills {
+  display: flex;
+  gap: 4px;
+  background: #efe8dc;
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid #d9cfbe;
+}
+
+.board-pill {
+  border: none;
+  background: transparent;
   color: var(--ink-muted);
+  font-size: 0.73rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.board-pill.active {
+  background: #fff;
+  color: var(--ink-dark);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.board-note {
+  font-weight: 600;
+  font-size: 0.74rem;
+  color: var(--accent-teal-dark);
 }
 
 .scrapbook-canvas {
@@ -633,11 +663,11 @@ body {
     radial-gradient(#eae2d3 1px, transparent 1px);
   background-size: 24px 24px;
   background-position: 0 0, 12px 12px;
-  padding: 28px 34px;
+  padding: 20px 26px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 44px;
+  gap: 32px;
   overflow: auto;
 }
 
@@ -647,16 +677,16 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 2;
+  z-index: 4;
 }
 
 /* ==========================================================================
-   7. Paper Cutouts & Washi Tape (เอกลักษณ์กระดาษตัดแปะสุดน่ารัก)
+   7. Paper Cutouts, Arduino / ESP32 Board & 2D Breadboard
    ========================================================================== */
 .paper-cutout {
   position: relative;
   background: var(--paper-cream);
-  padding: 14px 16px;
+  padding: 13px 15px;
   border-radius: 14px;
   border: 2px solid #e5dccd;
   box-shadow:
@@ -667,8 +697,8 @@ body {
 
 .washi-tape {
   position: absolute;
-  width: 60px;
-  height: 17px;
+  width: 58px;
+  height: 16px;
   background: var(--tape-yellow);
   border-left: 2px dotted rgba(255, 255, 255, 0.65);
   border-right: 2px dotted rgba(255, 255, 255, 0.65);
@@ -696,19 +726,39 @@ body {
   transform: translateX(-50%) rotate(-2deg);
 }
 
-/* Arduino Cutout */
+/* Arduino / ESP32 Cutout */
 .arduino-cutout {
   min-width: 215px;
-  transform: rotate(-1deg);
+  max-width: 230px;
+  transform: rotate(-0.8deg);
   flex-shrink: 0;
+  align-self: center;
 }
 
 .arduino-board-box {
   background: #006d77;
   color: #fff;
   border-radius: 10px;
-  padding: 14px;
+  padding: 13px;
   border: 2.5px solid #004e57;
+  transition: background 0.25s, border-color 0.25s;
+}
+
+/* ธีมบอร์ด ESP32 (สีกรมท่าเข้ม + ชิปสีเงิน Wi-Fi) */
+.arduino-board-box.board-esp32 {
+  background: #1e293b;
+  border-color: #0f172a;
+}
+
+.arduino-board-box.board-esp32 .mcu-chip {
+  background: #cbd5e1;
+  color: #0f172a;
+  font-weight: 800;
+  border: 1.5px solid #94a3b8;
+}
+
+.arduino-board-box.board-esp32 .pin-rail-title {
+  color: #93c5fd;
 }
 
 .board-header-chip {
@@ -729,8 +779,8 @@ body {
 
 .board-name {
   font-weight: 800;
-  font-size: 0.84rem;
-  letter-spacing: 0.5px;
+  font-size: 0.82rem;
+  letter-spacing: 0.4px;
 }
 
 .mcu-chip {
@@ -741,11 +791,20 @@ body {
   text-align: center;
   padding: 4px;
   border-radius: 5px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.board-power-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
 }
 
 .pin-rail-title {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.4px;
   color: #b8f2e6;
@@ -755,7 +814,7 @@ body {
 .pin-list {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
 }
 
 .pin-socket {
@@ -766,8 +825,18 @@ body {
   justify-content: space-between;
   align-items: center;
   font-family: Consolas, monospace;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
+}
+
+.pin-socket.power-vcc {
+  background: rgba(230, 57, 70, 0.28);
+  border: 1px solid rgba(255, 180, 180, 0.45);
+}
+
+.pin-socket.power-gnd {
+  background: rgba(29, 53, 87, 0.45);
+  border: 1px solid rgba(168, 218, 220, 0.45);
 }
 
 .pin-dot {
@@ -779,26 +848,210 @@ body {
   display: inline-block;
 }
 
+.pin-dot.dot-vcc {
+  background: var(--wire-vcc);
+}
+
+.pin-dot.dot-gnd {
+  background: #3a86ff;
+}
+
 .pin-socket.pin-error .pin-dot {
   background: var(--error-red);
 }
 
 .paper-caption {
   text-align: center;
-  font-size: 0.76rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  margin-top: 8px;
+  margin-top: 7px;
   color: var(--ink-muted);
 }
 
-/* Right Side Hardware Cutouts Zone */
+/* ==========================================================================
+   8. 2D Interactive Breadboard Cutout (เบรดบอร์ด 2D สำหรับฝึกต่อวงจร)
+   ========================================================================== */
+.breadboard-2d-container {
+  flex: 1;
+  min-width: 340px;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+}
+
+.breadboard-cutout {
+  background: #fdfbf7;
+  border: 2.5px solid #d8cebe;
+  border-radius: 18px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow:
+    0 8px 20px rgba(64, 50, 34, 0.08),
+    0 2px 0 #ffffff inset;
+}
+
+/* รางไฟบวก (+) และ รางไฟลบ (-) บนเบรดบอร์ด 2D */
+.bb-power-rail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.bb-power-rail.rail-vcc {
+  background: #fff0f1;
+  border: 1.5px solid #f7b2b7;
+  color: #b81d2a;
+}
+
+.bb-power-rail.rail-gnd {
+  background: #eef6ff;
+  border: 1.5px solid #b6d4fe;
+  color: #1d3557;
+}
+
+.rail-label {
+  white-space: nowrap;
+}
+
+.rail-holes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.bb-rail-hole {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #495057;
+  opacity: 0.65;
+}
+
+.bb-power-rail.rail-vcc:hover .bb-rail-hole {
+  background: var(--wire-vcc);
+  opacity: 1;
+  box-shadow: 0 0 4px var(--wire-vcc);
+}
+
+.bb-power-rail.rail-gnd:hover .bb-rail-hole {
+  background: #2563eb;
+  opacity: 1;
+  box-shadow: 0 0 4px #2563eb;
+}
+
+.bb-rail-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.bb-rail-dot.dot-vcc {
+  background: var(--wire-vcc);
+}
+
+.bb-rail-dot.dot-gnd {
+  background: #2563eb;
+}
+
+/* Interactive 2D Breadboard Hole Explorer (จำลองรูเบรดบอร์ด 5 รูเชื่อมถึงกันแนวตั้ง) */
+.bb-hole-explorer {
+  background: #f5efe4;
+  border: 1.5px dashed #d6cbb9;
+  border-radius: 12px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bb-explorer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--ink-dark);
+}
+
+.bb-hover-hint {
+  font-weight: 700;
+  font-size: 0.72rem;
+  color: var(--accent-teal-dark);
+  background: #e6f6f7;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.bb-mini-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 4px 6px;
+  background: #fffdf9;
+  border-radius: 8px;
+  border: 1px solid #e2d9c8;
+  overflow-x: auto;
+}
+
+.bb-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.bb-col-num {
+  font-size: 0.62rem;
+  font-family: Consolas, monospace;
+  font-weight: 800;
+  color: var(--ink-muted);
+}
+
+.bb-hole {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #5c554e;
+  transition: all 0.12s;
+}
+
+.bb-col:hover {
+  background: rgba(43, 147, 72, 0.16);
+}
+
+.bb-col:hover .bb-hole {
+  background: var(--ok-green);
+  transform: scale(1.18);
+  box-shadow: 0 0 4px rgba(43, 147, 72, 0.6);
+}
+
+.bb-col:hover .bb-col-num {
+  color: var(--ok-green);
+}
+
+/* พื้นที่วางอุปกรณ์ 2D บนเบรดบอร์ด */
 .devices-zone {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  flex: 1;
-  max-width: 390px;
-  z-index: 3;
+  gap: 14px;
 }
 
 .device-card-wrapper {
@@ -807,19 +1060,19 @@ body {
 
 .question-mark-badge {
   position: absolute;
-  top: -14px;
-  right: -10px;
-  width: 36px;
-  height: 36px;
+  top: -10px;
+  right: -8px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--error-red);
   color: #fff;
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid #fff;
+  border: 2.5px solid #fff;
   box-shadow: 0 4px 10px rgba(217, 4, 41, 0.35);
   z-index: 10;
   animation: popQuestion 0.9s infinite alternate ease-in-out;
@@ -828,11 +1081,12 @@ body {
 
 @keyframes popQuestion {
   0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-5px) scale(1.08); }
+  100% { transform: translateY(-4px) scale(1.08); }
 }
 
 .device-cutout {
   border: 2px solid #e2d8c7;
+  padding: 11px 13px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -844,7 +1098,7 @@ body {
 .device-inner {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .device-terminal-dot {
@@ -857,8 +1111,8 @@ body {
 }
 
 .device-illustration {
-  width: 72px;
-  height: 68px;
+  width: 82px;
+  height: 66px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -870,14 +1124,22 @@ body {
   min-width: 0;
 }
 
+.device-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .device-title {
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--ink-dark);
 }
 
 .device-state-text {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   margin-top: 2px;
   font-weight: 700;
 }
@@ -886,26 +1148,169 @@ body {
 .state-error { color: var(--error-red); }
 .state-muted { color: var(--ink-muted); }
 
-.device-bug-tooltip {
+/* ปุ่มจำลองเสียบ/ถอดสาย VCC (+) และ GND (-) บนเบรดบอร์ด 2D */
+.bb-wire-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
   margin-top: 6px;
-  background: #ffe8e8;
-  border-left: 3px solid var(--error-red);
-  padding: 4px 8px;
-  font-size: 0.74rem;
-  color: #7a0916;
-  border-radius: 5px;
 }
 
-/* Hand-drawn Wires */
+.wire-pill-btn {
+  border: 1.5px solid transparent;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.14s;
+}
+
+.wire-pill-btn.pill-vcc.connected {
+  background: #ffe3e5;
+  color: #b81d2a;
+  border-color: #f4a2a8;
+}
+
+.wire-pill-btn.pill-gnd.connected {
+  background: #e2eeff;
+  color: #1d3557;
+  border-color: #9ec5fe;
+}
+
+.wire-pill-btn. pill-sig,
+.wire-pill-btn.pill-sig {
+  background: #e6f4ea;
+  color: #1e6f35;
+  border-color: #a3dfb6;
+  cursor: default;
+}
+
+.wire-pill-btn.unplugged {
+  background: #f3ece0 !important;
+  color: #9c9288 !important;
+  border: 1.5px dashed #c8beae !important;
+  text-decoration: line-through;
+}
+
+/* แถบควบคุมอุปกรณ์ 2D แบบโต้ตอบได้จริง (กดปุ่ม / เลื่อนระยะทาง / ปรับอุณหภูมิ) */
+.device-interactive-row {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.interactive-push-btn {
+  background: #ffd166;
+  color: #2b2623;
+  border: 1.5px solid #d49600;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 0.73rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #c48b00;
+}
+
+.interactive-push-btn.pressed {
+  background: var(--ok-green);
+  color: #fff;
+  border-color: #19592b;
+  box-shadow: 0 1px 0 #19592b;
+  transform: translateY(1px);
+}
+
+.interactive-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f5efe6;
+  padding: 3px 8px;
+  border-radius: 8px;
+  border: 1px solid #dfd6c7;
+  font-size: 0.73rem;
+  font-weight: 700;
+}
+
+.interactive-slider-wrap input[type="range"] {
+  width: 85px;
+  accent-color: var(--accent-teal);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   9. Bottom 2D Component Tray (ถาดหยิบอุปกรณ์ 2D มาวางบนเบรดบอร์ด)
+   ========================================================================== */
+.component-tray-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 16px;
+  background: #f4ede1;
+  border-top: 1.5px dashed #d8cebe;
+  z-index: 10;
+}
+
+.tray-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--ink-dark);
+}
+
+.tray-items {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tray-item-btn {
+  background: #fff;
+  color: var(--ink-dark);
+  border: 1.5px solid #d5cab8;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #dfd5c5;
+  transition: all 0.14s;
+}
+
+.tray-item-btn:hover {
+  background: #fff9eb;
+  border-color: #ffb703;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   10. Hand-drawn 2D Jumper Wires (สายไฟจัมเปอร์ 2D: แดง VCC, น้ำเงิน GND, เขียว Signal)
+   ========================================================================== */
 .hand-wire {
   fill: none;
-  stroke-width: 4;
+  stroke-width: 3.8;
   stroke-linecap: round;
   filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.14));
 }
 
 .hand-wire.wire-ok {
   stroke: #2b9348;
+}
+
+.hand-wire.wire-vcc {
+  stroke: var(--wire-vcc);
+  stroke-width: 3.2;
+  opacity: 0.85;
+}
+
+.hand-wire.wire-gnd {
+  stroke: #2563eb;
+  stroke-width: 3.2;
+  opacity: 0.85;
 }
 
 .hand-wire.wire-error {
@@ -919,7 +1324,7 @@ body {
 }
 
 /* ==========================================================================
-   8. Simulation Toolbar & Component Animations
+   11. Simulation Toolbar & Component Animations
    ========================================================================== */
 .sim-toolbar {
   display: flex;
@@ -1026,7 +1431,7 @@ body {
 }
 
 /* ==========================================================================
-   9. Mini Companion Mode (โหมดย่อเกาะขอบจอคู่กับ Arduino IDE)
+   12. Mini Companion Mode (โหมดย่อเกาะขอบจอคู่กับ Arduino IDE)
    ========================================================================== */
 body.mini-mode .topbar-divider,
 body.mini-mode #recentFilesSelect,
@@ -1067,6 +1472,6 @@ body.mini-mode .mascot-banner {
   .scrapbook-panel {
     grid-column: 1;
     grid-row: 3;
-    min-height: 420px;
+    min-height: 460px;
   }
 }
