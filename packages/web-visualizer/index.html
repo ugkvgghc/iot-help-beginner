@@ -108,11 +108,14 @@
       </select>
 
       <select id="presetSelect" aria-label="Sample Bug Scenarios">
-        <option value="">🧪 ลองโหลดโจทย์ Bug ตัวอย่าง...</option>
+        <option value="">🧪 ลองโหลดโจทย์ Bug & อุปกรณ์ตัวอย่าง...</option>
         <option value="output_typo">ตัวอย่าง 1: เขียน Output ผิด (pinMode 4)</option>
         <option value="high_typo">ตัวอย่าง 2: เขียนจ่ายไฟ High ผิด + มีหลายอุปกรณ์</option>
         <option value="missing_pinmode">ตัวอย่าง 3: ลืมเขียน pinMode ใน setup()</option>
-        <option value="clean_working">ตัวอย่าง 4: โค้ดที่ถูกต้อง (ไฟติดครบทุกขา!)</option>
+        <option value="if_assignment_bug">ตัวอย่าง 4: เผลอใช้ = ใน if (buttonState = HIGH)</option>
+        <option value="ultrasonic_demo">ตัวอย่าง 5: เซนเซอร์วัดระยะทาง Ultrasonic (HC-SR04)</option>
+        <option value="dht11_lcd_buzzer">ตัวอย่าง 6: เซนเซอร์ DHT11 + จอ LCD I2C + เสียง Buzzer</option>
+        <option value="clean_working">ตัวอย่าง 7: โค้ดที่ถูกต้อง (ไฟติดครบทุกขา!)</option>
       </select>
     </div>
   </section>
@@ -160,9 +163,20 @@
 
     <!-- Right Panel: Torn-Paper Scrapbook IoT Circuit Visualizer -->
     <section class="scrapbook-panel">
-      <div class="panel-header">
-        <span id="boardTitle">📌 กระดานจำลองวงจรจากโค้ด (Paper-Scrapbook Circuit)</span>
-        <span class="board-note" id="boardNote">*อ้างอิงอุปกรณ์และขาจากโค้ดโดยอัตโนมัติ</span>
+      <div class="panel-header scrapbook-header-flex">
+        <div class="header-title-wrap">
+          <span id="boardTitle">📌 กระดานจำลองวงจรจากโค้ด (Paper-Scrapbook Circuit)</span>
+          <span class="board-note" id="boardNote">*อ้างอิงอุปกรณ์และขาจากโค้ดโดยอัตโนมัติ</span>
+        </div>
+        <div class="sim-toolbar" id="simToolbar">
+          <button id="btnSimulate" class="sim-btn" type="button" title="เริ่ม/หยุดจำลองการทำงานจริง">
+            ▶️ จำลองวงจรจริง (Live Sim)
+          </button>
+          <button id="btnToggleSound" class="sound-btn" type="button" title="เปิด/ปิดเสียง Buzzer จำลอง">
+            🔊 เสียง: เปิด
+          </button>
+          <span class="sim-status-badge" id="simStatusBadge">พร้อมจำลอง</span>
+        </div>
       </div>
 
       <div class="scrapbook-canvas" id="scrapbookCanvas">

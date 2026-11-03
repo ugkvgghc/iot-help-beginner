@@ -1,5 +1,6 @@
 /**
  * IoT Help Beginner - Desktop Companion & Paper-Scrapbook Circuit App
+ * พร้อมระบบตรวจจับ Bug อัจฉริยะ และ Live Simulation Engine (Web Audio API)
  */
 
 const PRESETS = {
@@ -34,6 +35,71 @@ void loop() {
   delay(500);
 }`,
 
+  if_assignment_bug: `const int buttonPin = 2;
+const int ledPin = 13;
+
+void setup() {
+  pinMode(buttonPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int buttonState = digitalRead(buttonPin);
+
+  // Bug ยอดฮิต: เผลอใช้ = ตัวเดียวแทน == ในเงื่อนไข if
+  if (buttonState = HIGH) {
+    digitalWrite(ledPin, HIGH);
+  } else {
+    digitalWrite(ledPin, LOW);
+  }
+}`,
+
+  ultrasonic_demo: `const int trigPin = 9;
+const int echoPin = 10;
+const int ledPin = 13;
+
+void setup() {
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  // ส่งคลื่นเสียง Ultrasonic (HC-SR04)
+  digitalWrite(trigPin, LOW);
+  delay(2);
+  digitalWrite(trigPin, HIGH);
+  delay(10);
+  digitalWrite(trigPin, LOW);
+
+  // หลอดไฟ LED กะพริบแจ้งเตือน
+  digitalWrite(ledPin, HIGH);
+  delay(500);
+  digitalWrite(ledPin, LOW);
+  delay(500);
+}`,
+
+  dht11_lcd_buzzer: `#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+const int buzzerPin = 8;
+const int dhtPin = 7;
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.print("Temp: 28.5C");
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(dhtPin, INPUT);
+}
+
+void loop() {
+  // สั่งส่งเสียงเตือนบี๊บๆ จากลำโพง Buzzer
+  tone(buzzerPin, 1000);
+  delay(200);
+  noTone(buzzerPin);
+  delay(800);
+}`,
+
   clean_working: `void setup() {
   pinMode(4, OUTPUT);
   pinMode(2, INPUT);
@@ -42,6 +108,8 @@ void loop() {
 void loop() {
   int btn = digitalRead(2);
   digitalWrite(4, HIGH);
+  delay(1000);
+  digitalWrite(4, LOW);
   delay(1000);
 }`,
 };
@@ -68,15 +136,24 @@ const UI_TEXT = {
     deviceNames: {
       led: "หลอดไฟ LED",
       button: "ปุ่มกด (Push Button)",
-      sensor: "เซนเซอร์ (Sensor)",
-      servo: "เซอร์โวมอเตอร์ (Servo)",
-      buzzer: "ลำโพงบัซเซอร์ (Buzzer)",
-      relay: "รีเลย์ (Relay)",
+      sensor: "เซนเซอร์ (Analog Sensor)",
+      servo: "เซอร์โวมอเตอร์ (Servo Motor)",
+      buzzer: "ลำโพงบัซเซอร์ (Piezo Buzzer)",
+      relay: "โมดูลรีเลย์ (Relay Module)",
+      ultrasonic: "เซนเซอร์วัดระยะทาง (Ultrasonic HC-SR04)",
+      dht11: "เซนเซอร์วัดอุณหภูมิและความชื้น (DHT11)",
+      lcd_i2c: "จอแสดงผล LCD I2C 16x2",
     },
     stateWorkingOn: "⚡ สว่าง / ทำงานปกติ",
     stateWorkingInput: "✅ พร้อมรับสัญญาณปกติ",
     stateBroken: "❌ ไม่ทำงาน (เกิด Bug จากโค้ด!)",
     noDevices: "ยังไม่มีการเรียกใช้ขา Pin ในโค้ด ลองเขียน pinMode หรือ digitalWrite ดูสิ!",
+    simStart: "▶️ จำลองวงจรจริง (Live Sim)",
+    simStop: "⏹️ หยุดจำลอง (Stop Sim)",
+    simSoundOn: "🔊 เสียง: เปิด",
+    simSoundOff: "🔇 เสียง: ปิด",
+    simStatusReady: "พร้อมจำลอง",
+    simStatusRunning: "⚡ กำลังจำลองการทำงานจริง...",
   },
   en: {
     subtitle: "Friendly Arduino IDE Bug Companion & Torn-Paper Scrapbook Circuit Visualizer",
@@ -103,11 +180,20 @@ const UI_TEXT = {
       servo: "Servo Motor",
       buzzer: "Piezo Buzzer",
       relay: "Relay Module",
+      ultrasonic: "Ultrasonic Distance Sensor (HC-SR04)",
+      dht11: "Temp & Humidity Sensor (DHT11)",
+      lcd_i2c: "16x2 I2C LCD Display",
     },
     stateWorkingOn: "⚡ Lit Up / Working Normally",
     stateWorkingInput: "✅ Ready & Reading Signal",
     stateBroken: "❌ Not Working (Code Bug!)",
     noDevices: "No pins detected in code yet. Try adding pinMode() or digitalWrite()!",
+    simStart: "▶️ Live Simulation",
+    simStop: "⏹️ Stop Simulation",
+    simSoundOn: "🔊 Sound: ON",
+    simSoundOff: "🔇 Sound: OFF",
+    simStatusReady: "Ready",
+    simStatusRunning: "⚡ Live Simulation Running...",
   },
 };
 
@@ -118,6 +204,14 @@ let currentWatchedPath = "";
 let lastSyncedMtime = 0;
 let isUserTyping = false;
 let typingTimer = null;
+
+// Simulation State
+let isSimulating = false;
+let simTimer = null;
+let simStepIndex = 0;
+let isSoundEnabled = true;
+let audioCtx = null;
+const simulatedDeviceStates = new Map(); // pinKey -> { powerState, label }
 
 const codeInput = document.getElementById("codeInput");
 const lineNumbers = document.getElementById("lineNumbers");
@@ -143,33 +237,194 @@ const arduinoPinList = document.getElementById("arduinoPinList");
 const devicesZone = document.getElementById("devicesZone");
 const wireLayer = document.getElementById("wireLayer");
 const scrapbookCanvas = document.getElementById("scrapbookCanvas");
+const btnSimulate = document.getElementById("btnSimulate");
+const btnToggleSound = document.getElementById("btnToggleSound");
+const simStatusBadge = document.getElementById("simStatusBadge");
 
-function getDeviceSVG(deviceType, isOn, hasBug) {
-  if (deviceType === "button" || deviceType === "sensor") {
-    const ringColor = hasBug ? "#d90429" : "#2b9348";
+/**
+ * เล่นเสียงสังเคราะห์ Buzzer ด้วย Web Audio API
+ */
+function playBuzzerSound(freq = 1000, durationMs = 200) {
+  if (!isSoundEnabled) return;
+  try {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!audioCtx) audioCtx = new AudioContextClass();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "square"; // เสียง Square wave แบบฉบับชิป Piezo 8-bit ของแท้
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + durationMs / 1000);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + durationMs / 1000);
+  } catch (err) {
+    console.warn("Audio Context warning:", err);
+  }
+}
+
+/**
+ * สร้าง SVG ภาพประกอบอุปกรณ์ในรูปแบบกระดาษฉีกแปะ (Paper Scrapbook Art)
+ */
+function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
+  // 1. ปุ่มกด (Push Button)
+  if (deviceType === "button") {
+    const ringColor = hasBug ? "#d90429" : isOn ? "#ffb703" : "#2b9348";
     return `
-      <svg viewBox="0 0 80 80" width="64" height="64">
+      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
         <rect x="12" y="16" width="56" height="48" rx="8" fill="#ced4da" stroke="#495057" stroke-width="3"/>
-        <circle cx="40" cy="40" r="15" fill="${ringColor}" stroke="#212529" stroke-width="3"/>
-        <circle cx="35" cy="35" r="4" fill="rgba(255,255,255,0.6)"/>
+        <circle cx="40" cy="40" r="16" fill="${ringColor}" stroke="#212529" stroke-width="3" style="cursor: pointer;"/>
+        <circle cx="36" cy="36" r="4" fill="rgba(255,255,255,0.7)"/>
       </svg>
     `;
   }
 
+  // 2. เซนเซอร์วัดระยะทาง Ultrasonic (HC-SR04)
+  if (deviceType === "ultrasonic") {
+    const waveColor = isOn && !hasBug ? "#3a86ff" : "transparent";
+    return `
+      <svg viewBox="0 0 110 80" width="95" height="70" class="scrapbook-svg">
+        <!-- แผงวงจรสีน้ำเงินตัดขอบกระดาษ -->
+        <rect x="10" y="18" width="90" height="48" rx="6" fill="#1d3557" stroke="#457b9d" stroke-width="3"/>
+        <!-- ขาพิน 4 ขา VCC, TRIG, ECHO, GND -->
+        <circle cx="28" cy="62" r="3" fill="#e9c46a"/>
+        <circle cx="44" cy="62" r="3" fill="#e9c46a"/>
+        <circle cx="66" cy="62" r="3" fill="#e9c46a"/>
+        <circle cx="82" cy="62" r="3" fill="#e9c46a"/>
+        <!-- กระบอกส่งสัญญาณ (Transmitter T) -->
+        <circle cx="34" cy="38" r="16" fill="#adb5bd" stroke="#212529" stroke-width="3"/>
+        <circle cx="34" cy="38" r="10" fill="#6c757d"/>
+        <text x="34" y="42" font-size="9" font-weight="900" fill="#fff" text-anchor="middle">T</text>
+        <!-- กระบอกรับสัญญาณ (Receiver R) -->
+        <circle cx="76" cy="38" r="16" fill="#adb5bd" stroke="#212529" stroke-width="3"/>
+        <circle cx="76" cy="38" r="10" fill="#6c757d"/>
+        <text x="76" y="42" font-size="9" font-weight="900" fill="#fff" text-anchor="middle">R</text>
+        <!-- คลื่น Ultrasonic จำลอง -->
+        ${
+          isOn && !hasBug
+            ? `<path d="M 52 24 A 18 18 0 0 1 52 52" stroke="${waveColor}" stroke-width="3" fill="none" stroke-linecap="round" class="pulse-wave"/>
+               <path d="M 58 18 A 26 26 0 0 1 58 58" stroke="${waveColor}" stroke-width="3" fill="none" stroke-linecap="round" class="pulse-wave-2"/>`
+            : ""
+        }
+      </svg>
+    `;
+  }
+
+  // 3. เซนเซอร์วัดอุณหภูมิและความชื้น (DHT11)
+  if (deviceType === "dht11") {
+    const gridColor = isOn && !hasBug ? "#00b4d8" : "#90e0ef";
+    return `
+      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+        <!-- ตัวถังสีฟ้าตารางของ DHT11 -->
+        <rect x="18" y="12" width="44" height="52" rx="4" fill="${gridColor}" stroke="#0077b6" stroke-width="3"/>
+        <!-- ช่องระบายอากาศตาราง -->
+        <line x1="26" y1="22" x2="54" y2="22" stroke="#03045e" stroke-width="2"/>
+        <line x1="26" y1="30" x2="54" y2="30" stroke="#03045e" stroke-width="2"/>
+        <line x1="26" y1="38" x2="54" y2="38" stroke="#03045e" stroke-width="2"/>
+        <line x1="26" y1="46" x2="54" y2="46" stroke="#03045e" stroke-width="2"/>
+        <!-- ขาเชื่อมต่อด้านล่าง -->
+        <line x1="26" y1="64" x2="26" y2="76" stroke="#6c757d" stroke-width="3"/>
+        <line x1="35" y1="64" x2="35" y2="76" stroke="#6c757d" stroke-width="3"/>
+        <line x1="45" y1="64" x2="45" y2="76" stroke="#6c757d" stroke-width="3"/>
+        <line x1="54" y1="64" x2="54" y2="76" stroke="#6c757d" stroke-width="3"/>
+      </svg>
+    `;
+  }
+
+  // 4. หน้าจอแสดงผล LCD I2C (16x2)
+  if (deviceType === "lcd_i2c") {
+    const lineTexts = extraData.lines || ["Temp: 28.5C", "IoT Buddy"];
+    const line1 = (lineTexts[0] || "IoT Ready!").substring(0, 16);
+    const line2 = (lineTexts[1] || "").substring(0, 16);
+    const screenBg = isOn && !hasBug ? "#52b788" : "#95d5b2";
+    return `
+      <svg viewBox="0 0 130 80" width="115" height="70" class="scrapbook-svg">
+        <!-- แผงวงจรหลัก -->
+        <rect x="8" y="10" width="114" height="60" rx="6" fill="#1b4332" stroke="#2d6a4f" stroke-width="3"/>
+        <!-- กรอบจอ LCD 16x2 -->
+        <rect x="18" y="16" width="94" height="46" rx="4" fill="${screenBg}" stroke="#081c15" stroke-width="2"/>
+        <!-- ตัวอักษรบนหน้าจอแบบ Dot Matrix -->
+        <text x="24" y="32" font-family="'Courier New', monospace" font-size="9" font-weight="900" fill="#081c15">${line1}</text>
+        <text x="24" y="48" font-family="'Courier New', monospace" font-size="9" font-weight="900" fill="#081c15">${line2}</text>
+      </svg>
+    `;
+  }
+
+  // 5. ลำโพงบัซเซอร์ (Piezo Buzzer)
+  if (deviceType === "buzzer") {
+    const isBeeping = isOn && !hasBug;
+    return `
+      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+        <circle cx="40" cy="40" r="26" fill="#212529" stroke="#495057" stroke-width="4"/>
+        <circle cx="40" cy="40" r="9" fill="#000"/>
+        <circle cx="40" cy="40" r="4" fill="#343a40"/>
+        <text x="26" y="30" font-size="12" font-weight="900" fill="#e9ecef">+</text>
+        ${
+          isBeeping
+            ? `<path d="M 68 28 A 16 16 0 0 1 68 52" stroke="#f72585" stroke-width="3" fill="none" class="buzzer-pulse"/>
+               <path d="M 74 20 A 24 24 0 0 1 74 60" stroke="#f72585" stroke-width="3" fill="none" class="buzzer-pulse-2"/>`
+            : ""
+        }
+      </svg>
+    `;
+  }
+
+  // 6. เซอร์โวมอเตอร์ (Servo)
+  if (deviceType === "servo") {
+    return `
+      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+        <rect x="16" y="24" width="48" height="40" rx="4" fill="#0077b6" stroke="#023e8a" stroke-width="3"/>
+        <circle cx="34" cy="24" r="10" fill="#ced4da" stroke="#495057" stroke-width="2"/>
+        <rect x="30" y="10" width="28" height="8" rx="4" fill="#fff" stroke="#212529" stroke-width="2" transform="${
+          isOn ? "rotate(45 34 24)" : "rotate(0 34 24)"
+        }"/>
+      </svg>
+    `;
+  }
+
+  // 7. รีเลย์ (Relay)
+  if (deviceType === "relay") {
+    return `
+      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+        <rect x="14" y="16" width="52" height="48" rx="6" fill="#0077b6" stroke="#03045e" stroke-width="3"/>
+        <circle cx="26" cy="28" r="4" fill="${isOn ? "#52b788" : "#6c757d"}"/>
+        <text x="40" y="44" font-size="10" font-weight="900" fill="#fff" text-anchor="middle">RELAY</text>
+      </svg>
+    `;
+  }
+
+  // 8. เซนเซอร์อะนาล็อกทั่วไป (Analog Sensor / LDR)
+  if (deviceType === "sensor") {
+    return `
+      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+        <circle cx="40" cy="40" r="22" fill="#adb5bd" stroke="#495057" stroke-width="3"/>
+        <path d="M 28 34 Q 40 26 52 34 Q 40 44 28 46 Q 40 54 52 46" stroke="#d90429" stroke-width="3" fill="none"/>
+      </svg>
+    `;
+  }
+
+  // 9. หลอดไฟ LED (ค่าเริ่มต้น)
   if (hasBug || !isOn) {
     return `
-      <svg viewBox="0 0 80 80" width="66" height="66">
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <line x1="33" y1="54" x2="33" y2="75" stroke="#6c757d" stroke-width="4" stroke-linecap="round"/>
         <line x1="47" y1="54" x2="47" y2="70" stroke="#6c757d" stroke-width="4" stroke-linecap="round"/>
         <path d="M22 52 L22 32 A18 18 0 0 1 58 32 L58 52 Z" fill="#adb5bd" stroke="#495057" stroke-width="3"/>
         <rect x="19" y="50" width="42" height="6" rx="2" fill="#6c757d" stroke="#495057" stroke-width="2"/>
-        <text x="40" y="41" text-anchor="middle" fill="#343a40" font-size="14" font-weight="bold">x_x</text>
+        <text x="40" y="41" text-anchor="middle" fill="#343a40" font-size="14" font-weight="bold">${hasBug ? "x_x" : "off"}</text>
       </svg>
     `;
   }
 
   return `
-    <svg viewBox="0 0 80 80" width="66" height="66">
+    <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg led-glowing">
       <defs>
         <radialGradient id="ledGlow" cx="50%" cy="40%" r="50%">
           <stop offset="0%" stop-color="#fff3b0"/>
@@ -177,7 +432,7 @@ function getDeviceSVG(deviceType, isOn, hasBug) {
           <stop offset="100%" stop-color="rgba(255,190,11,0)"/>
         </radialGradient>
       </defs>
-      <circle cx="40" cy="34" r="32" fill="url(#ledGlow)"/>
+      <circle cx="40" cy="34" r="32" fill="url(#ledGlow)" class="glow-circle"/>
       <line x1="33" y1="54" x2="33" y2="75" stroke="#495057" stroke-width="4" stroke-linecap="round"/>
       <line x1="47" y1="54" x2="47" y2="70" stroke="#495057" stroke-width="4" stroke-linecap="round"/>
       <path d="M22 52 L22 32 A18 18 0 0 1 58 32 L58 52 Z" fill="#ffbe0b" stroke="#fb5607" stroke-width="3"/>
@@ -208,6 +463,9 @@ function updateStaticLabels() {
   document.getElementById("boardTitle").textContent = t.boardTitle;
   document.getElementById("boardNote").textContent = t.boardNote;
   document.getElementById("pinRailTitle").textContent = t.pinRailTitle;
+  if (btnSimulate) btnSimulate.textContent = isSimulating ? t.simStop : t.simStart;
+  if (btnToggleSound) btnToggleSound.textContent = isSoundEnabled ? t.simSoundOn : t.simSoundOff;
+  if (simStatusBadge && !isSimulating) simStatusBadge.textContent = t.simStatusReady;
 }
 
 function renderAnalysis() {
@@ -278,11 +536,19 @@ function renderAnalysis() {
 
     const deviceTitle = t.deviceNames[dev.deviceType] || dev.deviceType.toUpperCase();
     const isInput = dev.deviceType === "button" || dev.deviceType === "sensor";
+
+    // ถ้ากำลังจำลอง ให้ใช้สถานะจำลองล่าสุด
+    const isDeviceOn = simulatedDeviceStates.has(dev.pin)
+      ? simulatedDeviceStates.get(dev.pin).powerState === "on"
+      : dev.powerState === "on";
+
     const stateLabel = dev.hasBug
       ? t.stateBroken
       : isInput
       ? t.stateWorkingInput
-      : t.stateWorkingOn;
+      : isDeviceOn
+      ? t.stateWorkingOn
+      : "⏹️ ปิดอยู่ (OFF)";
 
     const bugTooltipHtml = dev.hasBug
       ? dev.bugMessages
@@ -290,24 +556,33 @@ function renderAnalysis() {
           .join("")
       : "";
 
+    // ป้ายบอกค่าอ่านพิเศษ เช่น อุณหภูมิ DHT11, ระยะทาง Ultrasonic
+    let extraBadge = "";
+    if (dev.deviceType === "dht11") {
+      extraBadge = `<div class="device-readout-pill">🌡️ 28.5°C &nbsp;|&nbsp; 💧 65% RH</div>`;
+    } else if (dev.deviceType === "ultrasonic") {
+      extraBadge = `<div class="device-readout-pill">📏 ระยะทาง: 24 cm</div>`;
+    }
+
     wrapper.innerHTML = `
       ${
         dev.hasBug
           ? `<div class="question-mark-badge" title="${dev.bugMessages[0]?.message[currentLang] || ""}">?</div>`
           : ""
       }
-      <div class="paper-cutout device-cutout ${dev.hasBug ? "has-bug" : ""}" style="transform: rotate(${tiltDeg}deg);" id="device-card-${dev.pin}">
+      <div class="paper-cutout device-cutout ${dev.hasBug ? "has-bug" : ""} ${isDeviceOn ? "device-active" : ""}" style="transform: rotate(${tiltDeg}deg);" id="device-card-${dev.pin}">
         <div class="washi-tape tape-top-center"></div>
         <div class="device-inner">
           <div class="device-terminal-dot" id="dev-dot-${dev.pin}"></div>
-          <div class="device-illustration">
-            ${getDeviceSVG(dev.deviceType, dev.powerState === "on", dev.hasBug)}
+          <div class="device-illustration" id="dev-illu-${dev.pin}">
+            ${getDeviceSVG(dev.deviceType, isDeviceOn, dev.hasBug, dev.extraData)}
           </div>
           <div class="device-info">
             <div class="device-title">${deviceTitle} (Pin ${dev.pin})</div>
-            <div class="device-state-text ${dev.hasBug ? "state-error" : "state-ok"}">
+            <div class="device-state-text ${dev.hasBug ? "state-error" : isDeviceOn ? "state-ok" : "state-muted"}" id="dev-state-${dev.pin}">
               ${stateLabel}
             </div>
+            ${extraBadge}
           </div>
         </div>
         ${bugTooltipHtml}
@@ -385,6 +660,13 @@ async function autoFixCode() {
   code = code.replace(/\b(digitalread|DigitalRead)\b/g, "digitalRead");
   code = code.replace(/\b(High|high)\b/g, "HIGH");
   code = code.replace(/\b(Low|low)\b/g, "LOW");
+  code = code.replace(/\b(Tone)\b/g, "tone");
+
+  // แก้ Bug เผลอใช้ = ตัวเดียวใน if (...) เป็น ==
+  code = code.replace(
+    /\bif\s*\(\s*([A-Za-z0-9_\(\)]+)\s*(?<![!=<>+*\/\-%&|^])=(?![=])\s*([A-Za-z0-9_]+)\s*\)/g,
+    "if ($1 == $2)"
+  );
 
   if (lastAnalysis) {
     lastAnalysis.bugs.forEach((b) => {
@@ -400,6 +682,101 @@ async function autoFixCode() {
   codeInput.value = code;
   renderAnalysis();
   await saveCodeToInoFile(code);
+}
+
+/**
+ * ระบบจำลองการทำงานจริง (Live Simulation Engine)
+ */
+function startSimulation() {
+  if (!lastAnalysis) return;
+  isSimulating = true;
+  simStepIndex = 0;
+  btnSimulate.textContent = UI_TEXT[currentLang].simStop;
+  btnSimulate.classList.add("active");
+  simStatusBadge.textContent = UI_TEXT[currentLang].simStatusRunning;
+  simStatusBadge.classList.add("badge-running");
+
+  runNextSimulationStep();
+}
+
+function stopSimulation() {
+  isSimulating = false;
+  clearTimeout(simTimer);
+  btnSimulate.textContent = UI_TEXT[currentLang].simStart;
+  btnSimulate.classList.remove("active");
+  simStatusBadge.textContent = UI_TEXT[currentLang].simStatusReady;
+  simStatusBadge.classList.remove("badge-running");
+
+  simulatedDeviceStates.clear();
+  renderAnalysis();
+}
+
+function runNextSimulationStep() {
+  if (!isSimulating || !lastAnalysis) return;
+
+  const steps = lastAnalysis.simulationSteps;
+  if (!steps || steps.length === 0) {
+    // หากไม่มีขั้นตอน loop ชัดเจน ให้จำลองการกะพริบพื้นฐาน
+    simStatusBadge.textContent = "จำลองสถานะคงที่ (Static Active)";
+    return;
+  }
+
+  if (simStepIndex >= steps.length) {
+    simStepIndex = 0; // วน loop ซ้ำ
+  }
+
+  const step = steps[simStepIndex];
+  simStepIndex++;
+
+  let nextDelayMs = 400; // ค่าเริ่มต้น
+
+  if (step.type === "digitalWrite") {
+    const isHigh = step.value === "HIGH";
+    simulatedDeviceStates.set(step.pin, { powerState: isHigh ? "on" : "off" });
+    updateDeviceSimulationView(step.pin, isHigh);
+
+    // ถ้าอุปกรณ์คือ Buzzer และจ่ายไฟ HIGH ให้ส่งเสียงบี๊บ
+    const dev = lastAnalysis.devices.find((d) => d.pin === String(step.pin));
+    if (dev && dev.deviceType === "buzzer" && isHigh) {
+      playBuzzerSound(1000, 200);
+    }
+  } else if (step.type === "tone") {
+    simulatedDeviceStates.set(step.pin, { powerState: "on" });
+    updateDeviceSimulationView(step.pin, true);
+    playBuzzerSound(step.freq || 880, step.duration || 200);
+  } else if (step.type === "noTone") {
+    simulatedDeviceStates.set(step.pin, { powerState: "off" });
+    updateDeviceSimulationView(step.pin, false);
+  } else if (step.type === "delay") {
+    nextDelayMs = Math.max(200, Math.min(step.ms, 2500));
+    simStatusBadge.textContent = `⏱️ delay(${step.ms}ms)`;
+  }
+
+  simTimer = setTimeout(runNextSimulationStep, nextDelayMs);
+}
+
+function updateDeviceSimulationView(pinKey, isOn) {
+  const illuEl = document.getElementById(`dev-illu-${pinKey}`);
+  const stateEl = document.getElementById(`dev-state-${pinKey}`);
+  const cardEl = document.getElementById(`device-card-${pinKey}`);
+  const dev = lastAnalysis?.devices.find((d) => d.pin === String(pinKey));
+
+  if (dev && illuEl) {
+    illuEl.innerHTML = getDeviceSVG(dev.deviceType, isOn, dev.hasBug, dev.extraData);
+  }
+
+  if (stateEl) {
+    stateEl.textContent = isOn ? UI_TEXT[currentLang].stateWorkingOn : "⏹️ ปิดอยู่ (OFF)";
+    stateEl.className = `device-state-text ${isOn ? "state-ok" : "state-muted"}`;
+  }
+
+  if (cardEl) {
+    if (isOn) {
+      cardEl.classList.add("device-active");
+    } else {
+      cardEl.classList.remove("device-active");
+    }
+  }
 }
 
 /**
@@ -480,9 +857,7 @@ async function pollArduinoFileState() {
         renderAnalysis();
       }
     }
-  } catch (_) {
-    // กรณีเปิดผ่านไฟล์ตรงๆ โดยไม่ได้รัน server.js
-  }
+  } catch (_) {}
 }
 
 // Event Listeners
@@ -538,8 +913,30 @@ recentFilesSelect.addEventListener("change", async (e) => {
 presetSelect.addEventListener("change", (e) => {
   const key = e.target.value;
   if (PRESETS[key]) {
+    stopSimulation();
     codeInput.value = PRESETS[key];
     renderAnalysis();
+  }
+});
+
+btnSimulate.addEventListener("click", () => {
+  if (isSimulating) {
+    stopSimulation();
+  } else {
+    startSimulation();
+  }
+});
+
+btnToggleSound.addEventListener("click", () => {
+  isSoundEnabled = !isSoundEnabled;
+  btnToggleSound.textContent = isSoundEnabled
+    ? UI_TEXT[currentLang].simSoundOn
+    : UI_TEXT[currentLang].simSoundOff;
+  btnToggleSound.classList.toggle("sound-muted", !isSoundEnabled);
+
+  // ทดสอบเสียงสั้นๆ เมื่อเปิด
+  if (isSoundEnabled) {
+    playBuzzerSound(880, 150);
   }
 });
 
