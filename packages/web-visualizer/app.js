@@ -1,6 +1,6 @@
 /**
  * IoT Help Beginner - Desktop Companion & Paper-Scrapbook Circuit App
- * พร้อมระบบตรวจจับ Bug อัจฉริยะ และ Live Simulation Engine (Web Audio API)
+ * ออกแบบในสไตล์ Cute Paper-Scrapbook Minimalist (โปร่ง โล่ง ข้อความกระชับ ใช้งานง่าย)
  */
 
 const PRESETS = {
@@ -116,63 +116,67 @@ void loop() {
 
 const UI_TEXT = {
   th: {
-    subtitle: "ผู้ช่วยแปล Bug ใน Arduino IDE เป็นภาษาคน พร้อมจำลองวงจรสไตล์กระดาษตัดแปะ (Paper-Scrapbook)",
-    howToBtn: "📖 วิธีใช้งานคู่กับ Arduino IDE (3 ขั้นตอน)",
-    howToTitle: "🚀 วิธีใช้งานร่วมกับโปรแกรม Arduino IDE แบบง่ายๆ (ทำตามได้ทันที!)",
-    closeGuide: "✕ ซ่อนคู่มือนี้",
-    watchingLabel: "กำลังซิงค์กับไฟล์ Arduino IDE:",
-    pickFileBtn: "📂 เลือกไฟล์ .ino ในเครื่อง",
-    miniModeBtnOff: "📌 โหมดเกาะขอบจอคู่กับ Arduino IDE",
-    miniModeBtnOn: "📐 ขยายกลับโหมดเต็มจอ",
-    expandCircuitBtn: "🔍 ดูวงจรกระดาษแปะ (?)",
-    saveBtn: "💾 บันทึกลงไฟล์ .ino",
+    subtitle: "คู่หูตรวจโค้ด Arduino",
+    howToBtn: "❓ วิธีใช้",
+    howToTitle: "🚀 วิธีใช้งานคู่กับ Arduino IDE ใน 3 ขั้นตอน",
+    closeGuide: "✕ ปิด",
+    watchingLabel: "ซิงค์:",
+    pickFileBtn: "📂 เปิดไฟล์",
+    toggleCodeHide: "📝 ซ่อนโค้ด",
+    toggleCodeShow: "📝 ดูโค้ด",
+    miniModeBtnOff: "📌 ย่อเกาะจอ",
+    miniModeBtnOn: "📐 ขยายเต็มจอ",
+    expandCircuitBtn: "🔍 ดูวงจร (?)",
+    saveBtn: "💾 เซฟลงไฟล์",
     mascotName: "คู่หูตรวจโค้ด",
-    statusBug: "พบจุดผิดพลาด!",
-    statusOk: "โค้ดถูกต้องพร้อมลุย!",
-    autoFix: "✨ แก้โค้ดในไฟล์ .ino ให้อัตโนมัติ",
-    boardTitle: "📌 กระดานจำลองวงจรจากโค้ด (Paper-Scrapbook Circuit)",
-    boardNote: "*อ้างอิงอุปกรณ์และขาจากโค้ดโดยอัตโนมัติ",
-    pinRailTitle: "ขาเชื่อมต่อ (Pins in Code)",
+    statusBug: "พบจุดผิด",
+    statusOk: "โค้ดถูกต้อง!",
+    autoFix: "✨ แก้ทันที",
+    boardTitle: "📌 กระดานวงจรกระดาษแปะ",
+    boardNote: "",
+    pinRailTitle: "ขาที่ใช้งาน (Pins)",
     deviceNames: {
       led: "หลอดไฟ LED",
-      button: "ปุ่มกด (Push Button)",
-      sensor: "เซนเซอร์ (Analog Sensor)",
-      servo: "เซอร์โวมอเตอร์ (Servo Motor)",
-      buzzer: "ลำโพงบัซเซอร์ (Piezo Buzzer)",
-      relay: "โมดูลรีเลย์ (Relay Module)",
-      ultrasonic: "เซนเซอร์วัดระยะทาง (Ultrasonic HC-SR04)",
-      dht11: "เซนเซอร์วัดอุณหภูมิและความชื้น (DHT11)",
-      lcd_i2c: "จอแสดงผล LCD I2C 16x2",
+      button: "ปุ่มกด",
+      sensor: "เซนเซอร์",
+      servo: "เซอร์โวมอเตอร์",
+      buzzer: "ลำโพง Buzzer",
+      relay: "โมดูลรีเลย์",
+      ultrasonic: "Ultrasonic HC-SR04",
+      dht11: "เซนเซอร์ DHT11",
+      lcd_i2c: "จอ LCD I2C 16x2",
     },
-    stateWorkingOn: "⚡ สว่าง / ทำงานปกติ",
-    stateWorkingInput: "✅ พร้อมรับสัญญาณปกติ",
-    stateBroken: "❌ ไม่ทำงาน (เกิด Bug จากโค้ด!)",
+    stateWorkingOn: "⚡ ทำงานปกติ",
+    stateWorkingInput: "✅ พร้อมรับค่า",
+    stateBroken: "❌ พบจุดผิดในโค้ด",
     noDevices: "ยังไม่มีการเรียกใช้ขา Pin ในโค้ด ลองเขียน pinMode หรือ digitalWrite ดูสิ!",
-    simStart: "▶️ จำลองวงจรจริง (Live Sim)",
-    simStop: "⏹️ หยุดจำลอง (Stop Sim)",
-    simSoundOn: "🔊 เสียง: เปิด",
-    simSoundOff: "🔇 เสียง: ปิด",
+    simStart: "▶️ รันวงจร",
+    simStop: "⏹️ หยุด",
+    simSoundOn: "🔊 เสียง",
+    simSoundOff: "🔇 ปิดเสียง",
     simStatusReady: "พร้อมจำลอง",
-    simStatusRunning: "⚡ กำลังจำลองการทำงานจริง...",
+    simStatusRunning: "⚡ กำลังรัน...",
   },
   en: {
-    subtitle: "Friendly Arduino IDE Bug Companion & Torn-Paper Scrapbook Circuit Visualizer",
-    howToBtn: "📖 How to Use with Arduino IDE (3 Steps)",
+    subtitle: "Arduino Companion",
+    howToBtn: "❓ Guide",
     howToTitle: "🚀 How to Use Alongside Arduino IDE in 3 Easy Steps",
-    closeGuide: "✕ Hide Guide",
-    watchingLabel: "Watching Arduino IDE File:",
-    pickFileBtn: "📂 Browse .ino File",
-    miniModeBtnOff: "📌 Mini Mode (Float next to Arduino IDE)",
-    miniModeBtnOn: "📐 Expand to Full Circuit View",
-    expandCircuitBtn: "🔍 View Paper Circuit (?)",
-    saveBtn: "💾 Save to .ino File",
+    closeGuide: "✕ Close",
+    watchingLabel: "Sync:",
+    pickFileBtn: "📂 Open .ino",
+    toggleCodeHide: "📝 Hide Code",
+    toggleCodeShow: "📝 Show Code",
+    miniModeBtnOff: "📌 Mini Mode",
+    miniModeBtnOn: "📐 Full View",
+    expandCircuitBtn: "🔍 View Circuit (?)",
+    saveBtn: "💾 Save",
     mascotName: "IoT Buddy",
-    statusBug: "Bug Detected!",
-    statusOk: "All Systems Go!",
-    autoFix: "✨ Auto-Fix & Save .ino",
-    boardTitle: "📌 Paper-Scrapbook Circuit Board (Inferred from Code)",
-    boardNote: "*Hardware & wires automatically generated from your code",
-    pinRailTitle: "Active Pins in Code",
+    statusBug: "Bug Found",
+    statusOk: "All Good!",
+    autoFix: "✨ Auto-Fix",
+    boardTitle: "📌 Paper-Scrapbook Circuit",
+    boardNote: "",
+    pinRailTitle: "Active Pins",
     deviceNames: {
       led: "LED Light",
       button: "Push Button",
@@ -180,26 +184,27 @@ const UI_TEXT = {
       servo: "Servo Motor",
       buzzer: "Piezo Buzzer",
       relay: "Relay Module",
-      ultrasonic: "Ultrasonic Distance Sensor (HC-SR04)",
-      dht11: "Temp & Humidity Sensor (DHT11)",
-      lcd_i2c: "16x2 I2C LCD Display",
+      ultrasonic: "Ultrasonic HC-SR04",
+      dht11: "DHT11 Sensor",
+      lcd_i2c: "16x2 LCD I2C",
     },
-    stateWorkingOn: "⚡ Lit Up / Working Normally",
-    stateWorkingInput: "✅ Ready & Reading Signal",
-    stateBroken: "❌ Not Working (Code Bug!)",
-    noDevices: "No pins detected in code yet. Try adding pinMode() or digitalWrite()!",
-    simStart: "▶️ Live Simulation",
-    simStop: "⏹️ Stop Simulation",
-    simSoundOn: "🔊 Sound: ON",
-    simSoundOff: "🔇 Sound: OFF",
+    stateWorkingOn: "⚡ Working",
+    stateWorkingInput: "✅ Ready",
+    stateBroken: "❌ Code Bug",
+    noDevices: "No pins detected yet. Try adding pinMode() or digitalWrite()!",
+    simStart: "▶️ Run Sim",
+    simStop: "⏹️ Stop",
+    simSoundOn: "🔊 Sound",
+    simSoundOff: "🔇 Muted",
     simStatusReady: "Ready",
-    simStatusRunning: "⚡ Live Simulation Running...",
+    simStatusRunning: "⚡ Running...",
   },
 };
 
 let currentLang = "th";
 let lastAnalysis = null;
 let isMiniMode = false;
+let isCodeHidden = false;
 let currentWatchedPath = "";
 let lastSyncedMtime = 0;
 let isUserTyping = false;
@@ -211,13 +216,15 @@ let simTimer = null;
 let simStepIndex = 0;
 let isSoundEnabled = true;
 let audioCtx = null;
-const simulatedDeviceStates = new Map(); // pinKey -> { powerState, label }
+const simulatedDeviceStates = new Map();
 
+const mainWorkspace = document.getElementById("mainWorkspace");
 const codeInput = document.getElementById("codeInput");
 const lineNumbers = document.getElementById("lineNumbers");
 const presetSelect = document.getElementById("presetSelect");
 const recentFilesSelect = document.getElementById("recentFilesSelect");
 const btnPickFile = document.getElementById("btnPickFile");
+const btnToggleCode = document.getElementById("btnToggleCode");
 const btnToggleMini = document.getElementById("btnToggleMini");
 const btnHowTo = document.getElementById("btnHowTo");
 const btnCloseHowTo = document.getElementById("btnCloseHowTo");
@@ -254,7 +261,7 @@ function playBuzzerSound(freq = 1000, durationMs = 200) {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    osc.type = "square"; // เสียง Square wave แบบฉบับชิป Piezo 8-bit ของแท้
+    osc.type = "square";
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
     gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
@@ -274,11 +281,10 @@ function playBuzzerSound(freq = 1000, durationMs = 200) {
  * สร้าง SVG ภาพประกอบอุปกรณ์ในรูปแบบกระดาษฉีกแปะ (Paper Scrapbook Art)
  */
 function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
-  // 1. ปุ่มกด (Push Button)
   if (deviceType === "button") {
     const ringColor = hasBug ? "#d90429" : isOn ? "#ffb703" : "#2b9348";
     return `
-      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <rect x="12" y="16" width="56" height="48" rx="8" fill="#ced4da" stroke="#495057" stroke-width="3"/>
         <circle cx="40" cy="40" r="16" fill="${ringColor}" stroke="#212529" stroke-width="3" style="cursor: pointer;"/>
         <circle cx="36" cy="36" r="4" fill="rgba(255,255,255,0.7)"/>
@@ -286,27 +292,21 @@ function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
     `;
   }
 
-  // 2. เซนเซอร์วัดระยะทาง Ultrasonic (HC-SR04)
   if (deviceType === "ultrasonic") {
     const waveColor = isOn && !hasBug ? "#3a86ff" : "transparent";
     return `
-      <svg viewBox="0 0 110 80" width="95" height="70" class="scrapbook-svg">
-        <!-- แผงวงจรสีน้ำเงินตัดขอบกระดาษ -->
+      <svg viewBox="0 0 110 80" width="88" height="66" class="scrapbook-svg">
         <rect x="10" y="18" width="90" height="48" rx="6" fill="#1d3557" stroke="#457b9d" stroke-width="3"/>
-        <!-- ขาพิน 4 ขา VCC, TRIG, ECHO, GND -->
         <circle cx="28" cy="62" r="3" fill="#e9c46a"/>
         <circle cx="44" cy="62" r="3" fill="#e9c46a"/>
         <circle cx="66" cy="62" r="3" fill="#e9c46a"/>
         <circle cx="82" cy="62" r="3" fill="#e9c46a"/>
-        <!-- กระบอกส่งสัญญาณ (Transmitter T) -->
         <circle cx="34" cy="38" r="16" fill="#adb5bd" stroke="#212529" stroke-width="3"/>
         <circle cx="34" cy="38" r="10" fill="#6c757d"/>
         <text x="34" y="42" font-size="9" font-weight="900" fill="#fff" text-anchor="middle">T</text>
-        <!-- กระบอกรับสัญญาณ (Receiver R) -->
         <circle cx="76" cy="38" r="16" fill="#adb5bd" stroke="#212529" stroke-width="3"/>
         <circle cx="76" cy="38" r="10" fill="#6c757d"/>
         <text x="76" y="42" font-size="9" font-weight="900" fill="#fff" text-anchor="middle">R</text>
-        <!-- คลื่น Ultrasonic จำลอง -->
         ${
           isOn && !hasBug
             ? `<path d="M 52 24 A 18 18 0 0 1 52 52" stroke="${waveColor}" stroke-width="3" fill="none" stroke-linecap="round" class="pulse-wave"/>
@@ -317,19 +317,15 @@ function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
     `;
   }
 
-  // 3. เซนเซอร์วัดอุณหภูมิและความชื้น (DHT11)
   if (deviceType === "dht11") {
     const gridColor = isOn && !hasBug ? "#00b4d8" : "#90e0ef";
     return `
-      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
-        <!-- ตัวถังสีฟ้าตารางของ DHT11 -->
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <rect x="18" y="12" width="44" height="52" rx="4" fill="${gridColor}" stroke="#0077b6" stroke-width="3"/>
-        <!-- ช่องระบายอากาศตาราง -->
         <line x1="26" y1="22" x2="54" y2="22" stroke="#03045e" stroke-width="2"/>
         <line x1="26" y1="30" x2="54" y2="30" stroke="#03045e" stroke-width="2"/>
         <line x1="26" y1="38" x2="54" y2="38" stroke="#03045e" stroke-width="2"/>
         <line x1="26" y1="46" x2="54" y2="46" stroke="#03045e" stroke-width="2"/>
-        <!-- ขาเชื่อมต่อด้านล่าง -->
         <line x1="26" y1="64" x2="26" y2="76" stroke="#6c757d" stroke-width="3"/>
         <line x1="35" y1="64" x2="35" y2="76" stroke="#6c757d" stroke-width="3"/>
         <line x1="45" y1="64" x2="45" y2="76" stroke="#6c757d" stroke-width="3"/>
@@ -338,30 +334,25 @@ function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
     `;
   }
 
-  // 4. หน้าจอแสดงผล LCD I2C (16x2)
   if (deviceType === "lcd_i2c") {
     const lineTexts = extraData.lines || ["Temp: 28.5C", "IoT Buddy"];
     const line1 = (lineTexts[0] || "IoT Ready!").substring(0, 16);
     const line2 = (lineTexts[1] || "").substring(0, 16);
     const screenBg = isOn && !hasBug ? "#52b788" : "#95d5b2";
     return `
-      <svg viewBox="0 0 130 80" width="115" height="70" class="scrapbook-svg">
-        <!-- แผงวงจรหลัก -->
+      <svg viewBox="0 0 130 80" width="108" height="66" class="scrapbook-svg">
         <rect x="8" y="10" width="114" height="60" rx="6" fill="#1b4332" stroke="#2d6a4f" stroke-width="3"/>
-        <!-- กรอบจอ LCD 16x2 -->
         <rect x="18" y="16" width="94" height="46" rx="4" fill="${screenBg}" stroke="#081c15" stroke-width="2"/>
-        <!-- ตัวอักษรบนหน้าจอแบบ Dot Matrix -->
         <text x="24" y="32" font-family="'Courier New', monospace" font-size="9" font-weight="900" fill="#081c15">${line1}</text>
         <text x="24" y="48" font-family="'Courier New', monospace" font-size="9" font-weight="900" fill="#081c15">${line2}</text>
       </svg>
     `;
   }
 
-  // 5. ลำโพงบัซเซอร์ (Piezo Buzzer)
   if (deviceType === "buzzer") {
     const isBeeping = isOn && !hasBug;
     return `
-      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <circle cx="40" cy="40" r="26" fill="#212529" stroke="#495057" stroke-width="4"/>
         <circle cx="40" cy="40" r="9" fill="#000"/>
         <circle cx="40" cy="40" r="4" fill="#343a40"/>
@@ -376,10 +367,9 @@ function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
     `;
   }
 
-  // 6. เซอร์โวมอเตอร์ (Servo)
   if (deviceType === "servo") {
     return `
-      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <rect x="16" y="24" width="48" height="40" rx="4" fill="#0077b6" stroke="#023e8a" stroke-width="3"/>
         <circle cx="34" cy="24" r="10" fill="#ced4da" stroke="#495057" stroke-width="2"/>
         <rect x="30" y="10" width="28" height="8" rx="4" fill="#fff" stroke="#212529" stroke-width="2" transform="${
@@ -389,10 +379,9 @@ function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
     `;
   }
 
-  // 7. รีเลย์ (Relay)
   if (deviceType === "relay") {
     return `
-      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <rect x="14" y="16" width="52" height="48" rx="6" fill="#0077b6" stroke="#03045e" stroke-width="3"/>
         <circle cx="26" cy="28" r="4" fill="${isOn ? "#52b788" : "#6c757d"}"/>
         <text x="40" y="44" font-size="10" font-weight="900" fill="#fff" text-anchor="middle">RELAY</text>
@@ -400,31 +389,29 @@ function getDeviceSVG(deviceType, isOn, hasBug, extraData = {}) {
     `;
   }
 
-  // 8. เซนเซอร์อะนาล็อกทั่วไป (Analog Sensor / LDR)
   if (deviceType === "sensor") {
     return `
-      <svg viewBox="0 0 80 80" width="70" height="70" class="scrapbook-svg">
+      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
         <circle cx="40" cy="40" r="22" fill="#adb5bd" stroke="#495057" stroke-width="3"/>
         <path d="M 28 34 Q 40 26 52 34 Q 40 44 28 46 Q 40 54 52 46" stroke="#d90429" stroke-width="3" fill="none"/>
       </svg>
     `;
   }
 
-  // 9. หลอดไฟ LED (ค่าเริ่มต้น)
   if (hasBug || !isOn) {
     return `
-      <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg">
+      <svg viewBox="0 0 80 80" width="64" height="64" class="scrapbook-svg">
         <line x1="33" y1="54" x2="33" y2="75" stroke="#6c757d" stroke-width="4" stroke-linecap="round"/>
         <line x1="47" y1="54" x2="47" y2="70" stroke="#6c757d" stroke-width="4" stroke-linecap="round"/>
         <path d="M22 52 L22 32 A18 18 0 0 1 58 32 L58 52 Z" fill="#adb5bd" stroke="#495057" stroke-width="3"/>
         <rect x="19" y="50" width="42" height="6" rx="2" fill="#6c757d" stroke="#495057" stroke-width="2"/>
-        <text x="40" y="41" text-anchor="middle" fill="#343a40" font-size="14" font-weight="bold">${hasBug ? "x_x" : "off"}</text>
+        <text x="40" y="41" text-anchor="middle" fill="#343a40" font-size="13" font-weight="bold">${hasBug ? "x_x" : "off"}</text>
       </svg>
     `;
   }
 
   return `
-    <svg viewBox="0 0 80 80" width="66" height="66" class="scrapbook-svg led-glowing">
+    <svg viewBox="0 0 80 80" width="64" height="64" class="scrapbook-svg led-glowing">
       <defs>
         <radialGradient id="ledGlow" cx="50%" cy="40%" r="50%">
           <stop offset="0%" stop-color="#fff3b0"/>
@@ -455,6 +442,9 @@ function updateStaticLabels() {
   if (btnCloseHowTo) btnCloseHowTo.textContent = t.closeGuide;
   document.getElementById("watchingLabel").textContent = t.watchingLabel;
   btnPickFile.textContent = t.pickFileBtn;
+  if (btnToggleCode) {
+    btnToggleCode.textContent = isCodeHidden ? t.toggleCodeShow : t.toggleCodeHide;
+  }
   btnToggleMini.textContent = isMiniMode ? t.miniModeBtnOn : t.miniModeBtnOff;
   btnExpandCircuit.textContent = t.expandCircuitBtn;
   btnSaveCode.textContent = t.saveBtn;
@@ -475,7 +465,7 @@ function renderAnalysis() {
   lastAnalysis = result;
   const t = UI_TEXT[currentLang];
 
-  // 1. Mascot Speech Banner
+  // 1. Mascot Post-it Note (กระชับ ชัดเจน รวมจุดแก้ไว้ในที่เดียว)
   if (result.ok) {
     mascotBanner.classList.add("status-ok");
     mascotFace.textContent = "🦊🎉";
@@ -489,28 +479,16 @@ function renderAnalysis() {
     btnAutoFix.style.display = "inline-block";
     speechMessages.innerHTML = result.bugs
       .map(
-        (b) =>
-          `<div class="speech-item">💬 <strong>Line ${b.line}:</strong> ${b.message[currentLang]}</div>`
-      )
-      .join("");
-  }
-
-  // 2. Bug List Box
-  if (result.bugs.length === 0) {
-    bugListBox.innerHTML = `<span style="color: var(--ok-green); font-weight: 700;">✅ ${result.summary[currentLang]}</span>`;
-  } else {
-    bugListBox.innerHTML = result.bugs
-      .map(
         (b) => `
-        <div style="margin-bottom: 6px;">
-          <span class="bug-line-badge">Line ${b.line}</span>
-          <code>${b.wrongToken}</code> ➔ <strong><code>${b.correctToken}</code></strong>
+        <div class="speech-item">
+          <div><strong>บรรทัด ${b.line}:</strong> ${b.message[currentLang]}</div>
+          <span class="fix-inline-chip"><code>${b.wrongToken}</code> ➔ <strong><code>${b.correctToken}</code></strong></span>
         </div>`
       )
       .join("");
   }
 
-  // 3. Paper-Scrapbook Circuit Board
+  // 2. Paper-Scrapbook Circuit Stage
   arduinoPinList.innerHTML = "";
   devicesZone.innerHTML = "";
 
@@ -530,14 +508,13 @@ function renderAnalysis() {
     `;
     arduinoPinList.appendChild(pinEl);
 
-    const tiltDeg = index % 2 === 0 ? 1.5 : -1.8;
+    const tiltDeg = index % 2 === 0 ? 1.2 : -1.4;
     const wrapper = document.createElement("div");
     wrapper.className = "device-card-wrapper";
 
     const deviceTitle = t.deviceNames[dev.deviceType] || dev.deviceType.toUpperCase();
     const isInput = dev.deviceType === "button" || dev.deviceType === "sensor";
 
-    // ถ้ากำลังจำลอง ให้ใช้สถานะจำลองล่าสุด
     const isDeviceOn = simulatedDeviceStates.has(dev.pin)
       ? simulatedDeviceStates.get(dev.pin).powerState === "on"
       : dev.powerState === "on";
@@ -550,27 +527,24 @@ function renderAnalysis() {
       ? t.stateWorkingOn
       : "⏹️ ปิดอยู่ (OFF)";
 
-    const bugTooltipHtml = dev.hasBug
-      ? dev.bugMessages
-          .map((b) => `<div class="device-bug-tooltip">❓ ${b.impact[currentLang]}</div>`)
-          .join("")
-      : "";
-
-    // ป้ายบอกค่าอ่านพิเศษ เช่น อุณหภูมิ DHT11, ระยะทาง Ultrasonic
     let extraBadge = "";
     if (dev.deviceType === "dht11") {
-      extraBadge = `<div class="device-readout-pill">🌡️ 28.5°C &nbsp;|&nbsp; 💧 65% RH</div>`;
+      extraBadge = `<div class="device-readout-pill">🌡️ 28.5°C &nbsp;|&nbsp; 💧 65%</div>`;
     } else if (dev.deviceType === "ultrasonic") {
-      extraBadge = `<div class="device-readout-pill">📏 ระยะทาง: 24 cm</div>`;
+      extraBadge = `<div class="device-readout-pill">📏 24 cm</div>`;
     }
+
+    const hoverTip = dev.hasBug
+      ? dev.bugMessages.map((b) => b.impact[currentLang]).join(" • ")
+      : "";
 
     wrapper.innerHTML = `
       ${
         dev.hasBug
-          ? `<div class="question-mark-badge" title="${dev.bugMessages[0]?.message[currentLang] || ""}">?</div>`
+          ? `<div class="question-mark-badge" title="${hoverTip}">?</div>`
           : ""
       }
-      <div class="paper-cutout device-cutout ${dev.hasBug ? "has-bug" : ""} ${isDeviceOn ? "device-active" : ""}" style="transform: rotate(${tiltDeg}deg);" id="device-card-${dev.pin}">
+      <div class="paper-cutout device-cutout ${dev.hasBug ? "has-bug" : ""} ${isDeviceOn ? "device-active" : ""}" style="transform: rotate(${tiltDeg}deg);" id="device-card-${dev.pin}" title="${hoverTip}">
         <div class="washi-tape tape-top-center"></div>
         <div class="device-inner">
           <div class="device-terminal-dot" id="dev-dot-${dev.pin}"></div>
@@ -578,14 +552,13 @@ function renderAnalysis() {
             ${getDeviceSVG(dev.deviceType, isDeviceOn, dev.hasBug, dev.extraData)}
           </div>
           <div class="device-info">
-            <div class="device-title">${deviceTitle} (Pin ${dev.pin})</div>
+            <div class="device-title">${deviceTitle} <span style="font-weight:600; color:var(--ink-muted); font-size:0.8rem;">(Pin ${dev.pin})</span></div>
             <div class="device-state-text ${dev.hasBug ? "state-error" : isDeviceOn ? "state-ok" : "state-muted"}" id="dev-state-${dev.pin}">
               ${stateLabel}
             </div>
             ${extraBadge}
           </div>
         </div>
-        ${bugTooltipHtml}
       </div>
     `;
 
@@ -662,7 +635,6 @@ async function autoFixCode() {
   code = code.replace(/\b(Low|low)\b/g, "LOW");
   code = code.replace(/\b(Tone)\b/g, "tone");
 
-  // แก้ Bug เผลอใช้ = ตัวเดียวใน if (...) เป็น ==
   code = code.replace(
     /\bif\s*\(\s*([A-Za-z0-9_\(\)]+)\s*(?<![!=<>+*\/\-%&|^])=(?![=])\s*([A-Za-z0-9_]+)\s*\)/g,
     "if ($1 == $2)"
@@ -716,26 +688,24 @@ function runNextSimulationStep() {
 
   const steps = lastAnalysis.simulationSteps;
   if (!steps || steps.length === 0) {
-    // หากไม่มีขั้นตอน loop ชัดเจน ให้จำลองการกะพริบพื้นฐาน
-    simStatusBadge.textContent = "จำลองสถานะคงที่ (Static Active)";
+    simStatusBadge.textContent = "ทำงานค้าง (Static)";
     return;
   }
 
   if (simStepIndex >= steps.length) {
-    simStepIndex = 0; // วน loop ซ้ำ
+    simStepIndex = 0;
   }
 
   const step = steps[simStepIndex];
   simStepIndex++;
 
-  let nextDelayMs = 400; // ค่าเริ่มต้น
+  let nextDelayMs = 400;
 
   if (step.type === "digitalWrite") {
     const isHigh = step.value === "HIGH";
     simulatedDeviceStates.set(step.pin, { powerState: isHigh ? "on" : "off" });
     updateDeviceSimulationView(step.pin, isHigh);
 
-    // ถ้าอุปกรณ์คือ Buzzer และจ่ายไฟ HIGH ให้ส่งเสียงบี๊บ
     const dev = lastAnalysis.devices.find((d) => d.pin === String(step.pin));
     if (dev && dev.deviceType === "buzzer" && isHigh) {
       playBuzzerSound(1000, 200);
@@ -749,7 +719,7 @@ function runNextSimulationStep() {
     updateDeviceSimulationView(step.pin, false);
   } else if (step.type === "delay") {
     nextDelayMs = Math.max(200, Math.min(step.ms, 2500));
-    simStatusBadge.textContent = `⏱️ delay(${step.ms}ms)`;
+    simStatusBadge.textContent = `⏱️ ${step.ms}ms`;
   }
 
   simTimer = setTimeout(runNextSimulationStep, nextDelayMs);
@@ -780,6 +750,21 @@ function updateDeviceSimulationView(pinKey, isOn) {
 }
 
 /**
+ * สลับการซ่อน/แสดงกล่องโค้ด เพื่อเปิดพื้นที่กระดานวงจรเต็มจอ 100%
+ */
+function toggleCodePanel() {
+  isCodeHidden = !isCodeHidden;
+  if (mainWorkspace) {
+    mainWorkspace.classList.toggle("code-hidden", isCodeHidden);
+  }
+  if (btnToggleCode) {
+    btnToggleCode.classList.toggle("active", isCodeHidden);
+  }
+  updateStaticLabels();
+  setTimeout(drawHandDrawnWires, 60);
+}
+
+/**
  * สลับระหว่างโหมดหน้าต่างเล็กเกาะขอบจอคู่กับ Arduino IDE (Mini Mode) และโหมดดูวงจรเต็มจอ
  */
 async function setMiniMode(enable) {
@@ -789,8 +774,8 @@ async function setMiniMode(enable) {
     btnToggleMini.classList.add("active");
     btnExpandCircuit.style.display = "inline-block";
     try {
-      window.resizeTo(480, 320);
-      window.moveTo(window.screen.availWidth - 500, window.screen.availHeight - 360);
+      window.resizeTo(460, 260);
+      window.moveTo(window.screen.availWidth - 480, window.screen.availHeight - 300);
     } catch (_) {}
   } else {
     document.body.classList.remove("mini-mode");
@@ -817,7 +802,7 @@ async function setMiniMode(enable) {
 }
 
 /**
- * ซิงค์ไฟล์ .ino ล่าสุดจากเซิร์ฟเวอร์ (อัปเดตทันทีเมื่อผู้ใช้กด Save ใน Arduino IDE)
+ * ซิงค์ไฟล์ .ino ล่าสุดจากเซิร์ฟเวอร์
  */
 async function pollArduinoFileState() {
   if (isUserTyping) return;
@@ -829,23 +814,21 @@ async function pollArduinoFileState() {
     currentFileName.textContent = state.watchedFileName || "blink_bug.ino";
     currentFileName.title = state.watchedFilePath || "";
 
-    // อัปเดตรายการไฟล์ .ino ในเครื่อง
     if (Array.isArray(state.recentFiles)) {
       const currentOptions = Array.from(recentFilesSelect.options).map((o) => o.value);
       const newPaths = state.recentFiles.map((f) => f.path);
       if (JSON.stringify(currentOptions.slice(1)) !== JSON.stringify(newPaths)) {
-        recentFilesSelect.innerHTML = `<option value="">-- สลับไฟล์ .ino ในเครื่อง (${newPaths.length}) --</option>`;
+        recentFilesSelect.innerHTML = `<option value="">🕒 ไฟล์ล่าสุด (${newPaths.length})</option>`;
         state.recentFiles.forEach((f) => {
           const opt = document.createElement("option");
           opt.value = f.path;
-          opt.textContent = `${f.isExample ? "[ตัวอย่าง]" : "[Arduino IDE]"} ${f.name}`;
+          opt.textContent = `${f.isExample ? "🧪" : "📄"} ${f.name}`;
           if (f.path === state.watchedFilePath) opt.selected = true;
           recentFilesSelect.appendChild(opt);
         });
       }
     }
 
-    // ถ้าไฟล์ถูกแก้ไขจาก Arduino IDE หรือเพิ่งสลับไฟล์ใหม่ ให้อัปเดตโค้ดและวงจรทันที
     if (
       state.watchedFilePath !== currentWatchedPath ||
       state.mtimeMs !== lastSyncedMtime
@@ -941,11 +924,14 @@ btnToggleSound.addEventListener("click", () => {
     : UI_TEXT[currentLang].simSoundOff;
   btnToggleSound.classList.toggle("sound-muted", !isSoundEnabled);
 
-  // ทดสอบเสียงสั้นๆ เมื่อเปิด
   if (isSoundEnabled) {
     playBuzzerSound(880, 150);
   }
 });
+
+if (btnToggleCode) {
+  btnToggleCode.addEventListener("click", toggleCodePanel);
+}
 
 btnToggleMini.addEventListener("click", () => {
   setMiniMode(!isMiniMode);
@@ -954,12 +940,14 @@ btnToggleMini.addEventListener("click", () => {
 if (btnHowTo && howToCard) {
   btnHowTo.addEventListener("click", () => {
     howToCard.style.display = howToCard.style.display === "none" ? "block" : "none";
+    setTimeout(drawHandDrawnWires, 60);
   });
 }
 
 if (btnCloseHowTo && howToCard) {
   btnCloseHowTo.addEventListener("click", () => {
     howToCard.style.display = "none";
+    setTimeout(drawHandDrawnWires, 60);
   });
 }
 

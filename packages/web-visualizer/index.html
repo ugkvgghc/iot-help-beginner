@@ -3,184 +3,177 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IoT Help Beginner — คู่หูนักพัฒนา Arduino & จำลองวงจรกระดาษแปะ</title>
+  <title>IoT Help Beginner — คู่หู Arduino & กระดานวงจรกระดาษแปะ</title>
   <link rel="icon" type="image/x-icon" href="assets/app-icon.ico" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Beautiful Hero Cover Header -->
-  <header class="hero-cover">
-    <div class="hero-left">
-      <div class="cover-art-frame">
+  <!-- Unified Slim Paper Topbar (รวมทุกอย่างไว้ในแถบเดียวแบบคลีนๆ ไม่รกตา) -->
+  <header class="paper-topbar">
+    <div class="topbar-left">
+      <div class="brand-pill">
         <img
           src="assets/mascot-cover.png"
-          alt="IoT Help Beginner Cover"
-          class="cover-art-img"
+          alt="Mascot"
+          class="brand-avatar"
           onerror="this.style.display='none'; document.getElementById('fallbackCoverSvg').style.display='flex';"
         />
-        <div id="fallbackCoverSvg" class="fallback-cover" style="display: none;">
-          🦊⚡
+        <div id="fallbackCoverSvg" class="fallback-cover" style="display: none;">🦊</div>
+        <div class="brand-text">
+          <h1>IoT Help Beginner</h1>
+          <span id="subtitleText" class="sr-only">คู่หูตรวจโค้ด Arduino</span>
         </div>
       </div>
-      <div class="hero-title-block">
-        <div class="badge-row">
-          <span class="app-badge">✨ OPEN SOURCE DESKTOP COMPANION</span>
-          <span class="version-badge">v0.2 • Arduino IDE Ready</span>
+
+      <div class="topbar-divider"></div>
+
+      <!-- สถานะไฟล์ .ino + ปุ่มเปิดไฟล์แบบมินิมอล -->
+      <div class="sync-Cluster" id="syncBar">
+        <div class="file-status-pill" title="กำลังซิงค์อัตโนมัติกับ Arduino IDE">
+          <span class="pulse-dot"></span>
+          <span id="watchingLabel" class="sr-only">ซิงค์:</span>
+          <strong id="currentFileName">blink_bug.ino</strong>
         </div>
-        <h1>IoT Help Beginner</h1>
-        <p id="subtitleText">
-          ผู้ช่วยแปล Bug ใน Arduino IDE เป็นภาษาคน พร้อมจำลองวงจรสไตล์กระดาษตัดแปะ (Paper-Scrapbook)
-        </p>
+
+        <button id="btnPickFile" class="paper-btn btn-teal" type="button" title="เลือกไฟล์ .ino ในเครื่อง">
+          📂 เปิดไฟล์
+        </button>
+
+        <select id="recentFilesSelect" class="paper-select" aria-label="Recent Arduino Files" title="สลับไฟล์ .ino ล่าสุด">
+          <option value="">🕒 ไฟล์ล่าสุด...</option>
+        </select>
+
+        <select id="presetSelect" class="paper-select preset-highlight" aria-label="Sample Bug Scenarios" title="ลองโหลดโจทย์ตัวอย่าง">
+          <option value="">🧪 โจทย์ตัวอย่าง...</option>
+          <option value="output_typo">1. เขียน Output ผิด</option>
+          <option value="high_typo">2. เขียน High ผิด</option>
+          <option value="missing_pinmode">3. ลืมใส่ pinMode</option>
+          <option value="if_assignment_bug">4. ใช้ = ใน if ผิด</option>
+          <option value="ultrasonic_demo">5. Ultrasonic HC-SR04</option>
+          <option value="dht11_lcd_buzzer">6. DHT11 + LCD + Buzzer</option>
+          <option value="clean_working">7. โค้ดถูกต้อง (ไฟติดครบ)</option>
+        </select>
       </div>
     </div>
 
-    <div class="hero-right-controls">
-      <button id="btnHowTo" class="guide-toggle-btn" type="button">
-        📖 วิธีใช้งานคู่กับ Arduino IDE (3 ขั้นตอน)
+    <div class="topbar-right">
+      <button id="btnToggleCode" class="paper-btn btn-ghost" type="button" title="ซ่อนหรือแสดงกล่องโค้ดเพื่อดูวงจรเต็มจอ">
+        📝 ซ่อนโค้ด
       </button>
 
-      <button id="btnToggleMini" class="mode-btn" type="button" title="ย่อเป็นหน้าต่างเล็กเกาะขอบจอคู่กับ Arduino IDE">
-        📌 โหมดเกาะขอบจอคู่กับ Arduino IDE
+      <button id="btnHowTo" class="paper-btn btn-ghost" type="button" title="ดูวิธีใช้งาน 3 ขั้นตอน">
+        ❓ วิธีใช้
+      </button>
+
+      <button id="btnToggleMini" class="paper-btn btn-amber" type="button" title="ย่อเป็นหน้าต่างเล็กเกาะขอบจอคู่กับ Arduino IDE">
+        📌 ย่อเกาะจอ
       </button>
 
       <div class="lang-switch" role="group" aria-label="Language switch">
-        <button id="btnLangTH" class="lang-btn active" type="button">🇹🇭 ไทย</button>
-        <button id="btnLangEN" class="lang-btn" type="button">🇬🇧 EN</button>
+        <button id="btnLangTH" class="lang-btn active" type="button">TH</button>
+        <button id="btnLangEN" class="lang-btn" type="button">EN</button>
       </div>
     </div>
   </header>
 
-  <!-- Step-by-Step Visual Onboarding Guide for Arduino IDE (Collapsible) -->
-  <section class="howto-guide-card" id="howToCard">
+  <!-- Popover Guide Card (ซ่อนไว้เป็นค่าเริ่มต้น เปิดเมื่อกดปุ่ม ❓ วิธีใช้ เท่านั้น) -->
+  <section class="howto-guide-card" id="howToCard" style="display: none;">
+    <div class="washi-tape tape-top-center"></div>
     <div class="howto-header">
-      <h2 id="howToTitle">🚀 วิธีใช้งานร่วมกับโปรแกรม Arduino IDE แบบง่ายๆ (ทำตามได้ทันที!)</h2>
-      <button id="btnCloseHowTo" class="close-guide-btn" type="button">✕ ซ่อนคู่มือนี้</button>
+      <h2 id="howToTitle">🚀 วิธีใช้งานคู่กับ Arduino IDE ใน 3 ขั้นตอน</h2>
+      <button id="btnCloseHowTo" class="close-guide-btn" type="button">✕ ปิด</button>
     </div>
     <div class="howto-steps">
       <div class="step-box">
         <div class="step-num">1</div>
         <div class="step-content">
-          <h3 id="step1Title">เปิด Arduino IDE แล้วเลือกไฟล์ `.ino`</h3>
-          <p id="step1Desc">
-            เปิดโปรแกรม <strong>Arduino IDE</strong> ของคุณขึ้นมาตามปกติ แล้วกดปุ่ม
-            <strong>"📂 เลือกไฟล์ .ino ในเครื่อง"</strong> ด้านล่าง เพื่อชี้เป้าไฟล์ที่คุณกำลังเขียนอยู่ (หรือปล่อยให้โปรแกรมตรวจจับไฟล์ล่าสุดให้อัตโนมัติ)
-          </p>
+          <h3 id="step1Title">เลือกไฟล์ `.ino`</h3>
+          <p id="step1Desc">กดปุ่ม <strong>"📂 เปิดไฟล์"</strong> ด้านบนเพื่อเลือกไฟล์ที่กำลังเขียนใน Arduino IDE</p>
         </div>
       </div>
-
       <div class="step-box">
         <div class="step-num">2</div>
         <div class="step-content">
-          <h3 id="step2Title">กดโหมด "📌 เกาะขอบจอ" แล้วเขียนโค้ดได้เลย</h3>
-          <p id="step2Desc">
-            กดปุ่ม <strong>"📌 โหมดเกาะขอบจอคู่กับ Arduino IDE"</strong> หน้าต่างจะย่อเป็นตัวละครลอยอยู่มุมจอ เวลาคุณพิมพ์โค้ดใน Arduino IDE แล้วกด <strong>Save (Ctrl + S)</strong> โปรแกรมจะตรวจโค้ดให้ทันที!
-          </p>
+          <h3 id="step2Title">กด Save ใน Arduino IDE</h3>
+          <p id="step2Desc">กดปุ่ม <strong>"📌 ย่อเกาะจอ"</strong> แล้วพิมพ์โค้ดตามปกติ เมื่อกด Ctrl+S โปรแกรมจะตรวจให้ทันที</p>
         </div>
       </div>
-
       <div class="step-box">
         <div class="step-num">3</div>
         <div class="step-content">
-          <h3 id="step3Title">ดูจุดผิด (?) บนวงจรกระดาษแปะ & กดแก้โค้ดอัตโนมัติ</h3>
-          <p id="step3Desc">
-            ถ้าเขียนโค้ดผิด (เช่น <code>pinMode(4, Output);</code>) ตัวละครจะพูดบอกเป็นภาษาคน และชี้ว่าอุปกรณ์ชิ้นไหนในวงจรที่มีเครื่องหมาย <strong><code>?</code></strong> บนหัว พร้อมปุ่มกดแก้โค้ดให้อัตโนมัติ!
-          </p>
+          <h3 id="step3Title">ดูจุดผิด (?) & กดแก้ทันที</h3>
+          <p id="step3Desc">ดูเครื่องหมาย <strong><code>?</code></strong> บนชิ้นส่วนกระดาษแปะ แล้วกดปุ่ม <strong>"✨ แก้ทันที"</strong> ได้เลย</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Arduino IDE Live File Sync Bar -->
-  <section class="sync-bar" id="syncBar">
-    <div class="sync-status">
-      <span class="pulse-dot"></span>
-      <span id="watchingLabel">กำลังซิงค์กับไฟล์ Arduino IDE:</span>
-      <strong id="currentFileName" class="file-pill" title="">blink_bug.ino</strong>
-    </div>
-
-    <div class="sync-actions">
-      <button id="btnPickFile" class="action-btn primary-action" type="button">
-        📂 เลือกไฟล์ .ino ในเครื่อง
-      </button>
-
-      <select id="recentFilesSelect" aria-label="Recent Arduino Files">
-        <option value="">-- หรือสลับไฟล์ .ino ในเครื่อง --</option>
-      </select>
-
-      <select id="presetSelect" aria-label="Sample Bug Scenarios">
-        <option value="">🧪 ลองโหลดโจทย์ Bug & อุปกรณ์ตัวอย่าง...</option>
-        <option value="output_typo">ตัวอย่าง 1: เขียน Output ผิด (pinMode 4)</option>
-        <option value="high_typo">ตัวอย่าง 2: เขียนจ่ายไฟ High ผิด + มีหลายอุปกรณ์</option>
-        <option value="missing_pinmode">ตัวอย่าง 3: ลืมเขียน pinMode ใน setup()</option>
-        <option value="if_assignment_bug">ตัวอย่าง 4: เผลอใช้ = ใน if (buttonState = HIGH)</option>
-        <option value="ultrasonic_demo">ตัวอย่าง 5: เซนเซอร์วัดระยะทาง Ultrasonic (HC-SR04)</option>
-        <option value="dht11_lcd_buzzer">ตัวอย่าง 6: เซนเซอร์ DHT11 + จอ LCD I2C + เสียง Buzzer</option>
-        <option value="clean_working">ตัวอย่าง 7: โค้ดที่ถูกต้อง (ไฟติดครบทุกขา!)</option>
-      </select>
-    </div>
-  </section>
-
-  <!-- Mascot Speech Banner (Always visible in both Mini Mode & Full Mode) -->
-  <section class="mascot-banner" id="mascotBanner">
-    <div class="mascot-avatar-card">
-      <img
-        src="assets/mascot-cover.png"
-        alt="Mascot"
-        class="mascot-mini-img"
-        onerror="this.style.display='none'; document.getElementById('mascotFace').style.display='block';"
-      />
-      <div class="mascot-face" id="mascotFace" style="display: none;">🦊🔧</div>
-      <span class="mascot-tag" id="mascotNameTag">คู่หูตรวจโค้ด</span>
-    </div>
-    <div class="mascot-speech-bubble">
-      <div class="speech-header">
-        <span class="status-pill" id="statusPill">พบจุดผิดพลาด!</span>
-        <div class="speech-buttons">
-          <button id="btnAutoFix" class="autofix-btn" type="button">✨ แก้โค้ดในไฟล์ .ino ให้อัตโนมัติ</button>
-          <button id="btnExpandCircuit" class="expand-btn" type="button" style="display: none;">
-            🔍 ดูวงจรกระดาษแปะ (?)
-          </button>
-        </div>
-      </div>
-      <div class="speech-messages" id="speechMessages"></div>
-    </div>
-  </section>
-
-  <!-- Main Workspace: Code Editor (Left) + Paper-Scrapbook Circuit Board (Right) -->
+  <!-- Main Spacious Paper-Scrapbook Workspace -->
   <main class="workspace" id="mainWorkspace">
-    <!-- Left Panel: Arduino Code Editor -->
-    <section class="editor-panel">
+    <!-- Left Column Top: Cute Post-it Mascot Coach Note -->
+    <section class="mascot-banner" id="mascotBanner">
+      <div class="washi-tape tape-mascot"></div>
+      <div class="mascot-avatar-card">
+        <img
+          src="assets/mascot-cover.png"
+          alt="Mascot"
+          class="mascot-mini-img"
+          onerror="this.style.display='none'; document.getElementById('mascotFace').style.display='block';"
+        />
+        <div class="mascot-face" id="mascotFace" style="display: none;">🦊</div>
+        <span class="mascot-tag" id="mascotNameTag">คู่หูตรวจโค้ด</span>
+      </div>
+
+      <div class="mascot-speech-bubble">
+        <div class="speech-header">
+          <span class="status-pill" id="statusPill">พบจุดผิดพลาด</span>
+          <div class="speech-buttons">
+            <button id="btnAutoFix" class="autofix-btn" type="button">✨ แก้ทันที</button>
+            <button id="btnExpandCircuit" class="expand-btn" type="button" style="display: none;">
+              🔍 ดูวงจร (?)
+            </button>
+          </div>
+        </div>
+        <div class="speech-messages" id="speechMessages"></div>
+      </div>
+    </section>
+
+    <!-- Left Column Bottom: Clean Notebook Code Editor -->
+    <section class="editor-panel" id="editorPanel">
       <div class="panel-header">
-        <span>📝 โค้ดจากไฟล์ `.ino` (ซิงค์กับ Arduino IDE อัตโนมัติ)</span>
-        <button id="btnSaveCode" class="save-btn" type="button">💾 บันทึกลงไฟล์ .ino</button>
+        <span class="panel-title-text">📝 โค้ด Arduino (`.ino`)</span>
+        <button id="btnSaveCode" class="save-btn" type="button">💾 เซฟลงไฟล์</button>
       </div>
       <div class="code-editor-container">
         <div class="line-numbers" id="lineNumbers">1</div>
         <textarea id="codeInput" spellcheck="false" aria-label="Arduino Code Editor"></textarea>
       </div>
-      <div class="bug-list-box" id="bugListBox"></div>
+      <!-- ซ่อนกล่อง Bug List ซ้ำซ้อน แล้วแสดงสรุปสั้นๆ เฉพาะเมื่อจำเป็น -->
+      <div class="bug-list-box" id="bugListBox" style="display: none;"></div>
     </section>
 
-    <!-- Right Panel: Torn-Paper Scrapbook IoT Circuit Visualizer -->
-    <section class="scrapbook-panel">
-      <div class="panel-header scrapbook-header-flex">
-        <div class="header-title-wrap">
-          <span id="boardTitle">📌 กระดานจำลองวงจรจากโค้ด (Paper-Scrapbook Circuit)</span>
-          <span class="board-note" id="boardNote">*อ้างอิงอุปกรณ์และขาจากโค้ดโดยอัตโนมัติ</span>
+    <!-- Right Column (Full Height): Torn-Paper Scrapbook IoT Circuit Stage -->
+    <section class="scrapbook-panel" id="scrapbookPanel">
+      <!-- Floating Paper Header inside the Circuit Stage -->
+      <div class="scrapbook-floating-bar">
+        <div class="stage-title-pill">
+          <span id="boardTitle">📌 กระดานวงจรกระดาษแปะ</span>
+          <span class="board-note" id="boardNote"></span>
         </div>
+
         <div class="sim-toolbar" id="simToolbar">
-          <button id="btnSimulate" class="sim-btn" type="button" title="เริ่ม/หยุดจำลองการทำงานจริง">
-            ▶️ จำลองวงจรจริง (Live Sim)
-          </button>
-          <button id="btnToggleSound" class="sound-btn" type="button" title="เปิด/ปิดเสียง Buzzer จำลอง">
-            🔊 เสียง: เปิด
-          </button>
           <span class="sim-status-badge" id="simStatusBadge">พร้อมจำลอง</span>
+          <button id="btnSimulate" class="sim-btn" type="button" title="เริ่ม/หยุดจำลองการทำงานจริง">
+            ▶️ รันวงจร
+          </button>
+          <button id="btnToggleSound" class="sound-btn" type="button" title="เปิด/ปิดเสียง Buzzer">
+            🔊 เสียง
+          </button>
         </div>
       </div>
 
       <div class="scrapbook-canvas" id="scrapbookCanvas">
-        <!-- SVG Layer for Hand-Drawn Wires connecting Board pins to Torn Paper Device Cutouts -->
+        <!-- SVG Layer for Hand-Drawn Wires -->
         <svg id="wireLayer" class="wire-layer" xmlns="http://www.w3.org/2000/svg"></svg>
 
         <!-- Left Side of Canvas: Torn Paper Cutout of Arduino Uno Board -->
@@ -193,13 +186,13 @@
               <span class="board-name">ARDUINO UNO</span>
             </div>
             <div class="mcu-chip">ATmega328P</div>
-            <div class="pin-rail-title" id="pinRailTitle">ขาเชื่อมต่อ (Pins in Code)</div>
+            <div class="pin-rail-title" id="pinRailTitle">ขาที่ใช้งาน (Pins)</div>
             <div class="pin-list" id="arduinoPinList"></div>
           </div>
-          <div class="paper-caption">บอร์ดหลัก (Main Board)</div>
+          <div class="paper-caption">บอร์ดหลัก</div>
         </div>
 
-        <!-- Right Side of Canvas: Torn Paper Cutouts of Hardware Devices inferred from Code -->
+        <!-- Right Side of Canvas: Torn Paper Cutouts of Hardware Devices -->
         <div class="devices-zone" id="devicesZone"></div>
       </div>
     </section>

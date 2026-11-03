@@ -1,15 +1,17 @@
 :root {
   --bg-desk: #f4efe6;
-  --paper-cream: #fffdf8;
+  --paper-cream: #fffdf9;
   --paper-edge: #e2d9c8;
+  --paper-shadow: 0 6px 20px rgba(68, 52, 36, 0.08);
   --ink-dark: #2c2623;
-  --ink-muted: #6e655f;
+  --ink-muted: #786f68;
   --accent-teal: #00878f;
-  --accent-teal-dark: #005f66;
-  --accent-orange: #e85d04;
+  --accent-teal-dark: #00666c;
+  --accent-orange: #f46036;
   --error-red: #d90429;
   --ok-green: #2b9348;
-  --tape-yellow: rgba(255, 232, 140, 0.82);
+  --tape-yellow: rgba(255, 228, 132, 0.82);
+  --tape-mint: rgba(168, 230, 207, 0.78);
 }
 
 * {
@@ -21,190 +23,244 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--bg-desk);
+  background-image: radial-gradient(#dfd7c8 1px, transparent 1px);
+  background-size: 20px 20px;
   color: var(--ink-dark);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* Beautiful Hero Cover Header */
-.hero-cover {
-  background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #006d77 100%);
-  color: #fff;
-  padding: 16px 24px;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+/* ==========================================================================
+   1. Unified Slim Paper Topbar (คลีน กะทัดรัด สไตล์กระดาษ)
+   ========================================================================== */
+.paper-topbar {
+  background: var(--paper-cream);
+  border-bottom: 2px dashed #d8cebe;
+  padding: 8px 20px;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 18px;
-  border-bottom: 4px solid #ffd166;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
-}
-
-.hero-left {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.cover-art-frame {
-  width: 78px;
-  height: 78px;
-  border-radius: 16px;
-  background: #fff9eb;
-  border: 3px solid #ffd166;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+  gap: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  z-index: 30;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.cover-art-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.fallback-cover {
-  font-size: 2.2rem;
-  align-items: center;
-  justify-content: center;
-}
-
-.badge-row {
+.topbar-left,
+.topbar-right {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 4px;
-}
-
-.app-badge {
-  background: #ffd166;
-  color: #1d2d44;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 2px 9px;
-  border-radius: 999px;
-  letter-spacing: 0.4px;
-}
-
-.version-badge {
-  background: rgba(255, 255, 255, 0.16);
-  color: #e0fbfc;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 2px 9px;
-  border-radius: 999px;
-}
-
-.hero-title-block h1 {
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: 0.3px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
-}
-
-.hero-title-block p {
-  font-size: 0.88rem;
-  color: #e0fbfc;
-  margin-top: 2px;
-}
-
-.hero-right-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   flex-wrap: wrap;
 }
 
-.guide-toggle-btn {
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 7px 13px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.83rem;
-  cursor: pointer;
-  transition: all 0.15s;
+.brand-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 4px;
 }
 
-.guide-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.28);
+.brand-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 2px solid #ffb703;
+  object-fit: cover;
+  background: #fff8e7;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.mode-btn {
-  background: #ffd166;
-  color: #1f1d1b;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 8px;
+.fallback-cover {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #fff8e7;
+  border: 2px solid #ffb703;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.brand-text h1 {
+  font-size: 1.05rem;
   font-weight: 800;
-  font-size: 0.83rem;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
-  transition: all 0.15s;
+  color: var(--ink-dark);
+  letter-spacing: -0.2px;
 }
 
-.mode-btn:hover,
-.mode-btn.active {
-  background: #ffb703;
+.topbar-divider {
+  width: 1.5px;
+  height: 22px;
+  background: #e2d9c8;
+  margin: 0 4px;
+}
+
+.sync-Cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.file-status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #f5efe6;
+  border: 1.5px solid #dfd6c7;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: #005f66;
+  font-family: Consolas, monospace;
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok-green);
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { box-shadow: 0 0 0 0 rgba(43, 147, 72, 0.55); }
+  70% { box-shadow: 0 0 0 6px rgba(43, 147, 72, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(43, 147, 72, 0); }
+}
+
+/* Cute Paper Buttons & Selects */
+.paper-btn {
+  border: 1.5px solid #d6cbb9;
+  background: #ffffff;
+  color: var(--ink-dark);
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 0 #e2d9c8;
+}
+
+.paper-btn:hover {
   transform: translateY(-1px);
+  box-shadow: 0 3px 0 #d5cab6;
+}
+
+.paper-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #d5cab6;
+}
+
+.paper-btn.btn-teal {
+  background: var(--accent-teal);
+  color: #fff;
+  border-color: var(--accent-teal-dark);
+  box-shadow: 0 2px 0 #005257;
+}
+
+.paper-btn.btn-amber {
+  background: #ffd166;
+  color: #2b2623;
+  border-color: #e6b84d;
+  box-shadow: 0 2px 0 #d4a238;
+}
+
+.paper-btn.btn-amber.active,
+.paper-btn.btn-ghost.active {
+  background: #ffb703;
+  border-color: #d49600;
+  color: #1f1b18;
+}
+
+.paper-select {
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1.5px solid #d6cbb9;
+  background: #fff;
+  color: var(--ink-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #e2d9c8;
+  max-width: 175px;
+}
+
+.paper-select.preset-highlight {
+  background: #fff9eb;
+  border-color: #ecc878;
 }
 
 .lang-switch {
   display: flex;
-  background: rgba(0, 0, 0, 0.32);
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: #ede6da;
+  border-radius: 10px;
+  padding: 2px;
+  border: 1.5px solid #dcd2c2;
 }
 
 .lang-btn {
   background: transparent;
-  color: #ddd;
+  color: var(--ink-muted);
   border: none;
-  padding: 6px 12px;
-  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 7px;
+  font-size: 0.75rem;
+  font-weight: 800;
   cursor: pointer;
 }
 
 .lang-btn.active {
-  background: #00b4d8;
-  color: #fff;
+  background: #fff;
+  color: var(--ink-dark);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* 3-Step Visual Onboarding Guide Card */
+/* ==========================================================================
+   2. Popover 3-Step Guide Card (แสดงเฉพาะตอนกดปุ่ม ❓ วิธีใช้)
+   ========================================================================== */
 .howto-guide-card {
-  margin: 12px 20px 4px;
-  background: linear-gradient(to right, #ffffff, #f8fdff);
-  border: 2px solid #90e0ef;
-  border-radius: 14px;
+  position: relative;
+  margin: 12px 22px 0;
+  background: #fffdf7;
+  border: 2px solid #d8cebe;
+  border-radius: 16px;
   padding: 14px 18px;
-  box-shadow: 0 4px 14px rgba(0, 119, 182, 0.08);
+  box-shadow: var(--paper-shadow);
+  z-index: 25;
 }
 
 .howto-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .howto-header h2 {
-  font-size: 1rem;
-  color: #005f73;
+  font-size: 0.92rem;
+  color: var(--ink-dark);
 }
 
 .close-guide-btn {
-  background: #e9ecef;
-  color: #495057;
-  border: none;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 0.78rem;
+  background: #f0eae1;
+  color: var(--ink-dark);
+  border: 1px solid #d8cebe;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 0.76rem;
   font-weight: 700;
   cursor: pointer;
 }
@@ -212,33 +268,27 @@ body {
 .howto-steps {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-@media (max-width: 900px) {
-  .howto-steps {
-    grid-template-columns: 1fr;
-  }
+  gap: 12px;
 }
 
 .step-box {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  background: #f1faee;
-  border: 1px solid #cce3de;
-  border-radius: 10px;
+  gap: 10px;
+  background: #faf6ee;
+  border: 1.5px dashed #dcd2c2;
+  border-radius: 12px;
   padding: 10px 12px;
 }
 
 .step-num {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--accent-teal);
   color: #fff;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -246,107 +296,84 @@ body {
 }
 
 .step-content h3 {
-  font-size: 0.88rem;
-  color: #1d3557;
-  margin-bottom: 3px;
+  font-size: 0.84rem;
+  color: var(--ink-dark);
+  margin-bottom: 2px;
 }
 
 .step-content p {
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: #455a64;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--ink-muted);
 }
 
-/* Arduino IDE Live Sync Bar */
-.sync-bar {
-  background: #e9e2d6;
-  border-bottom: 1px solid #d4cbbd;
-  padding: 8px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+/* ==========================================================================
+   3. Spacious 2-Column Paper Workspace
+   ========================================================================== */
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 16px 20px;
+  padding: 18px 22px 22px;
+  position: relative;
 }
 
-.sync-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.88rem;
+/* เมื่อกดปุ่ม "📝 ซ่อนโค้ด" ให้กระดานวงจรขยายเต็มจอ 100% และมาสคอตลอยมุมล่างซ้าย */
+.workspace.code-hidden {
+  grid-template-columns: 1fr;
 }
 
-.pulse-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--ok-green);
-  box-shadow: 0 0 0 0 rgba(43, 147, 72, 0.7);
-  animation: pulseGreen 1.8s infinite;
+.workspace.code-hidden .editor-panel {
+  display: none;
 }
 
-@keyframes pulseGreen {
-  0% { box-shadow: 0 0 0 0 rgba(43, 147, 72, 0.6); }
-  70% { box-shadow: 0 0 0 8px rgba(43, 147, 72, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(43, 147, 72, 0); }
+.workspace.code-hidden .scrapbook-panel {
+  grid-column: 1 / -1;
+  grid-row: 1 / 3;
 }
 
-.file-pill {
-  background: #fff;
-  padding: 3px 10px;
-  border-radius: 6px;
-  border: 1px solid #c6bcad;
-  color: #005f73;
-  font-family: Consolas, monospace;
+.workspace.code-hidden .mascot-banner {
+  position: absolute;
+  bottom: 34px;
+  left: 36px;
+  width: 420px;
+  max-width: calc(100vw - 72px);
+  z-index: 20;
+  box-shadow: 0 10px 28px rgba(44, 38, 35, 0.16);
 }
 
-.sync-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  background: var(--accent-teal);
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.82rem;
-  cursor: pointer;
-}
-
-.action-btn:hover {
-  background: var(--accent-teal-dark);
-}
-
-.sync-actions select {
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: 1px solid #b8afa0;
-  background: #fff;
-  font-size: 0.82rem;
-  cursor: pointer;
-}
-
-/* Mascot Speech Banner */
+/* ==========================================================================
+   4. Cute Post-it Mascot Note (การ์ดโพสต์อิทคำใบ้มาสคอต)
+   ========================================================================== */
 .mascot-banner {
-  margin: 10px 20px 6px;
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
   display: flex;
-  align-items: stretch;
-  gap: 14px;
-  background: #fff9eb;
-  border: 2px dashed #d4a373;
-  border-radius: 14px;
-  padding: 12px 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  align-items: center;
+  gap: 12px;
+  background: #fff9e6;
+  border: 2px solid #e9d296;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 4px 14px rgba(140, 108, 40, 0.08);
 }
 
 .mascot-banner.status-ok {
-  background: #f0fff4;
-  border-color: #52b788;
+  background: #f2fbf5;
+  border-color: #a3dfb6;
+}
+
+.tape-mascot {
+  width: 68px;
+  height: 16px;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  background: var(--tape-yellow);
 }
 
 .mascot-avatar-card {
@@ -354,37 +381,38 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-width: 92px;
+  min-width: 68px;
   background: #fff;
   border-radius: 12px;
-  padding: 8px;
-  border: 2px solid #e6ccb2;
+  padding: 6px;
+  border: 1.5px solid #ead8b1;
+  flex-shrink: 0;
 }
 
 .mascot-mini-img {
-  width: 54px;
-  height: 54px;
-  border-radius: 10px;
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
   object-fit: cover;
-  animation: mascotBounce 2.2s infinite ease-in-out;
+  animation: mascotBounce 2.4s infinite ease-in-out;
 }
 
 .mascot-face {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   line-height: 1;
-  animation: mascotBounce 2.2s infinite ease-in-out;
+  animation: mascotBounce 2.4s infinite ease-in-out;
 }
 
 @keyframes mascotBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-3px); }
 }
 
 .mascot-tag {
-  margin-top: 5px;
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: #7f5539;
+  margin-top: 3px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #8a6534;
   text-align: center;
 }
 
@@ -392,30 +420,29 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
 }
 
 .speech-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 6px;
   flex-wrap: wrap;
-  gap: 8px;
 }
 
 .speech-buttons {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .status-pill {
   display: inline-block;
-  padding: 3px 10px;
+  padding: 2px 9px;
   border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.74rem;
+  font-weight: 800;
   background: #ffe3e3;
   color: var(--error-red);
 }
@@ -428,138 +455,113 @@ body {
 .autofix-btn {
   background: var(--accent-orange);
   color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 7px;
-  font-weight: 700;
-  font-size: 0.82rem;
+  border: 1.5px solid #d14920;
+  padding: 4px 11px;
+  border-radius: 9px;
+  font-weight: 800;
+  font-size: 0.76rem;
   cursor: pointer;
+  box-shadow: 0 2px 0 #b33915;
+  transition: transform 0.12s;
+}
+
+.autofix-btn:hover {
+  transform: translateY(-1px);
 }
 
 .expand-btn {
   background: var(--accent-teal);
   color: #fff;
   border: none;
-  padding: 6px 12px;
-  border-radius: 7px;
+  padding: 4px 10px;
+  border-radius: 8px;
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   cursor: pointer;
 }
 
 .speech-messages {
-  font-size: 0.95rem;
-  line-height: 1.5;
-  color: #2b2623;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--ink-dark);
+  max-height: 82px;
+  overflow-y: auto;
 }
 
 .speech-item {
-  padding: 3px 0;
+  padding: 2px 0;
 }
 
-/* Mini Companion Mode (เกาะขอบจอคู่กับ Arduino IDE) */
-body.mini-mode .hero-title-block p,
-body.mini-mode .badge-row,
-body.mini-mode .cover-art-frame,
-body.mini-mode #btnHowTo,
-body.mini-mode #howToCard,
-body.mini-mode #recentFilesSelect,
-body.mini-mode #presetSelect,
-body.mini-mode #mainWorkspace {
-  display: none !important;
+.fix-inline-chip {
+  display: inline-block;
+  margin-top: 3px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px dashed #d4a373;
+  padding: 1px 7px;
+  border-radius: 6px;
+  font-family: Consolas, monospace;
+  font-size: 0.76rem;
 }
 
-body.mini-mode .hero-cover {
-  padding: 8px 12px;
-}
-
-body.mini-mode .hero-title-block h1 {
-  font-size: 1.05rem;
-}
-
-body.mini-mode .sync-bar {
-  padding: 6px 12px;
-}
-
-body.mini-mode .mascot-banner {
-  margin: 10px 12px;
-  flex: 1;
-}
-
-/* Workspace Layout */
-.workspace {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 390px 1fr;
-  gap: 16px;
-  padding: 8px 20px 20px;
-}
-
-@media (max-width: 960px) {
-  .workspace {
-    grid-template-columns: 1fr;
-  }
-}
-
-.editor-panel,
-.scrapbook-panel {
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #dcd3c6;
+/* ==========================================================================
+   5. Clean Notebook Code Editor (คอลัมน์ซ้ายล่าง)
+   ========================================================================== */
+.editor-panel {
+  grid-column: 1;
+  grid-row: 2;
+  background: var(--paper-cream);
+  border-radius: 16px;
+  border: 2px solid #ded4c3;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--paper-shadow);
+  min-height: 0;
 }
 
 .panel-header {
-  background: #eee7dc;
-  padding: 9px 14px;
-  font-weight: 700;
-  font-size: 0.88rem;
+  background: #f3ece0;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: var(--ink-dark);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #dcd3c6;
+  border-bottom: 1.5px solid #dfd5c5;
 }
 
 .save-btn {
-  background: #2b9348;
+  background: var(--ok-green);
   color: #fff;
-  border: none;
-  padding: 4px 10px;
-  border-radius: 5px;
-  font-size: 0.78rem;
+  border: 1px solid #1e6f35;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 0.74rem;
   font-weight: 700;
   cursor: pointer;
+  box-shadow: 0 2px 0 #19592b;
 }
 
-.board-note {
-  font-weight: 400;
-  font-size: 0.76rem;
-  color: var(--ink-muted);
-}
-
-/* Code Editor */
 .code-editor-container {
   display: flex;
   flex: 1;
-  min-height: 240px;
-  background: #1e1e1e;
+  min-height: 0;
+  background: #21201e;
   color: #f8f8f2;
   font-family: Consolas, "Courier New", monospace;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
 }
 
 .line-numbers {
-  background: #252526;
-  color: #858585;
-  padding: 12px 10px;
+  background: #292724;
+  color: #8c857b;
+  padding: 12px 9px;
   text-align: right;
   user-select: none;
   line-height: 1.55;
-  min-width: 40px;
-  border-right: 1px solid #333;
+  min-width: 38px;
+  border-right: 1px solid #383531;
   overflow-y: hidden;
 }
 
@@ -576,43 +578,67 @@ body.mini-mode .mascot-banner {
   resize: none;
 }
 
-.bug-list-box {
-  background: #faf6f0;
-  border-top: 1px solid #e2d9c8;
-  padding: 10px 14px;
-  font-size: 0.84rem;
-  max-height: 140px;
-  overflow-y: auto;
-}
-
-.bug-line-badge {
-  display: inline-block;
-  background: var(--error-red);
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.74rem;
-  padding: 2px 7px;
-  border-radius: 4px;
-  margin-right: 6px;
-}
-
-/* Scrapbook Canvas */
-.scrapbook-canvas {
+/* ==========================================================================
+   6. Full-Height Paper-Scrapbook Circuit Stage (คอลัมน์ขวาเต็มความสูง)
+   ========================================================================== */
+.scrapbook-panel {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  background: #fcf8f0;
+  border-radius: 20px;
+  border: 2.5px solid #dcd0be;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--paper-shadow);
   position: relative;
-  flex: 1;
-  min-height: 430px;
-  background-color: #f6efe2;
-  background-image:
-    radial-gradient(#d5c7b2 1.2px, transparent 1.2px),
-    linear-gradient(to right, rgba(210, 195, 170, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(210, 195, 170, 0.25) 1px, transparent 1px);
-  background-size: 24px 24px;
-  padding: 32px 28px;
+  min-height: 0;
+}
+
+.scrapbook-floating-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 18px;
+  background: rgba(255, 253, 249, 0.88);
+  backdrop-filter: blur(6px);
+  border-bottom: 1.5px dashed #e2d8c7;
+  z-index: 10;
+}
+
+.stage-title-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: var(--ink-dark);
+}
+
+.board-note {
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+}
+
+.scrapbook-canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background-color: #f9f4ea;
+  background-image:
+    radial-gradient(#d8ccb8 1.3px, transparent 1.3px),
+    radial-gradient(#eae2d3 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  padding: 28px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 44px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .wire-layer {
@@ -624,195 +650,195 @@ body.mini-mode .mascot-banner {
   z-index: 2;
 }
 
-/* Torn Paper Cutout Styling */
+/* ==========================================================================
+   7. Paper Cutouts & Washi Tape (เอกลักษณ์กระดาษตัดแปะสุดน่ารัก)
+   ========================================================================== */
 .paper-cutout {
   position: relative;
-  z-index: 3;
   background: var(--paper-cream);
-  padding: 18px 18px 14px;
-  filter: drop-shadow(3px 5px 6px rgba(60, 45, 30, 0.22));
-  clip-path: polygon(
-    0% 3%, 4% 0%, 11% 2%, 18% 0%, 26% 3%, 34% 0%, 42% 2%, 51% 0%, 60% 3%, 69% 0%, 77% 2%, 86% 0%, 94% 3%, 100% 1%,
-    99% 12%, 100% 24%, 98% 37%, 100% 50%, 98% 63%, 100% 76%, 99% 89%, 100% 97%,
-    93% 100%, 84% 98%, 75% 100%, 66% 97%, 57% 100%, 48% 98%, 39% 100%, 30% 97%, 21% 100%, 12% 98%, 4% 100%, 0% 96%,
-    2% 84%, 0% 71%, 2% 58%, 0% 45%, 2% 31%, 0% 17%
-  );
-  transition: transform 0.2s ease;
-}
-
-.paper-cutout:hover {
-  transform: scale(1.02) rotate(0deg) !important;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 2px solid #e5dccd;
+  box-shadow:
+    0 6px 16px rgba(64, 50, 34, 0.08),
+    0 1px 0 #ffffff inset;
+  z-index: 3;
 }
 
 .washi-tape {
   position: absolute;
-  width: 68px;
-  height: 20px;
+  width: 60px;
+  height: 17px;
   background: var(--tape-yellow);
-  border-left: 2px dotted rgba(180, 150, 70, 0.45);
-  border-right: 2px dotted rgba(180, 150, 70, 0.45);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border-left: 2px dotted rgba(255, 255, 255, 0.65);
+  border-right: 2px dotted rgba(255, 255, 255, 0.65);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   z-index: 5;
+  pointer-events: none;
 }
 
 .tape-top-left {
-  top: 4px;
-  left: 10px;
-  transform: rotate(-16deg);
+  top: -8px;
+  left: 14px;
+  transform: rotate(-8deg);
 }
 
 .tape-top-right {
-  top: 4px;
-  right: 10px;
-  transform: rotate(14deg);
+  top: -8px;
+  right: 14px;
+  transform: rotate(7deg);
+  background: var(--tape-mint);
 }
 
 .tape-top-center {
-  top: 2px;
+  top: -9px;
   left: 50%;
-  transform: translateX(-50%) rotate(-4deg);
+  transform: translateX(-50%) rotate(-2deg);
 }
 
+/* Arduino Cutout */
 .arduino-cutout {
-  min-width: 220px;
-  transform: rotate(-1.2deg);
+  min-width: 215px;
+  transform: rotate(-1deg);
+  flex-shrink: 0;
 }
 
 .arduino-board-box {
   background: #006d77;
   color: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 14px;
-  border: 3px solid #004e57;
+  border: 2.5px solid #004e57;
 }
 
 .board-header-chip {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 8px;
 }
 
 .usb-port {
-  background: #adb5bd;
+  background: #ced4da;
   color: #212529;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .board-name {
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
+  letter-spacing: 0.5px;
 }
 
 .mcu-chip {
   background: #212529;
-  color: #ced4da;
+  color: #adb5bd;
+  font-family: Consolas, monospace;
+  font-size: 0.72rem;
   text-align: center;
-  font-family: monospace;
-  font-size: 0.75rem;
-  padding: 5px;
-  border-radius: 4px;
+  padding: 4px;
+  border-radius: 5px;
   margin-bottom: 12px;
-  border: 1px dashed #6c757d;
 }
 
 .pin-rail-title {
-  font-size: 0.75rem;
-  color: #e0fbfc;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #b8f2e6;
   margin-bottom: 6px;
-  font-weight: 600;
 }
 
 .pin-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .pin-socket {
-  background: #1b263b;
-  padding: 6px 10px;
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.28);
+  padding: 5px 10px;
+  border-radius: 7px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-family: monospace;
-  font-size: 0.85rem;
-  border: 1px solid #415a77;
-}
-
-.pin-socket.pin-error {
-  border-color: #ff4d6d;
-  background: #4a1525;
+  font-family: Consolas, monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .pin-dot {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: #ffd166;
   border: 2px solid #fff;
+  display: inline-block;
+}
+
+.pin-socket.pin-error .pin-dot {
+  background: var(--error-red);
 }
 
 .paper-caption {
-  margin-top: 8px;
   text-align: center;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  color: #5c5346;
+  margin-top: 8px;
+  color: var(--ink-muted);
 }
 
+/* Right Side Hardware Cutouts Zone */
 .devices-zone {
   display: flex;
   flex-direction: column;
-  gap: 26px;
-  align-items: flex-end;
+  gap: 20px;
+  flex: 1;
+  max-width: 390px;
   z-index: 3;
 }
 
 .device-card-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .question-mark-badge {
   position: absolute;
-  top: -22px;
-  right: 12px;
-  z-index: 10;
-  width: 44px;
-  height: 44px;
+  top: -14px;
+  right: -10px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--error-red);
   color: #fff;
-  font-size: 1.65rem;
+  font-size: 1.35rem;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 3px solid #fff;
-  box-shadow: 0 4px 12px rgba(217, 4, 41, 0.5);
-  cursor: pointer;
-  animation: questionPulse 1.1s infinite alternate ease-in-out;
+  box-shadow: 0 4px 10px rgba(217, 4, 41, 0.35);
+  z-index: 10;
+  animation: popQuestion 0.9s infinite alternate ease-in-out;
+  cursor: help;
 }
 
-@keyframes questionPulse {
-  0% { transform: translateY(0) scale(1) rotate(-8deg); }
-  100% { transform: translateY(-8px) scale(1.12) rotate(8deg); }
+@keyframes popQuestion {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-5px) scale(1.08); }
 }
 
 .device-cutout {
-  min-width: 240px;
-  max-width: 285px;
-  padding: 20px 18px 14px;
+  border: 2px solid #e2d8c7;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .device-cutout.has-bug {
-  background: #fff5f5;
+  border: 2px dashed var(--error-red);
+  background: #fff8f8;
 }
 
 .device-inner {
@@ -822,62 +848,60 @@ body.mini-mode .mascot-banner {
 }
 
 .device-terminal-dot {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  background: #495057;
-  border: 3px solid #adb5bd;
+  background: #2b2623;
+  border: 2.5px solid #ffd166;
   flex-shrink: 0;
 }
 
 .device-illustration {
-  width: 68px;
+  width: 72px;
   height: 68px;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .device-info {
   flex: 1;
+  min-width: 0;
 }
 
 .device-title {
   font-weight: 800;
-  font-size: 0.95rem;
-  color: #2b2623;
+  font-size: 0.9rem;
+  color: var(--ink-dark);
 }
 
 .device-state-text {
-  font-size: 0.8rem;
-  margin-top: 3px;
-  font-weight: 600;
+  font-size: 0.78rem;
+  margin-top: 2px;
+  font-weight: 700;
 }
 
-.state-ok {
-  color: var(--ok-green);
-}
-
-.state-error {
-  color: var(--error-red);
-}
+.state-ok { color: var(--ok-green); }
+.state-error { color: var(--error-red); }
+.state-muted { color: var(--ink-muted); }
 
 .device-bug-tooltip {
-  margin-top: 8px;
-  background: #ffe3e3;
+  margin-top: 6px;
+  background: #ffe8e8;
   border-left: 3px solid var(--error-red);
-  padding: 6px 8px;
-  font-size: 0.78rem;
-  color: #6a040f;
-  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.74rem;
+  color: #7a0916;
+  border-radius: 5px;
 }
 
+/* Hand-drawn Wires */
 .hand-wire {
   fill: none;
-  stroke-width: 4.5;
+  stroke-width: 4;
   stroke-linecap: round;
-  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.14));
 }
 
 .hand-wire.wire-ok {
@@ -886,29 +910,17 @@ body.mini-mode .mascot-banner {
 
 .hand-wire.wire-error {
   stroke: #d90429;
-  stroke-dasharray: 9 7;
+  stroke-dasharray: 8 7;
   animation: wireDash 1s linear infinite;
 }
 
 @keyframes wireDash {
-  to {
-    stroke-dashoffset: -16;
-  }
+  to { stroke-dashoffset: -15; }
 }
-
 
 /* ==========================================================================
-   Simulation Engine & Hardware Component Styles
+   8. Simulation Toolbar & Component Animations
    ========================================================================== */
-
-.scrapbook-header-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
 .sim-toolbar {
   display: flex;
   align-items: center;
@@ -916,147 +928,145 @@ body.mini-mode .mascot-banner {
 }
 
 .sim-btn {
-  background: linear-gradient(135deg, #2b9348 0%, #1b4332 100%);
+  background: var(--ok-green);
   color: #fff;
-  border: 2px solid #52b788;
-  padding: 6px 14px;
-  font-size: 0.82rem;
+  border: 1.5px solid #1e6f35;
+  padding: 5px 14px;
+  font-size: 0.8rem;
   font-weight: 800;
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-  transition: all 0.18s ease;
-}
-
-.sim-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 12px rgba(43, 147, 72, 0.35);
-}
-
-.sim-btn.active {
-  background: linear-gradient(135deg, #d90429 0%, #6a040f 100%);
-  border-color: #ff4d6d;
-}
-
-.sound-btn {
-  background: #fffdf8;
-  border: 2px solid #ced4da;
-  color: #2b2623;
-  padding: 6px 12px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  border-radius: 999px;
-  cursor: pointer;
+  box-shadow: 0 2px 0 #19592b;
   transition: all 0.15s ease;
 }
 
-.sound-btn:hover {
-  background: #f8f9fa;
-  border-color: #adb5bd;
+.sim-btn:hover {
+  transform: translateY(-1px);
+}
+
+.sim-btn.active {
+  background: var(--error-red);
+  border-color: #a3001b;
+  box-shadow: 0 2px 0 #7a0014;
+}
+
+.sound-btn {
+  background: #fff;
+  border: 1.5px solid #d6cbb9;
+  color: var(--ink-dark);
+  padding: 5px 11px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #e2d9c8;
 }
 
 .sound-btn.sound-muted {
-  background: #e9ecef;
-  color: #868e96;
-  border-color: #dee2e6;
+  background: #eee9df;
+  color: var(--ink-muted);
 }
 
 .sim-status-badge {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #e9ecef;
-  color: #495057;
-  border: 1px dashed #adb5bd;
-  transition: all 0.2s ease;
+  background: #f3ece0;
+  color: var(--ink-muted);
+  border: 1px dashed #cfc4b2;
 }
 
 .sim-status-badge.badge-running {
   background: #d8f3dc;
   color: #1b4332;
   border: 1px solid #74c69d;
-  box-shadow: 0 0 10px rgba(82, 183, 136, 0.4);
-  animation: badgePulse 1.2s ease-in-out infinite;
-}
-
-@keyframes badgePulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.03); }
-}
-
-.state-muted {
-  color: #6c757d;
 }
 
 .device-active {
-  box-shadow: 0 8px 24px rgba(255, 183, 3, 0.3), 0 0 0 3px rgba(255, 190, 11, 0.5) !important;
-  transition: box-shadow 0.2s ease;
+  box-shadow: 0 8px 22px rgba(255, 183, 3, 0.25), 0 0 0 2.5px rgba(255, 190, 11, 0.55) !important;
 }
 
 .device-readout-pill {
-  margin-top: 6px;
+  margin-top: 4px;
   display: inline-block;
   background: #e0f2fe;
   color: #0369a1;
-  font-size: 0.75rem;
+  font-size: 0.73rem;
   font-weight: 800;
   padding: 2px 8px;
   border-radius: 6px;
   border: 1px solid #bae6fd;
 }
 
-/* Animations for Simulation Components */
 .led-glowing .glow-circle {
   animation: ledGlowPulse 1s ease-in-out infinite alternate;
 }
 
 @keyframes ledGlowPulse {
-  from {
-    transform: scale(0.92);
-    opacity: 0.75;
-  }
-  to {
-    transform: scale(1.1);
-    opacity: 1;
-  }
+  from { transform: scale(0.92); opacity: 0.75; }
+  to { transform: scale(1.1); opacity: 1; }
 }
 
-.pulse-wave {
-  animation: ultraWaveAnim 0.8s ease-out infinite;
-}
-
-.pulse-wave-2 {
-  animation: ultraWaveAnim 0.8s ease-out 0.25s infinite;
-}
+.pulse-wave { animation: ultraWaveAnim 0.8s ease-out infinite; }
+.pulse-wave-2 { animation: ultraWaveAnim 0.8s ease-out 0.25s infinite; }
 
 @keyframes ultraWaveAnim {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.25);
-  }
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25); }
 }
 
-.buzzer-pulse {
-  animation: buzzerWaveAnim 0.6s ease-in-out infinite alternate;
-}
-
-.buzzer-pulse-2 {
-  animation: buzzerWaveAnim 0.6s ease-in-out 0.2s infinite alternate;
-}
+.buzzer-pulse { animation: buzzerWaveAnim 0.6s ease-in-out infinite alternate; }
+.buzzer-pulse-2 { animation: buzzerWaveAnim 0.6s ease-in-out 0.2s infinite alternate; }
 
 @keyframes buzzerWaveAnim {
-  from {
-    opacity: 0.3;
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+/* ==========================================================================
+   9. Mini Companion Mode (โหมดย่อเกาะขอบจอคู่กับ Arduino IDE)
+   ========================================================================== */
+body.mini-mode .topbar-divider,
+body.mini-mode #recentFilesSelect,
+body.mini-mode #presetSelect,
+body.mini-mode #btnToggleCode,
+body.mini-mode #btnHowTo,
+body.mini-mode #howToCard,
+body.mini-mode .editor-panel,
+body.mini-mode .scrapbook-panel {
+  display: none !important;
+}
+
+body.mini-mode .paper-topbar {
+  padding: 6px 12px;
+}
+
+body.mini-mode .workspace {
+  display: flex;
+  padding: 10px 12px;
+}
+
+body.mini-mode .mascot-banner {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  flex: 1;
+}
+
+@media (max-width: 920px) {
+  body {
+    height: auto;
+    overflow: auto;
   }
-  to {
-    opacity: 1;
+  .workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .scrapbook-panel {
+    grid-column: 1;
+    grid-row: 3;
+    min-height: 420px;
   }
 }

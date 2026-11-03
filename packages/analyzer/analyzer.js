@@ -267,7 +267,7 @@
             wrongToken: fnName,
             correctToken: "pinMode",
             message: {
-              th: `เฮ้! นายเขียนคำสั่ง "${fnName}" ผิดที่บรรทัด ${lineNum} นะ ต้องเขียนเป็น "pinMode" (ตัว M พิมพ์ใหญ่) ไม่งั้นบอร์ดตั้งค่าขา ${pinObj.pin} ไม่ได้นะ!`,
+              th: `สะกด "${fnName}" ผิดนะ! ต้องใช้ตัว M พิมพ์ใหญ่เป็น "pinMode" เพื่อตั้งค่าขา ${pinObj.pin}`,
               en: `Hey! You wrote "${fnName}" on line ${lineNum}. You need to write it as "pinMode" (with a capital M), otherwise Pin ${pinObj.pin} won't be configured!`,
             },
             impact: {
@@ -294,7 +294,7 @@
             wrongToken: modeArg,
             correctToken: suggested,
             message: {
-              th: `เฮ้! นายเขียนตัว "${modeArg}" ผิดที่บรรทัด ${lineNum} นะ นายต้องเขียนเป็นตัวพิมพ์ใหญ่ทั้งหมดว่า "${suggested}" ไม่งั้นขา ${pinObj.pin} จะจ่ายไฟหรือรับค่าไม่ได้!`,
+              th: `เขียน "${modeArg}" ผิดนะ! ต้องใช้ตัวพิมพ์ใหญ่ทั้งหมดว่า "${suggested}" ขา ${pinObj.pin} ถึงจะทำงาน`,
               en: `Hey! You wrote "${modeArg}" on line ${lineNum}. You must write it in ALL CAPS as "${suggested}", otherwise Pin ${pinObj.pin} won't work!`,
             },
             impact: {
@@ -332,7 +332,7 @@
             wrongToken: fnName,
             correctToken: "digitalWrite",
             message: {
-              th: `เฮ้! ที่บรรทัด ${lineNum} นายสะกดคำสั่ง "${fnName}" ผิดนะ ต้องเป็น "digitalWrite" (ตัว W พิมพ์ใหญ่) ถึงจะสั่งจ่ายไฟที่ขา ${pinObj.pin} ได้!`,
+              th: `สะกด "${fnName}" ผิดนะ! ต้องเป็น "digitalWrite" (W พิมพ์ใหญ่) เพื่อสั่งงานขา ${pinObj.pin}`,
               en: `Hey! On line ${lineNum}, you wrote "${fnName}". It should be "digitalWrite" (capital W) to control power on Pin ${pinObj.pin}!`,
             },
             impact: {
@@ -358,7 +358,7 @@
             wrongToken: valArg,
             correctToken: suggested,
             message: {
-              th: `เฮ้! นายเขียนค่าจ่ายไฟ "${valArg}" ผิดที่บรรทัด ${lineNum} นะ ต้องเขียนเป็นตัวพิมพ์ใหญ่ทั้งหมดว่า "${suggested}" อุปกรณ์ที่ขา ${pinObj.pin} ถึงจะทำงาน!`,
+              th: `เขียนค่า "${valArg}" ผิดนะ! ต้องเป็นตัวพิมพ์ใหญ่ "${suggested}" อุปกรณ์ขา ${pinObj.pin} ถึงจะติด`,
               en: `Hey! You wrote "${valArg}" on line ${lineNum}. You need to write "${suggested}" in ALL CAPS so the component on Pin ${pinObj.pin} gets the right signal!`,
             },
             impact: {
@@ -397,7 +397,7 @@
             wrongToken: `analogWrite(${rawPinToken}, ...)`,
             correctToken: "ใช้ขา PWM (3, 5, 6, 9, 10, 11)",
             message: {
-              th: `เฮ้! บรรทัด ${lineNum} นายใช้ analogWrite กับขา ${pinObj.pin} ซึ่งบอร์ด Arduino Uno ขานี้ไม่รองรับการหรี่ไฟ (PWM) นะ! ลองย้ายไปขา 3, 5, 6, 9, 10 หรือ 11 ดูสิ`,
+              th: `ขา ${pinObj.pin} ไม่รองรับ PWM (analogWrite) บน Uno นะ! ลองย้ายไปขา 3, 5, 6, 9, 10 หรือ 11`,
               en: `Hey! On line ${lineNum}, you used analogWrite on Pin ${pinObj.pin}, which doesn't support PWM on Arduino Uno! Try pins 3, 5, 6, 9, 10, or 11 instead.`,
             },
             impact: {
@@ -430,7 +430,7 @@
             wrongToken: fnName,
             correctToken: "digitalRead",
             message: {
-              th: `เฮ้! บรรทัด ${lineNum} นายพิมพ์ "${fnName}" ผิดนะ ต้องเป็น "digitalRead" (ตัว R พิมพ์ใหญ่) ถึงจะอ่านค่าจากปุ่ม/เซนเซอร์ขา ${pinObj.pin} ได้!`,
+              th: `สะกด "${fnName}" ผิดนะ! ต้องเป็น "digitalRead" (R พิมพ์ใหญ่) เพื่ออ่านค่าขา ${pinObj.pin}`,
               en: `Hey! On line ${lineNum}, you wrote "${fnName}". Change it to "digitalRead" (capital R) to read from the sensor/button on Pin ${pinObj.pin}!`,
             },
             impact: {
@@ -461,7 +461,7 @@
             wrongToken: fnName,
             correctToken: "tone",
             message: {
-              th: `เฮ้! บรรทัด ${lineNum} นายพิมพ์ "${fnName}" ผิดนะ ต้องเป็น "tone" (ตัวพิมพ์เล็กทั้งหมด) ถึงจะสั่งเสียงลำโพงขา ${pinObj.pin} ได้!`,
+              th: `สะกด "${fnName}" ผิดนะ! ต้องใช้ตัวพิมพ์เล็ก "tone" เพื่อสั่งลำโพงขา ${pinObj.pin}`,
               en: `Hey! On line ${lineNum}, you wrote "${fnName}". It should be lowercase "tone" to sound the buzzer on Pin ${pinObj.pin}!`,
             },
             impact: {
@@ -517,7 +517,7 @@
             wrongToken: wrongExpr,
             correctToken: fixedExpr,
             message: {
-              th: `เฮ้! ที่บรรทัด ${lineNum} นายเผลอใช้เครื่องหมายกำหนดค่า "=" ตัวเดียวในเงื่อนไข \`if (${wrongExpr})\` นะ! ในภาษา C/Arduino นายต้องใช้ "==" (สองตัว) สำหรับเปรียบเทียบ ไม่งั้นมันจะเป็นการเซ็ตค่าให้ตัวแปรและทำให้เงื่อนไขเป็นจริง (True) ตลอดเวลาเลย!`,
+              th: `เผลอใช้ "=" ตัวเดียวใน if นะ! ต้องใช้ "==" (สองตัว) เพื่อเปรียบเทียบค่า ไม่งั้นเงื่อนไขจะเป็นจริงตลอดเวลา`,
               en: `Hey! On line ${lineNum}, you used a single "=" assignment operator in \`if (${wrongExpr})\`! In C/Arduino, you must use "==" (double equals) to compare. A single "=" assigns the value and makes the condition evaluate to true all the time!`,
             },
             impact: {
@@ -563,7 +563,7 @@
           wrongToken: rawLine.trim(),
           correctToken: `${rawLine.trim()};`,
           message: {
-            th: `เฮ้! นายลืมใส่เครื่องหมายเซมิโคลอน (;) ปิดท้ายที่บรรทัด ${lineNum} นะ! เติม ";" ต่อท้ายบรรทัดนี้ก็เรียบร้อยแล้ว`,
+            th: `ลืมใส่เซมิโคลอน (;) ปิดท้ายคำสั่งนะ! เติม ";" ต่อท้ายบรรทัดนี้ได้เลย`,
             en: `Hey! You forgot a semicolon (;) at the end of line ${lineNum}! Just add ";" at the end of that line.`,
           },
           impact: {
@@ -603,7 +603,7 @@
             wrongToken: `ไม่มี pinMode(${pin}, OUTPUT)`,
             correctToken: `pinMode(${pin}, OUTPUT);`,
             message: {
-              th: `เฮ้! นายสั่งจ่ายไฟที่ขา ${pin} (บรรทัด ${firstLine}) แต่ลืมเขียน pinMode(${pin}, OUTPUT); ในฟังก์ชัน setup() นะ! ถ้าไม่ตั้งค่าก่อน ไฟที่ขา ${pin} จะออกมาน้อยมากจนอุปกรณ์ไม่ทำงานนะ`,
+              th: `สั่งจ่ายไฟขา ${pin} แต่ลืมใส่ pinMode(${pin}, OUTPUT); ใน setup() นะ!`,
               en: `Hey! You used digitalWrite on Pin ${pin} (line ${firstLine}), but forgot to add pinMode(${pin}, OUTPUT); inside setup()! Without it, the component on Pin ${pin} will be super dim or won't work!`,
             },
             impact: {
@@ -684,8 +684,8 @@
       summary: {
         th:
           bugs.length === 0
-            ? "เย่! โค้ดของนายดูถูกต้องครบถ้วน อุปกรณ์ทุกชิ้นในวงจรทำงานได้ปกติเลย!"
-            : `พบจุดที่เขียนผิด ${bugs.length} จุด! ลองดูคำแนะนำจากตัวละครและดูอุปกรณ์ที่มีเครื่องหมาย ? ในวงจรกระดาษแปะได้เลย`,
+            ? "เย่! โค้ดถูกต้องครบถ้วน อุปกรณ์ทุกชิ้นพร้อมทำงานเลย!"
+            : `พบจุดผิด ${bugs.length} จุด! กดปุ่ม ✨ แก้ทันที หรือดูจุดที่มี ? บนวงจรได้เลย`,
         en:
           bugs.length === 0
             ? "Yay! Your Arduino code looks great! All components in the circuit are working normally."
