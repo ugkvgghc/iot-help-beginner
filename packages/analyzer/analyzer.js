@@ -28,13 +28,16 @@
     if (vLower.includes("button") || vLower.includes("btn") || vLower.includes("sw") || vLower.includes("switch")) return "button";
     if (vLower.includes("pot") || vLower.includes("ldr") || vLower.includes("sensor")) return "sensor";
 
-    // 2. ค้นหาในบรรทัดที่มีการประกาศหรือใช้งานขานี้โดยเฉพาะ (Line-specific context)
+    // 2. ค้นหาในบรรทัดที่มีการประกาศหรือใช้งานขานี้โดยเฉพาะ (สแกน 150 บรรทัดแรกที่มีการประกาศขาเพื่อประสิทธิภาพสูงสุด)
     const pinStr = String(pin).trim();
     const pinEscaped = pinStr.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const varEscaped = String(varName || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pattern = varEscaped ? `(?:\\b${pinEscaped}\\b|\\b${varEscaped}\\b)` : `\\b${pinEscaped}\\b`;
     const specificRegex = new RegExp(`.*${pattern}.*`, "gi");
-    const matchedLines = (codeContext.match(specificRegex) || []).join(" ").toLowerCase();
+    
+    // ค้นหาเฉพาะในส่วนหัวของไฟล์หรือ 150 บรรทัดแรกที่มีการกำหนดค่า
+    const scanHeader = codeContext.split(/\r?\n/).slice(0, 150).join("\n");
+    const matchedLines = (scanHeader.match(specificRegex) || []).join(" ").toLowerCase();
 
     if (matchedLines.includes("led")) return "led";
     if (matchedLines.includes("buzzer") || matchedLines.includes("tone") || matchedLines.includes("speaker") || matchedLines.includes("piezo")) return "buzzer";
@@ -83,6 +86,10 @@
       }
 
       if (insideLoop) {
+        if (steps.length >= 64) {
+          // เก็บขั้นตอนจำลองสูงสุด 64 สเต็ปเพื่อความลื่นไหลและประหยัดหน่วยความจำ
+          break;
+        }
         if (line.includes("{")) bracketDepth++;
         if (line.includes("}")) {
           bracketDepth--;
@@ -221,9 +228,12 @@
         });
       } else {
         const entry = pinMap.get(pinKey);
-        if (!entry.lines.includes(lineNum)) entry.lines.push(lineNum);
-        // ปรับ deviceType ให้แม่นยำขึ้นถ้าพบ hint ใหม่
-        if (entry.deviceType === "led" && varHint) {
+        if (entry.lines.length < 50 && !entry.lines.includes(lineNum)) {
+          entry.lines.push(lineNum);
+        }
+        // ปรับ deviceType ครั้งเดียวถ้ามี hint ใหม่ที่เจาะจงขึ้น
+        if (entry.deviceType === "led" && varHint && varHint !== pinKey && !entry._checkedHint) {
+          entry._checkedHint = true;
           const refinedType = guessDeviceType(pinKey, roleHint, code, varHint);
           if (refinedType !== "led") entry.deviceType = refinedType;
         }

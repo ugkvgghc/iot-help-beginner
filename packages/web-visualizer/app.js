@@ -860,14 +860,21 @@ async function pollArduinoFileState() {
   } catch (_) {}
 }
 
-// Event Listeners
+// Event Listeners & Scroll Sync
+codeInput.addEventListener("scroll", () => {
+  lineNumbers.scrollTop = codeInput.scrollTop;
+});
+
+let inputDebounceTimer = null;
 codeInput.addEventListener("input", () => {
   isUserTyping = true;
   clearTimeout(typingTimer);
   typingTimer = setTimeout(() => {
     isUserTyping = false;
   }, 2000);
-  renderAnalysis();
+  updateLineNumbers();
+  clearTimeout(inputDebounceTimer);
+  inputDebounceTimer = setTimeout(renderAnalysis, 80);
 });
 
 btnSaveCode.addEventListener("click", async () => {
